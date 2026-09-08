@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" data-club="fiorentina">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
 <style>
   html { scroll-behavior: smooth; }
 
-  .meto-intro { margin-bottom: var(--gap-section); }
+  .meto-intro { max-width: 720px; margin: 0 auto var(--gap-section); }
   .meto-intro h1 {
     font-size: var(--text-2xl);
     font-weight: var(--weight-bold);
@@ -132,6 +132,8 @@
     text-transform: uppercase;
     color: var(--color-text-faint);
   }
+
+  .approfondimento-detail { max-width: 720px; margin: 0 auto; }
 
   .principio { padding: 8px 0; scroll-margin-top: 24px; }
   .principio-head {
@@ -296,7 +298,7 @@
 <header class="site-header">
   <a class="home-link" href="../../index.html">← Homepage</a>
   <span class="breadcrumb"><span class="current">Come</span><span class="sep">/</span><span class="current">Metodologia</span></span>
-  <span class="season">ACF Fiorentina · 2026/27</span>
+  <span class="season">MtX Model</span>
 </header>
 
 <main class="meto-main">
@@ -372,6 +374,8 @@
 
   <!-- LIVELLO 2 — dettaglio -->
   <div class="approfondimento-sep"><span>Approfondimento</span></div>
+
+  <div class="approfondimento-detail">
 
   <!-- 1 — CONOSCERE -->
   <article class="principio" id="conoscere">
@@ -494,6 +498,8 @@
       </div>
     </div>
   </article>
+
+  </div>
 
 </main>
 

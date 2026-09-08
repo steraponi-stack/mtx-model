@@ -64,12 +64,6 @@
   --maxw-content: 860px;
 }
 
-/* Override Fiorentina — unica variazione ammessa */
-[data-club="fiorentina"] {
-  --color-accent:     #482e92;
-  --color-accent-alt: #a29160;
-}
-
 /* ---------- RESET ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
