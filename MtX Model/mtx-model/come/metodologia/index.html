@@ -6,6 +6,8 @@
 <title>Metodologia — MtX Model</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
+  html { scroll-behavior: smooth; }
+
   main.meto-main {
     max-width: 800px;
     padding-left: 60px;
@@ -18,7 +20,103 @@
   .meto-intro { margin-bottom: var(--gap-section); }
   .meto-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: var(--leading-loose); margin-top: 14px; }
 
-  .principio { padding: 8px 0; }
+  /* ===== LIVELLO 1 — griglia panoramica ===== */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: var(--gap-section);
+  }
+  @media (max-width: 700px) {
+    .overview-grid { grid-template-columns: 1fr; }
+  }
+  .overview-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-top: 2px solid var(--color-black);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .overview-card .ov-num {
+    position: absolute;
+    top: -6px;
+    right: 10px;
+    font-size: 80px;
+    font-weight: var(--weight-bold);
+    color: #F0F0F0;
+    line-height: 1;
+    z-index: 0;
+    user-select: none;
+  }
+  .overview-card > * { position: relative; z-index: 1; }
+  .overview-card .ov-title {
+    font-size: 16px;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-black);
+  }
+  .overview-card .ov-sub {
+    font-size: 12px;
+    font-weight: var(--weight-regular);
+    font-style: italic;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+  }
+  .overview-card .ov-text {
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-top: 14px;
+  }
+  .overview-card .ov-claim {
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    font-style: italic;
+    color: var(--color-black);
+    border-left: 2px solid var(--color-black);
+    padding-left: 12px;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .overview-card .ov-link {
+    margin-top: auto;
+    padding-top: 16px;
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .overview-card .ov-link:hover { color: var(--color-black); }
+
+  /* ===== separatore "Approfondimento" ===== */
+  .approfondimento-sep {
+    position: relative;
+    text-align: center;
+    margin: var(--gap-section) 0 40px;
+    border-top: 1.5px solid var(--color-black);
+  }
+  .approfondimento-sep span {
+    position: relative;
+    top: -9px;
+    background: var(--color-bg);
+    padding: 0 14px;
+    font-size: 10px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+
+  .principio { padding: 8px 0; scroll-margin-top: 24px; }
   .principio-head {
     display: flex;
     align-items: baseline;
@@ -192,8 +290,39 @@
     <p class="lead">La metodologia del MtX Model si fonda su tre principi fondamentali.</p>
   </section>
 
+  <!-- LIVELLO 1 — vista panoramica -->
+  <div class="overview-grid">
+    <div class="overview-card">
+      <span class="ov-num">1</span>
+      <div class="ov-title">Conoscere</div>
+      <div class="ov-sub">Cognizione Incarnata</div>
+      <p class="ov-text">I principi di gioco si acquisiscono attraverso l'esperienza del corpo in movimento, non attraverso spiegazioni astratte.</p>
+      <blockquote class="ov-claim">«Il maestro è il compito, non le spiegazioni.»</blockquote>
+      <a class="ov-link" href="#conoscere">Approfondisci ↓</a>
+    </div>
+    <div class="overview-card">
+      <span class="ov-num">2</span>
+      <div class="ov-title">Riconoscere</div>
+      <div class="ov-sub">Percezione-Azione</div>
+      <p class="ov-text">Percepire nell'ambiente le opportunità di azione (affordance) per agire in modo efficace, momento per momento.</p>
+      <blockquote class="ov-claim">«Progetta vincoli. Lascia emergere soluzioni.»</blockquote>
+      <a class="ov-link" href="#riconoscere">Approfondisci ↓</a>
+    </div>
+    <div class="overview-card">
+      <span class="ov-num">3</span>
+      <div class="ov-title">Risolvere insieme</div>
+      <div class="ov-sub">Auto-organizzazione</div>
+      <p class="ov-text">I principi sono guide, non gabbie. Il gioco si auto-organizza attraverso l'intelligenza collettiva della squadra.</p>
+      <blockquote class="ov-claim">«Identità dei principi, creatività nell'espressione.»</blockquote>
+      <a class="ov-link" href="#risolvere-insieme">Approfondisci ↓</a>
+    </div>
+  </div>
+
+  <!-- LIVELLO 2 — dettaglio -->
+  <div class="approfondimento-sep"><span>Approfondimento</span></div>
+
   <!-- 1 — CONOSCERE -->
-  <article class="principio">
+  <article class="principio" id="conoscere">
     <div class="principio-head">
       <div class="principio-num">1</div>
       <div class="principio-titles">
@@ -238,7 +367,7 @@
   <hr class="principio-sep">
 
   <!-- 2 — RICONOSCERE -->
-  <article class="principio">
+  <article class="principio" id="riconoscere">
     <div class="principio-head">
       <div class="principio-num">2</div>
       <div class="principio-titles">
@@ -284,7 +413,7 @@
   <hr class="principio-sep">
 
   <!-- 3 — RISOLVERE INSIEME -->
-  <article class="principio">
+  <article class="principio" id="risolvere-insieme">
     <div class="principio-head">
       <div class="principio-num">3</div>
       <div class="principio-titles">
