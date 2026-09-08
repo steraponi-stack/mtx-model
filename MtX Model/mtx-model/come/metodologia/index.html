@@ -18,7 +18,33 @@
   }
 
   .meto-intro { margin-bottom: var(--gap-section); }
-  .meto-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: var(--leading-loose); margin-top: 14px; }
+  .meto-intro h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-tight);
+    color: var(--color-black);
+  }
+  .meto-intro .meto-quote {
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    font-style: italic;
+    color: var(--color-black);
+    border-left: 2px solid var(--color-black);
+    padding-left: 16px;
+    margin-top: 18px;
+    line-height: var(--leading-normal);
+  }
+  .meto-intro .meto-quote cite {
+    display: block;
+    font-size: var(--text-xs);
+    font-style: normal;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-faint);
+    letter-spacing: 0.04em;
+    margin-top: 6px;
+  }
+  .meto-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: var(--leading-loose); margin-top: 18px; }
 
   /* ===== LIVELLO 1 — griglia panoramica ===== */
   .overview-grid {
@@ -287,6 +313,11 @@
   <section class="meto-intro">
     <div class="kicker">Come</div>
     <h1>Metodologia</h1>
+    <blockquote class="meto-quote">
+      «Conoscere, riconoscere, risolvere insieme.»
+      <cite>— Fabio Grosso</cite>
+    </blockquote>
+    <p class="lead">Il nostro compito non è fornire soluzioni preconfezionate ma formare giocatori autonomi e adattivi, capaci di auto-organizzarsi per rispondere con flessibilità ed efficacia alla complessità del gioco.</p>
     <p class="lead">La metodologia del MtX Model si fonda su tre principi fondamentali.</p>
   </section>
 
@@ -317,6 +348,36 @@
       <a class="ov-link" href="#risolvere-insieme">Approfondisci ↓</a>
     </div>
   </div>
+
+  <!-- Le condizioni della pratica -->
+  <section class="condizioni">
+    <h2>Le condizioni della pratica</h2>
+    <p class="condizioni-intro">«Imparare a giocare attraverso il gioco.»</p>
+    <p class="condizioni-testo">I giocatori devono fare per imparare, fare molto e farlo giocando in contesti che simulano la variabilità del gioco reale. Le condizioni della pratica devono stimolare le capacità di auto-organizzazione e adattamento, incoraggiando la ricerca continua di nuove soluzioni.</p>
+
+    <div class="condizioni-grid">
+      <div class="condizioni-card">
+        <div class="cc-title">Induttiva</div>
+        <div class="cc-sub">Fare per imparare</div>
+        <p class="cc-text">Esplorare attraverso prove ed errori. La soluzione emerge dall'esperienza, non dalla spiegazione.</p>
+      </div>
+      <div class="condizioni-card">
+        <div class="cc-title">Massiva</div>
+        <div class="cc-sub">Fare molto</div>
+        <p class="cc-text">Pratica abbondante, intensa, costante. Tempi morti ridotti al minimo. Ottimizzare il rapporto palla/giocatori, organizzazione a blocchi e stazioni multiple.</p>
+      </div>
+      <div class="condizioni-card">
+        <div class="cc-title">Specifica</div>
+        <div class="cc-sub">Imparare giocando</div>
+        <p class="cc-text">Compiti vicini alla realtà del gioco. Le azioni emergono dal contesto stesso, non da esercizi isolati. Più gioco, meno esercizi.</p>
+      </div>
+      <div class="condizioni-card">
+        <div class="cc-title">Variabile</div>
+        <div class="cc-sub">Ripetere senza ripetere</div>
+        <p class="cc-text">Ripetere il processo di ricerca, non la soluzione. La variabilità stimola adattabilità e creatività. Non «fai sempre questo», ma «risolvi questo problema» in contesti sempre diversi.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- LIVELLO 2 — dettaglio -->
   <div class="approfondimento-sep"><span>Approfondimento</span></div>
@@ -442,36 +503,6 @@
       </div>
     </div>
   </article>
-
-  <!-- SEZIONE FINALE — Le condizioni della pratica -->
-  <section class="condizioni">
-    <h2>Le condizioni della pratica</h2>
-    <p class="condizioni-intro">«Imparare a giocare attraverso il gioco.»</p>
-    <p class="condizioni-testo">I giocatori devono fare per imparare, fare molto e farlo giocando in contesti che simulano la variabilità del gioco reale. Le condizioni della pratica devono stimolare le capacità di auto-organizzazione e adattamento, incoraggiando la ricerca continua di nuove soluzioni.</p>
-
-    <div class="condizioni-grid">
-      <div class="condizioni-card">
-        <div class="cc-title">Induttiva</div>
-        <div class="cc-sub">Fare per imparare</div>
-        <p class="cc-text">Esplorare attraverso prove ed errori. La soluzione emerge dall'esperienza, non dalla spiegazione.</p>
-      </div>
-      <div class="condizioni-card">
-        <div class="cc-title">Massiva</div>
-        <div class="cc-sub">Fare molto</div>
-        <p class="cc-text">Pratica abbondante, intensa, costante. Tempi morti ridotti al minimo. Ottimizzare il rapporto palla/giocatori, organizzazione a blocchi e stazioni multiple.</p>
-      </div>
-      <div class="condizioni-card">
-        <div class="cc-title">Specifica</div>
-        <div class="cc-sub">Imparare giocando</div>
-        <p class="cc-text">Compiti vicini alla realtà del gioco. Le azioni emergono dal contesto stesso, non da esercizi isolati. Più gioco, meno esercizi.</p>
-      </div>
-      <div class="condizioni-card">
-        <div class="cc-title">Variabile</div>
-        <div class="cc-sub">Ripetere senza ripetere</div>
-        <p class="cc-text">Ripetere il processo di ricerca, non la soluzione. La variabilità stimola adattabilità e creatività. Non «fai sempre questo», ma «risolvi questo problema» in contesti sempre diversi.</p>
-      </div>
-    </div>
-  </section>
 
 </main>
 
