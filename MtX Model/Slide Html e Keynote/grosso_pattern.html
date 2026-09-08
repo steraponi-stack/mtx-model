@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pattern e Allineamento — Fabio Grosso</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --viola: #482e92;
+    --viola-light: #EDE7F6;
+    --viola-mid: #9C6CC0;
+    --gold: #a29160;
+    --gold-light: #FFF8E1;
+    --white: #ffffff;
+    --gray-100: #f5f5f5;
+    --gray-200: #e8e8e8;
+    --gray-400: #999;
+    --text: #0a0a0a;
+    --text-muted: #666;
+    --border: rgba(0,0,0,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--white);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  .tab-radio { display: none; }
+
+  .header {
+    background: var(--viola);
+    padding: 40px 22px 26px;
+    text-align: center;
+  }
+  .header-label {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 12px;
+  }
+  .header-title {
+    font-size: 21px; font-weight: 600;
+    color: var(--white); line-height: 1.25;
+    letter-spacing: -0.01em; margin-bottom: 6px;
+  }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 300; }
+  .header-divider { width: 24px; height: 2px; background: var(--gold); margin: 14px auto 0; }
+
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-label {
+    flex-shrink: 0;
+    padding: 13px 16px;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-muted); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap; display: block;
+  }
+
+  #t1:checked ~ .nav .l1,
+  #t2:checked ~ .nav .l2,
+  #t3:checked ~ .nav .l3,
+  #t4:checked ~ .nav .l4,
+  #t5:checked ~ .nav .l5 { color: var(--viola); border-bottom-color: var(--viola); }
+
+  .section { display: none; padding: 24px 18px 48px; }
+
+  #t1:checked ~ .sections .s1,
+  #t2:checked ~ .sections .s2,
+  #t3:checked ~ .sections .s3,
+  #t4:checked ~ .sections .s4,
+  #t5:checked ~ .sections .s5 { display: block; }
+
+  .sec-eyebrow {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--viola-mid); margin-bottom: 8px;
+  }
+  .sec-title {
+    font-size: 19px; font-weight: 600;
+    color: var(--text); line-height: 1.3;
+    letter-spacing: -0.01em; margin-bottom: 16px;
+  }
+  .prose { font-size: 14px; line-height: 1.8; color: var(--text); margin-bottom: 14px; }
+
+  /* PATTERN CARDS */
+  .pattern-list { display: flex; flex-direction: column; gap: 12px; }
+  .pattern-card {
+    background: var(--gray-100);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .pattern-num {
+    font-size: 10px; font-weight: 700; color: var(--viola);
+    letter-spacing: 0.08em; margin-bottom: 4px;
+  }
+  .pattern-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .pattern-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+  .pattern-quote {
+    font-size: 12px; font-style: italic; color: var(--text);
+    margin-top: 5px; padding-left: 10px; border-left: 2px solid var(--gold);
+  }
+
+  /* PCC SECTIONS */
+  .pcc-block { margin-bottom: 22px; }
+  .pcc-head {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--white); background: var(--viola);
+    padding: 6px 12px; border-radius: 20px;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .pcc-item { margin-bottom: 12px; }
+  .pcc-item-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .pcc-item-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+  .pcc-item-quote {
+    font-size: 12px; font-style: italic; color: var(--text);
+    margin-top: 4px; padding-left: 10px; border-left: 2px solid var(--gold);
+  }
+  .divider { height: 1px; background: var(--gray-200); margin: 18px 0; }
+
+  /* CONVERGENZE */
+  .conv-card {
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 10px;
+  }
+  .conv-label {
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 600; color: #1a6b35;
+    background: #e6f4ea; padding: 2px 9px; border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .conv-pair { display: flex; flex-direction: column; gap: 6px; }
+  .conv-side { font-size: 12.5px; line-height: 1.55; }
+  .conv-side strong { color: var(--viola); }
+
+  /* PUNTI APERTI */
+  .open-card {
+    border-left: 2px solid var(--gold); background: var(--gold-light);
+    border-radius: 0 10px 10px 0; padding: 12px 14px; margin-bottom: 10px;
+  }
+  .open-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .open-desc { font-size: 12.5px; color: var(--text); line-height: 1.6; }
+
+  .footer { padding: 20px; text-align: center; border-top: 1px solid var(--gray-200); }
+  .footer-text { font-size: 10px; color: var(--gray-400); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* NOTE ORIGINALI */
+  .raw-block {
+    background: var(--gray-100);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .raw-source { font-size: 9.5px; color: var(--gray-400); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<input type="radio" name="tabs" id="t1" class="tab-radio" checked>
+<input type="radio" name="tabs" id="t2" class="tab-radio">
+<input type="radio" name="tabs" id="t3" class="tab-radio">
+<input type="radio" name="tabs" id="t4" class="tab-radio">
+<input type="radio" name="tabs" id="t5" class="tab-radio">
+
+<div class="header">
+  <div class="header-label">ACF Fiorentina · Lavoro sul modello identitario</div>
+  <div class="header-title">Pattern e Allineamento<br>con il pensiero di Fabio</div>
+  <div class="header-sub">Riorganizzazione di note, appunti e riflessioni</div>
+  <div class="header-divider"></div>
+</div>
+
+<nav class="nav">
+  <label class="nav-label l1" for="t1">Pattern</label>
+  <label class="nav-label l2" for="t2">Perché·Come·Cosa</label>
+  <label class="nav-label l3" for="t3">Convergenze</label>
+  <label class="nav-label l4" for="t4">Punti Aperti</label>
+  <label class="nav-label l5" for="t5">Note Originali</label>
+</nav>
+
+<div class="sections">
+
+  <!-- S1 PATTERN -->
+  <div class="section s1">
+    <div class="sec-eyebrow">Temi ricorrenti</div>
+    <div class="sec-title">Pattern</div>
+    <p class="prose">Dodici temi ricorrenti emersi dalla lettura di note, appunti e citazioni raccolte nel tempo.</p>
+
+    <div class="pattern-list">
+      <div class="pattern-card">
+        <div class="pattern-num">01</div>
+        <div class="pattern-title">Fiducia come fondamento, non conseguenza</div>
+        <div class="pattern-desc">Tema più insistito di tutto il materiale. La fiducia si genera con il lavoro quotidiano, non dipende dal risultato.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">02</div>
+        <div class="pattern-title">Coraggio come decisione assoluta</div>
+        <div class="pattern-desc">Non situazionale, ma impegno dichiarato in anticipo, indipendente dalle circostanze.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">03</div>
+        <div class="pattern-title">Creare valore, non comprarlo</div>
+        <div class="pattern-desc">Affermazione forte sul ruolo dell'allenatore in un contesto di risorse limitate.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">04</div>
+        <div class="pattern-title">Il pensiero che diventa istinto</div>
+        <div class="pattern-desc">Tema ricorrente, ripreso più volte citando altri (Messina) e nei propri appunti.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">05</div>
+        <div class="pattern-title">Responsabilità individuale dentro il collettivo</div>
+        <div class="pattern-desc">Rifiuto netto dell'appiattimento del giudizio sui singoli.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">06</div>
+        <div class="pattern-title">Esteta concreto</div>
+        <div class="pattern-desc">Equilibrio tra bellezza del gioco e funzionalità; rifiuto dell'ostentazione tattica a scapito dei giocatori.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">07</div>
+        <div class="pattern-title">Costruzione per ascolto</div>
+        <div class="pattern-desc">Il pensiero si forma assemblando voci esterne (Guardiola, Messina, De Giorgi, pallavolo, padel), non per sola introspezione.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">08</div>
+        <div class="pattern-title">Identità come ancoraggio nell'incertezza</div>
+        <div class="pattern-desc">La stabilità interna come risposta al fatto che il risultato non è controllabile.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">09</div>
+        <div class="pattern-title">Posizione e postura come fondamento tecnico</div>
+        <div class="pattern-desc">Affermazione di peso specifico molto alto.</div>
+        <div class="pattern-quote">"Posizione e posture sono il 70% del gioco, con e senza palla"</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">10</div>
+        <div class="pattern-title">Gioco continuo, mai fermo</div>
+        <div class="pattern-desc">La reazione alla palla persa genera l'azione successiva, più pericolosa.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">11</div>
+        <div class="pattern-title">Rapporto lucido col giudizio esterno</div>
+        <div class="pattern-desc">Consapevolezza che stampa e contesto condizionano la percezione indipendentemente dal merito.</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-num">12</div>
+        <div class="pattern-title">Innovazione come scelta continua</div>
+        <div class="pattern-desc">Il cambiamento va anticipato, non subito.</div>
+        <div class="pattern-quote">"Cambia, prima di doverlo fare"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 PERCHÉ COME COSA -->
+  <div class="section s2">
+    <div class="sec-eyebrow">Struttura</div>
+    <div class="sec-title">Perché · Come · Cosa</div>
+    <p class="prose">I pattern riorganizzati secondo la bussola identitaria.</p>
+
+    <div class="pcc-block">
+      <div class="pcc-head">Perché</div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Creare valore, non comprarlo</div>
+        <div class="pcc-item-desc">Il compito dell'allenatore è generare crescita, non acquistarla.</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">La fiducia si costruisce con il lavoro</div>
+        <div class="pcc-item-quote">"La fiducia non la dà e non la leva un risultato, la fiducia la dà il lavoro"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Stabilità interna contro l'incertezza del risultato</div>
+        <div class="pcc-item-quote">"Nel calcio tutto può cambiare velocemente. Non per noi, se facciamo quello che stiamo facendo"</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pcc-block">
+      <div class="pcc-head">Come</div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Coraggio come decisione permanente</div>
+        <div class="pcc-item-quote">"Non rinuncerò mai al coraggio per far posto alla paura" · "Coraggiosi sempre"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Onestà di giudizio sui singoli, dentro la cornice del gruppo</div>
+        <div class="pcc-item-quote">"Se qualcuno fa bene e qualcuno fa meno bene, qui dentro bisogna dirlo"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Generare fiducia attraverso tre leve</div>
+        <div class="pcc-item-desc">Autenticità, empatia, progetto chiaro.</div>
+        <div class="pcc-item-quote">"La squadra è la proiezione di quello che sono"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Esteta concreto</div>
+        <div class="pcc-item-quote">"Non mi piace chi vuole ostentare un'idea. I protagonisti devono rimanere i giocatori" · "Strategia meglio del tatticismo"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Costruzione per ascolto, non per certezza</div>
+        <div class="pcc-item-desc">Assembla angolazioni diverse da fonti esterne piuttosto che cercare conferme.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pcc-block">
+      <div class="pcc-head">Cosa</div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Posizione e postura come fondamento tecnico</div>
+        <div class="pcc-item-quote">"Posizione e posture sono il 70% del gioco, con e senza palla"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Gioco continuo, mai fermo</div>
+        <div class="pcc-item-desc">La reazione alla palla persa determina la qualità dell'azione successiva.</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Possesso semplice, reazione feroce</div>
+        <div class="pcc-item-quote">"1 o 2 tocchi e reazione feroce sulla palla persa"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Pensiero che diventa istinto</div>
+        <div class="pcc-item-quote">"I giocatori pensano troppo, tutto diventa top quando il pensiero diventa istinto" · "Cuore e testa, le gambe arrivano"</div>
+      </div>
+      <div class="pcc-item">
+        <div class="pcc-item-title">Iniziativa diversificata per contesto avversario</div>
+        <div class="pcc-item-quote">"Contro le pressioni, con il gioco trovi spazio. Contro la difesa di posizione devi prendere iniziativa"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 CONVERGENZE -->
+  <div class="section s3">
+    <div class="sec-eyebrow">Confronto col modello attuale</div>
+    <div class="sec-title">Convergenze</div>
+    <p class="prose">Punti dove il pensiero espresso nelle note coincide direttamente con quanto già costruito nel modello identitario e di gioco.</p>
+
+    <div class="conv-card">
+      <div class="conv-label">Coraggio</div>
+      <div class="conv-pair">
+        <div class="conv-side"><strong>Modello:</strong> "Affronta ogni momento. Fino in fondo."</div>
+        <div class="conv-side"><strong>Note:</strong> "Coraggiosi sempre"</div>
+      </div>
+    </div>
+
+    <div class="conv-card">
+      <div class="conv-label">Autenticità</div>
+      <div class="conv-pair">
+        <div class="conv-side"><strong>Modello:</strong> "Esprimi te stesso. La tua unicità è la nostra forza."</div>
+        <div class="conv-side"><strong>Note:</strong> "La squadra è la proiezione di quello che sono"</div>
+      </div>
+    </div>
+
+    <div class="conv-card">
+      <div class="conv-label">Il perché del modello</div>
+      <div class="conv-pair">
+        <div class="conv-side"><strong>Modello:</strong> "Saremo forti quando saremo deboli"</div>
+        <div class="conv-side"><strong>Note:</strong> "Non per noi, se facciamo quello che stiamo facendo"</div>
+      </div>
+    </div>
+
+    <div class="conv-card">
+      <div class="conv-label">Metodologia ecologica</div>
+      <div class="conv-pair">
+        <div class="conv-side"><strong>Modello:</strong> Principio Percezione-Azione</div>
+        <div class="conv-side"><strong>Note:</strong> "Il pensiero diventa istinto"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 PUNTI APERTI -->
+  <div class="section s4">
+    <div class="sec-eyebrow">Da chiarire insieme</div>
+    <div class="sec-title">Punti Aperti</div>
+    <p class="prose">Temi emersi che richiedono un confronto diretto prima di essere integrati nel modello.</p>
+
+    <div class="open-card">
+      <div class="open-title">Fiducia</div>
+      <div class="open-desc">Ricorre come concetto-faro autonomo, non solo come conseguenza di Autenticità. Da chiarire se va inserita esplicitamente nel modello.</div>
+    </div>
+
+    <div class="open-card">
+      <div class="open-title">Posizione / Postura al 70%</div>
+      <div class="open-desc">Peso specifico dichiarato molto alto. Da verificare se nel modello di gioco merita un rilievo maggiore rispetto agli altri principi.</div>
+    </div>
+
+    <div class="open-card">
+      <div class="open-title">"Creare valore, non comprarlo"</div>
+      <div class="open-desc">Potenziale frase-chiave per la comunicazione sul tema budget con la proprietà.</div>
+    </div>
+  </div>
+
+  <!-- S5 NOTE ORIGINALI -->
+  <div class="section s5">
+    <div class="sec-eyebrow">Materiale sorgente</div>
+    <div class="sec-title">Note Originali</div>
+    <p class="prose">Il testo grezzo da cui sono stati estratti pattern e struttura.</p>
+
+    <div class="raw-block">GENERARE FIDUCIA
+Autenticità (la squadra è la proiezione di quello che sono...)
+Empatia (difficile ma importante)
+Progetto CHIARO (se non fosse chiaro ci potrebbero essere due ragioni: 1) va spiegato meglio 2) non c'è!)</div>
+
+    <div class="raw-block">Qualità e Valori
+Se aumenti
+ la qualità, rimani un vincitore
+ i valori, diventi un DEGNO vincitore
+
+Calcio di grande velocità
+(Giocatori generosi seri e affidabili)
+
+L'ottimismo genera: creatività entusiasmo e forza, superiorità nei pressi della palla
+
+Idea che coinvolge tutti i giocatori, uniti da un filo invisibile che si chiama gioco
+
+Innovazione è figlia di una sfida continua
+(Se non ti rinnovi cadi nella routine... nel passato... nel pessimismo)
+
+Sport di squadra: costruire è meglio di distruggere
+I valori sono determinanti (bellezza e merito)
+Lo stile — STRATEGIA MEGLIO DEL TATTICISMO</div>
+
+    <div class="raw-block">Più grave dello shock provocato dall'imprevisto è lo shock provocato dal previsto per il quale non ci si è voluti preparare.
+
+Uno shock inaspettato può essere un insegnamento
+Uno shock previsto DEVE essere un vantaggio</div>
+
+    <div class="raw-block">Crederci o Farlo — cambia tutto
+Lavoro più passione o solo Lavoro
+
+Alla base c'è CORRERE INSIEME, poi sappiamo dove sono, e a volte può essere più facile
+
+Andiamoli a cercare e vincere i duelli
+Poi c'è il desiderio di divertirsi con la palla per portarla nella porta (da sola non ci arriva!)</div>
+
+    <div class="raw-block">LEGAME = potente forza di attrazione
+I legami chimici sono ciò che rendono la materia materia
+
+Nella scienza non esiste "vicino"... esiste giusto e sbagliato
+
+Essere il boss è dura. Avere responsabilità non è facile. Necessita un duro lavoro.
+Far fare quello che serve, non che vogliono.
+
+Non conta quello che succede, ma come reagisci "a quello che succede"</div>
+
+    <div class="raw-block">"Una battaglia persa spesso ti aiuta a vincere quella successiva"
+
+E un campionato dove non servono troppi soldi, equilibrato.
+I piccoli dettagli fanno la differenza (noi fino ad ora siamo superficiali in tutto, fuori dal campo)
+Con IDEE E ORGANIZZAZIONE, però devi metterci impegno e passione</div>
+
+    <div class="raw-block">Finché non andiamo fuori giri, siamo tutti uguali. Noi dobbiamo pretendere di più da noi, ci siamo salvati all'ultima giornata. Sono andati via i due migliori marcatori.
+
+Se qualcuno fa bene e qualcuno fa meno bene, qui dentro bisogna dirlo... non è che tutti abbiamo fatto NORMALE
+
+IL MIO COMPITO È CREARE VALORE, NON COMPRARLO
+
+Se facciamo quello che abbiamo sempre fatto, otteniamo quello che abbiamo sempre ottenuto
+
+Alta intensità — Pressing contro pressing su palla persa e verticalità
+
+Costruzione e Profondità sono le cose più difficili da insegnare. Quando venire a giocare, quando attaccare gli spazi (dipende da cosa decidono le difese avversarie).</div>
+
+    <div class="raw-block">Non bisogna pensare a quello che poteva essere e non è stato. Bisogna capire quello che è e quello che vogliamo diventi.
+
+Motivazione e determinazione
+
+Non aspetto che succedano le cose. Mi piace farle succedere.
+
+Non rinuncerò mai al coraggio, per far posto alla paura.
+Possiamo aspettarla o cercarla... io ho già deciso, coraggiosi SEMPRE
+
+Non sono i risultati che mi danno fiducia. Siete voi, quello che facciamo e come lo facciamo.</div>
+
+    <div class="raw-block">Non deve scappare questa anima per un risultato. Oggi ho visto una squadra.
+
+Nel calcio tutto può cambiare velocemente. Non per noi. Non per noi se facciamo quello che stiamo facendo.
+
+LA FIDUCIA NON LA DA E NON LA LEVA UN RISULTATO, SE SI FANNO LE COSE CON RABBIA FAME E DETERMINAZIONE
+LA FIDUCIA LA DA IL LAVORO
+
+I complimenti devono essere la nostra benzina, insieme al lavoro
+
+Lo abbiamo fatto. Abbiamo fatto vedere di saperlo fare. Ora dobbiamo, vogliamo continuare a farlo MEGLIO.
+
+APPENA PENSI CHE SEI BRAVO, in questo campionato PERDI</div>
+
+    <div class="raw-source">Voce alternativa</div>
+    <div class="raw-block">I'm not God, I'm not good enough I know that
+Don't make faces, it's the only thing I don't want in my team
+I try to do my best, that's all
+In a few years you can be a manager and you can do it
+But for now guys I'm the boss and I decide
+Don't make bad faces guys, now and in the future
+Because I told you the first day, I'm not perfect, I make mistakes
+TRY TO HELP ME
+
+Stay in the game, the referee and the opponent don't exist, guys
+FOCUS ON WHAT WE HAVE TO DO
+
+We play to win a game, but we cannot lose it
+Four against one and we conceded the goal. In a final that cannot happen.
+In this game we have to finish in eleven.
+
+I'm telling you: are they playing better than us? NO
+Go shower, recover, never forget it
+
+— Pep Guardiola</div>
+
+    <div class="raw-block">La vostra visione diventerà chiara solo quando guarderete nel vostro cuore. Chi guarda all'esterno, sogna. Chi guarda all'interno, apre gli occhi.
+
+Una scintilla di follia serve ad affrontare delle difficoltà che alla luce della ragione appaiono insuperabili. In genere, queste si rivelano le modalità vincenti, ma essere vincenti non vuol dire raggiungere il potere e la celebrità. Vincente è colui che, seguendo le proprie indicazioni interne, riesce a navigare nella vita con le proprie leggi, col proprio vento e col proprio timone, mentre navigare con il vento altrui significa abbandonarsi alla corrente.
+
+Certezze polverose e dubbi granitici!
+"Il dubbio è l'inizio della conoscenza" — Cartesio
+
+"Se la mia mente può concepirlo e il mio cuore può crederlo, allora io posso compierlo."</div>
+
+    <div class="raw-block">POSIZIONE E POSTURE SONO IL 70% del GIOCO con e senza palla
+
+Sappiamo cosa ci può aspettare, ma va conquistato con il sudore sul campo. Mezzo sforzi non ci sono bastati, è già successo, sappiamo che dobbiamo fare una grandissima prestazione.</div>
+
+    <div class="raw-block">Le lezioni si tengono quasi sempre fuori dagli orari didattici
+
+La peggior cosa che può accaderti consiste nel porti piccoli obiettivi e raggiungerli
+
+Si chiama spirito libero colui che pensa diversamente da come, in base alla sua origine, al suo ambiente e alle opinioni dominanti del tempo, ci si aspetterebbe che egli pensasse. Egli è l'eccezione, gli spiriti vincolati sono la regola.
+
+La comodità è una minaccia al tuo successo, peggiore delle avversità.
+Passione + allenamento = MIGLIORAMENTO
+
+Non esistono piccoli sforzi, per grandi traguardi</div>
+
+    <div class="raw-block">"Colui che conosce il proprio obiettivo si sente forte; questa forza lo rende sereno; questa serenità assicura la pace interiore; solo la pace interiore consente la riflessione profonda; la riflessione profonda è il punto di partenza di ogni successo."
+
+"Molto potente è chi ha se stesso in proprio potere"
+
+"Il successo è deformante: rilassa, inganna, ci rende peggiori. Al contrario, l'insuccesso è formativo: ci rende stabili, ci avvicina alle nostre convinzioni, ci fa ritornare a essere coerenti."
+
+"Cambia, prima di doverlo fare" — FG
+
+Se rispetti tutte le regole... ti perdi tutto il divertimento
+
+"Senza deviazione della norma, il progresso non è possibile"</div>
+
+    <div class="raw-block">Non mi piace essere banale né superficiale
+
+Ci sono dei momenti in cui tecnica e tattica vengono dopo
+
+Cuore e testa, le gambe arrivano</div>
+
+    <div class="raw-block">L'entusiasmo aiuta. Ti spinge, ti sostiene, ti soffia. Ma se tu ti siedi, non riesce.
+Intelligenza di usarlo... immaginate con che rabbia si sta allenando l'avversario. Noi dobbiamo avere più fame di loro.
+
+Gli obiettivi si raggiungono lavorando. Non si raggiungono dicendoli.
+
+Falli laterali alle spalle della difesa (o do e rigioco)
+
+Duelli... forti
+
+Timore e rispetto... SEMPRE, altrimenti si fa male.
+
+Non vi chiedo di non sbagliare in campo. VI CHIEDO DI NON SBAGLIARE IL MODO. Non lo accetto e non lo accetterò mai.
+
+Bravi a capitalizzare (ancor meglio si può). Nel primo tempo troppi errori di passaggi semplici. Qualche pressione mancata che ci fa soffrire. Nel secondo tempo se leggi la gara e sono forte, loro in campo devono arrendersi.
+
+Esperienza</div>
+
+    <div class="raw-block">È un mondo in cui qualsiasi cosa fai sarebbe stato meglio farne un'altra</div>
+
+    <div class="raw-block">Abbiamo sempre da criticare. Negativi.
+
+Nei posti più belli e vincenti del mondo ci è voluto tempo per costruire: fiducia e lavoro, una passione feroce, una disponibilità nei comportamenti illimitata, una generosità straordinaria.
+
+Tanto rispetto per la fede dei nostri tifosi.</div>
+
+    <div class="raw-block">Il successo non è scontato. Ma la determinazione con cui lo desidero sì.</div>
+
+    <div class="raw-block">Sono un ESTETA/CONCRETO
+Non mi piace chi vuole ostentare un'idea
+I protagonisti devono rimanere i giocatori
+
+"L'allenatore non incide" o "la squadra non è adatta alle sue idee" — dipende sempre da che messaggio si vuole mandare
+
+Non mi faccio assalire dalle emozioni e dai pensieri negativi. Faccio un passo indietro e allargo la visuale.
+Ci credo e Si può
+So quanto valgo io e le persone che sono con me
+So quanto valgono i ragazzi</div>
+
+    <div class="raw-block">Voi siete qui a mettere dubbi. Io provo a dare fiducia e trovare la strada.
+Il gap da queste squadre è ancora troppo (detto da un allenatore che ha una squadra che viene da tre finali europee)
+
+Creare relazioni. Ricostruire alcuni equilibri che si rompono.
+
+Il giochino di chi non ha giocato non ci dà grandi vantaggi.
+
+Lottare per mantenere la categoria significa sapersi fortificare nelle difficoltà che inevitabilmente sono numerose.</div>
+
+    <div class="raw-block">O ci compattiamo e troviamo le superiorità, o la palla viaggia tanto e attacchiamo i terzi con poi il cambio gioco. Una via di mezzo ci tritano.</div>
+
+    <div class="raw-block">Azioni da terzo basso con palla che viaggia o 1-2 o spazio. Tipo fallo laterale a combinazioni.
+
+Se faccio il giro (sempre solido in mezzo), ma di là devo attaccare 2>1 dentro o fuori.</div>
+
+    <div class="raw-block">Troveranno soluzioni per superarci. Non facciamoci trovare impreparati.
+
+Consapevoli e forti di voler fare fatica, di voler recuperare la palla, di voler fare gol. O di volerla tenere quando si può, per fare male o recuperare.</div>
+
+    <div class="raw-block">Devo conoscere le qualità e le modalità degli altri per non farmi cogliere impreparato.
+
+Sentirsi a proprio agio a fare partite diverse, con lo stesso modo.</div>
+
+    <div class="raw-block">Bisogna entrare nel cuore — non con le chiacchiere, ma con i fatti</div>
+
+    <div class="raw-block">Grande Forza morale per non illudersi e non deprimersi. Si costruisce gg per gg.</div>
+
+    <div class="raw-block">Non deve essere una ricerca di errori. Deve essere una comprensione di come e dove lavorare.</div>
+
+    <div class="raw-block">Vedere partite. Studiare le partite (foto). Portare video, idee, soluzioni, esercitazioni nuove.
+
+Forma fisica.
+
+Voglio professionalità, serietà, dentro e fuori.</div>
+
+    <div class="raw-block">Chiama dove vuole la palla. Va dove la palla lo chiama.</div>
+
+    <div class="raw-block">Squadra flessibile: le caratteristiche dei giocatori, i principi del gioco
+
+Qualità e sacrificio collettivo è la chiave del successo
+
+Pressione uomo contro uomo, fino a che non si perde un duello o non diventa palla scoperta</div>
+
+    <div class="raw-source">Occasioni e contesto</div>
+    <div class="raw-block">Le occasioni determinano i livelli sia per gli allenatori che per i giocatori
+
+LA STAMPA TI ACCOMPAGNA O TI METTE IN DIFFICOLTÀ A SECONDA DI QUANDO SEI BEN VISTO / LA TUA SOCIETÀ È FORTE
+
+Percorsi di allenatori osservati: Maresca (Parma, Leicester, secondo di Pep, Chelsea) · Kompany (Burnley B-A-B, Bayern) · Gattuso (Sion, Palermo, Creta, Pisa C-B-C, Milan Primavera, Napoli, Valencia, Marsiglia, Spalato) · Palladino (Monza Primavera, Monza, Fiorentina) · De Rossi (Spal, Roma)</div>
+
+    <div class="raw-block">Quando pressano, è lì che si gioca. Se decidi di abbassarti per farli uscire, devi prenderti dei rischi, sennò non hanno mai avuto la palla.
+
+Dembele prima, Dembele in finale — i modi.
+Barella, linguaggio del corpo sul secondo gol. Non ha avuto la serenità di fare quello che gli avrebbe permesso poi di metterli in difficoltà.
+
+A padel con solo un compagno in tanti cambiano prestazione. Figuriamoci con 10 intorno.</div>
+
+    <div class="raw-block">Scegliere le persone. Trasformare gruppi in squadre.
+
+Una nave nel porto è al sicuro, ma non è per questo scopo che le navi sono costruite.
+
+Una dimensione della prestazione riproducibile (sempre con delle varianti che ci saranno). Una parte che non fa riferimento a quello che noi possiamo preparare: e qualcosa che ci succede (possiamo definirlo problema ma diventerebbe un alibi). La parola alternativa è contesto.
+
+In automatico siamo orientati alla ricerca delle soluzioni.
+
+Pallavolo: passare la palla è obbligatorio. Non sono più altruisti i pallavolisti, ma il regolamento lo impone. Qualunque azione determina la qualità media di quello che riescono a fare gli altri.
+
+Il fuoriclasse è quello che più degli altri riesce a far emergere le qualità degli altri.
+
+La pallavolo è lo sport di relazione per eccellenza. Il campo più piccolo di tutti, densità maggiore (81 metri quadrati totali).
+
+Paradosso dell'arciere: quella traiettoria è sottoposta a traiettorie che devo conoscere e saper valutare.
+
+Innamorarsi di un gesto — approccio che ti porta a dedicare tempo e attenzioni, con piena responsabilità (soprattutto) quando è difficile.
+
+Quattro competenze verticali decidono di mettersi a disposizione una dell'altra per una soluzione orizzontale.
+
+RICCHEZZA DELLE DIFFERENZE
+FRAGILE — RESILIENTE — ANTIFRAGILE
+
+Grecia e Finlandia. 100%... 120%... la gara 80%.
+
+Tre variabili: il tuo avversario vero, l'arbitro, il pubblico.
+
+Usciamo dal giudizio... quale meglio quale peggio.
+
+Io incido di più quando gli altri sono meno motivati. Ovunque è uguale? NO. Saper leggere quel contesto e capire cosa serve di più.</div>
+
+    <div class="raw-block">Contro le pressioni, con il gioco trovi spazio. Contro la difesa di posizione devi prendere iniziativa.
+
+Possesso semplice 1 o 2 tocchi e reazione feroce palla persa. Forti da un lato, tutti difendono, con energia.
+
+Può capitare che qualcosa non andrà, ma se è giusta bisogna continuare. Con l'idea di TIRARE CONCLUDERE CROSSARE SFONDARE. E LA REAZIONE DETERMINA LA SECONDA AZIONE, ancora più pericolosa.</div>
+
+    <div class="raw-block">Le relazioni personali sono molto più importanti delle relazioni professionali.
+
+Quando subentri, se le dinamiche sono sbagliate, è dura. La differenza sta nel tempo che si ha per risolvere le difficoltà (allenatori restano anche dopo 10 sconfitte... le società fanno la differenza!)
+
+POTERE (la società): l'abilità di orientare o influenzare il comportamento altrui o il corso degli eventi.</div>
+
+    <div class="raw-block">Nella difficoltà non li faccio saltare addosso, ma corro negli spazi, ritrovo le distanze. E gioco gioco gioco, non ci si ferma (come la Juve... male!)</div>
+
+    <div class="raw-block">Spesso si fanno considerazioni superficiali e prive di contenuti. Non si conoscono percorsi e storie. Si valuta sulle sensazioni, sul sentito dire.
+
+Si bruciano giocatori per episodi, e non per qualità (Radu). Si portano avanti altri per mancanza di coraggio (Ronaldo) a dispetto delle prestazioni.
+
+Un calcio che deve crescere: cambiamo mentalità, almeno noi.
+
+Perché negli altri sport, se non sei competitivo, esci. Non puoi nuotare piano, non puoi menare leggero, non puoi correre lento.</div>
+
+    <div class="raw-block">ETTORE MESSINA:
+Uguali comportamenti, uguali reazioni. Onestà intellettuale con tutti.
+
+I giocatori ascoltano solo le persone che pensano possano aiutarli.
+
+Politica esterna e politica interna: nella comunicazione non è utile mettere i panni sporchi al pubblico, l'opinione che deve contare è dell'allenatore e dei compagni.
+
+La forza del gruppo è la responsabilizzazione dei singoli (sennò è una nebbia che maschera!). Io ho giocato bene e tu no... non significa che entrambi abbiamo fatto così così!
+
+Efficienza dell'allenamento: ritmi e spazi, continuità e brillantezza.
+
+Esecuzioni e letture: leggere le situazioni e reagire con lo stesso pensiero. I giocatori pensano troppo... tutto diventa top quando il pensiero diventa ISTINTO. Devi capire quante opzioni dare: poche, poi sempre di più (giovani e grandi).
+
+Il giocatore vuole capire chi sei e cosa ti passa per la testa... è importante condividere, poi aiuta nei rapporti.
+
+In difesa hai bisogno di talento fisico. In attacco talento di gioco.
+
+FACCIAMO UN BEL GRUPPO PERCHÉ CI RISPETTIAMO IN PRIVATO ED IN PUBBLICO
+
+Potenziale - obiettivi: chiara la correlazione (in Europa si segue il risultato dei momenti).</div>
+
+    <div class="raw-block">DE GIORGI FEFE ("Ragazzi d'oro"):
+Cultura del lavoro, del rispetto, del cercare continuamente miglioramenti.
+
+Gruppo tosto dal punto di vista caratteriale e motivazionale.
+
+Le squadre forti, che vogliono diventare forti, devono saper perdere. Voglia di colmare la distanza.
+
+Cosa può servire di più alla squadra? Sempre questo è il pensiero finale.
+
+Ci siamo allenati ad essere noi stessi... il meglio di noi stessi.
+
+In alcuni momenti bisogna saper soffrire.
+
+Metafora: una torta con 7 fette. Gustiamocele tutte, una alla volta.
+
+(Time out) Tutti e 11 nello stesso modo con la stessa intensità. Meno... non basta.
+
+FIDUCIA
+
+Le regole utili a quello che facciamo non sono tantissime.
+
+PER FARE DELLE COSE SPECIALI SERVONO PERSONE SPECIALI
+
+Le vittorie devono dare solo consapevolezza, poi vanno archiviate per ricercare successi futuri.
+
+"Conoscere, riconoscere, riconoscere insieme"</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-text">ACF Fiorentina · Staff Tecnico · Documento riservato · 2026/27</div>
+</div>
+
+</body>
+</html>

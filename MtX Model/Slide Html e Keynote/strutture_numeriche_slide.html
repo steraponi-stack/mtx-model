@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strutture Numeriche</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #e0e0e0; font-family: 'Inter', Helvetica, Arial, sans-serif; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .header { padding: 22px 80px 10px 80px; flex-shrink: 0; }
+  .slide-title { font-size: 24px; font-weight: 700; color: #0A0A0A; letter-spacing: -0.03em; line-height: 1; }
+  .slide-sub { font-size: 10px; font-weight: 400; color: #777; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 4px; }
+
+  .sep { height: 1.5px; background: #0A0A0A; margin: 0 80px; flex-shrink: 0; }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.9fr;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+    margin: 0 80px;
+    padding-top: 10px;
+    min-height: 0;
+  }
+
+  .col { display: flex; flex-direction: column; overflow: hidden; padding: 0 18px; border-right: 0.5px solid #E0E0E0; min-height: 0; }
+  .col:first-child { padding-left: 0; }
+  .col:last-child { border-right: none; padding-right: 0; }
+
+  .col-num { font-size: 8.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #999; margin-bottom: 3px; }
+  .col-head { font-size: 12.5px; font-weight: 700; color: #0A0A0A; margin-bottom: 2px; letter-spacing: -0.01em; }
+  .col-obj { font-size: 9px; font-weight: 400; color: #555; line-height: 1.4; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 0.5px solid #D0D0D0; }
+
+  /* diagrammi a livelli */
+  .lvl-row { display: flex; gap: 5px; margin-bottom: 4px; }
+  .lvl-box { flex: 1; min-width: 0; border: 1px solid #0A0A0A; border-radius: 3px; padding: 4px 5px; text-align: center; background: #fff; }
+  .lvl-box .t { font-size: 8.5px; font-weight: 600; color: #0A0A0A; line-height: 1.25; }
+  .lvl-box .f { font-size: 7.5px; font-weight: 400; color: #999; margin-top: 1px; }
+
+  .connector { display: flex; flex-direction: column; align-items: center; margin: 3px 0 5px; }
+  .connector svg { display: block; }
+  .connector .clabel { font-size: 7px; font-weight: 400; font-style: italic; color: #999; margin-top: 1px; }
+
+  .rotate-block { display: flex; flex-direction: column; align-items: center; margin: 3px 0 6px; }
+  .rotate-block .clabel { font-size: 7px; font-weight: 400; font-style: italic; color: #999; margin-top: 2px; }
+
+  /* colonna 4: differenziata / mista */
+  .single-task-title { font-size: 11px; font-weight: 700; color: #0A0A0A; margin-bottom: 2px; }
+  .single-task-desc { font-size: 8.5px; font-weight: 300; color: #333; line-height: 1.4; margin-bottom: 8px; }
+  .task-divider { height: 0.5px; background: #EBEBEB; margin: 10px 0; }
+
+  .mini-row { display: flex; align-items: center; gap: 6px; }
+  .mini-box { flex: 1; min-width: 0; border: 1px solid #0A0A0A; border-radius: 3px; padding: 6px 6px; text-align: center; font-size: 8.5px; font-weight: 500; color: #0A0A0A; }
+  .mini-symbol { flex: 0 0 auto; }
+  .mini-note { font-size: 7.5px; font-weight: 300; font-style: italic; color: #999; margin-top: 5px; text-align: center; }
+
+  .legend-wrap { margin: 8px 80px 14px; flex-shrink: 0; }
+  .legend-note { font-size: 8.5px; font-weight: 300; font-style: italic; color: #666; text-align: center; }
+
+  .bottom-line { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #0A0A0A; }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <div class="header">
+    <div class="slide-title">Strutture Numeriche</div>
+    <div class="slide-sub">Modalità di organizzazione dei gruppi nel contenitore-seduta &nbsp;&middot;&nbsp; Esempio: rosa di 24 giocatori + 4P (28 totale) &mdash; le singole stazioni ne impiegano 1 o 2</div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="main">
+
+    <!-- 1. CIRCUITO -->
+    <div class="col">
+      <div class="col-num">01</div>
+      <div class="col-head">Circuito</div>
+      <div class="col-obj">I gruppi ruotano in sequenza tra i contenitori</div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">A &mdash; Rondo 6v2</div><div class="f">8G</div></div>
+        <div class="lvl-box"><div class="t">B &mdash; Tecnica</div><div class="f">8G</div></div>
+        <div class="lvl-box"><div class="t">C &mdash; Rondo 5v3</div><div class="f">8G</div></div>
+      </div>
+
+      <div class="rotate-block">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8 8 0 1 1 12 4"/><path d="M20 4v6h-6"/></svg>
+        <div class="clabel">rotazione tra stazioni</div>
+      </div>
+
+      <div class="connector">
+        <svg width="10" height="15" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">A &mdash; GdPo P+6v6+P</div><div class="f">12G</div></div>
+        <div class="lvl-box"><div class="t">B &mdash; GdSvil 6v6, 3/3p</div><div class="f">12G</div></div>
+      </div>
+
+      <div class="rotate-block">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8 8 0 1 1 12 4"/><path d="M20 4v6h-6"/></svg>
+        <div class="clabel">rotazione tra stazioni</div>
+      </div>
+
+      <div class="connector">
+        <svg width="10" height="15" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">Partita 10v10+2P</div><div class="f">globale</div></div>
+      </div>
+    </div>
+
+    <!-- 2. PARALLELO -->
+    <div class="col">
+      <div class="col-num">02</div>
+      <div class="col-head">Parallelo</div>
+      <div class="col-obj">I gruppi si uniscono a coppie, raddoppiando ad ogni livello</div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+      </div>
+
+      <div class="connector">
+        <svg width="10" height="15" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+        <div class="clabel">raddoppio</div>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">GdP 4v4+4J</div><div class="f">12G</div></div>
+        <div class="lvl-box"><div class="t">GdP 4v4+4J</div><div class="f">12G</div></div>
+      </div>
+
+      <div class="connector">
+        <svg width="10" height="15" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+        <div class="clabel">raddoppio</div>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">GdCostr P+10v10, dif. vinc.</div><div class="f">globale</div></div>
+      </div>
+
+      <div class="connector">
+        <svg width="10" height="15" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">Partita 10v10+2P</div><div class="f">globale</div></div>
+      </div>
+    </div>
+
+    <!-- 3. PIRAMIDE ROVESCIATA -->
+    <div class="col">
+      <div class="col-num">03</div>
+      <div class="col-head">Piramide rovesciata (4321)</div>
+      <div class="col-obj">Il numero dei mezzi nei contenitori si riduce ad ogni livello</div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 4v2</div><div class="f">6G</div></div>
+      </div>
+      <div class="connector">
+        <svg width="10" height="13" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">Rondo 5v3</div><div class="f">8G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 5v3</div><div class="f">8G</div></div>
+        <div class="lvl-box"><div class="t">Rondo 5v3</div><div class="f">8G</div></div>
+      </div>
+      <div class="connector">
+        <svg width="10" height="13" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">GdProg 5v5+2J</div><div class="f">12G</div></div>
+        <div class="lvl-box"><div class="t">GdProg 5v5+2J</div><div class="f">12G</div></div>
+      </div>
+      <div class="connector">
+        <svg width="10" height="13" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">GdSvil-Fin 10v9+P</div><div class="f">a settori</div></div>
+      </div>
+      <div class="connector">
+        <svg width="10" height="13" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+
+      <div class="lvl-row">
+        <div class="lvl-box"><div class="t">Partita 10v10+2P</div><div class="f">globale</div></div>
+      </div>
+    </div>
+
+    <!-- 4. DIFFERENZIATA / MISTA / CIRCUITO 2+1 -->
+    <div class="col">
+      <div class="col-num">04</div>
+      <div class="col-head">Combinazioni</div>
+      <div class="col-obj">Modalità di composizione e rotazione dei gruppi</div>
+
+      <div class="single-task-title">Differenziata</div>
+      <div class="single-task-desc">Gruppi con compiti diversi, senza interscambio nei contenitori.</div>
+      <div class="mini-row">
+        <div class="mini-box">Gruppo A</div>
+        <div class="mini-symbol">
+          <svg width="34" height="14" viewBox="0 0 40 14"><line x1="4" y1="7" x2="15" y2="7" stroke="#0A0A0A" stroke-width="1"/><line x1="25" y1="7" x2="36" y2="7" stroke="#0A0A0A" stroke-width="1"/><line x1="17" y1="3" x2="23" y2="11" stroke="#0A0A0A" stroke-width="1.2"/><line x1="23" y1="3" x2="17" y2="11" stroke="#0A0A0A" stroke-width="1.2"/></svg>
+        </div>
+        <div class="mini-box">Gruppo B</div>
+      </div>
+      <div class="mini-note">nessuno scambio</div>
+
+      <div class="task-divider"></div>
+
+      <div class="single-task-title">Mista</div>
+      <div class="single-task-desc">Integrazione di strutture diverse (parallelo o piramide), fino a 2 contenitori con interscambio.</div>
+      <div class="mini-row">
+        <div class="mini-box">Contenitore 1</div>
+        <div class="mini-symbol">
+          <svg width="34" height="14" viewBox="0 0 40 14"><line x1="6" y1="7" x2="34" y2="7" stroke="#0A0A0A" stroke-width="1"/><path d="M6 7 L11 3 M6 7 L11 11" stroke="#0A0A0A" stroke-width="1" fill="none"/><path d="M34 7 L29 3 M34 7 L29 11" stroke="#0A0A0A" stroke-width="1" fill="none"/></svg>
+        </div>
+        <div class="mini-box">Contenitore 2</div>
+      </div>
+      <div class="mini-note">max 2 contenitori</div>
+
+      <div class="task-divider"></div>
+
+      <div class="single-task-title">Circuito a rotazione 2+1</div>
+      <div class="single-task-desc">3 gruppi uguali: 2 si uniscono per un lavoro combinato, 1 resta solo su un lavoro ridotto. Chi resta solo ruota ad ogni ciclo.</div>
+      <div class="mini-row" style="margin-bottom: 3px;">
+        <div class="mini-box" style="font-size:7.5px;">Gruppo 1 &middot; 8G</div>
+        <div class="mini-box" style="font-size:7.5px;">Gruppo 2 &middot; 8G</div>
+        <div class="mini-box" style="font-size:7.5px;">Gruppo 3 &middot; 8G</div>
+      </div>
+      <div class="connector" style="margin: 1px 0 3px;">
+        <svg width="10" height="11" viewBox="0 0 10 15"><line x1="5" y1="0" x2="5" y2="10" stroke="#0A0A0A" stroke-width="1"/><path d="M1 9 L5 15 L9 9 Z" fill="#0A0A0A"/></svg>
+      </div>
+      <div class="mini-row">
+        <div class="mini-box" style="font-size:7.5px;">GdPo P+7+2J v 7+P &middot; 16G+2P</div>
+        <div class="mini-box" style="font-size:7.5px;">GdP 3v3+2J &middot; 8G</div>
+      </div>
+      <div class="rotate-block" style="margin: 3px 0 0;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8 8 0 1 1 12 4"/><path d="M20 4v6h-6"/></svg>
+        <div class="clabel">ruota chi resta solo</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="legend-wrap">
+    <div class="legend-note">Freccia: progressione tra livelli &nbsp;&middot;&nbsp; Icona di rotazione: cambio stazione &nbsp;&middot;&nbsp; Linea interrotta: nessuno scambio &nbsp;&middot;&nbsp; Doppia freccia: interscambio consentito</div>
+  </div>
+
+  <div class="bottom-line"></div>
+
+</div>
+
+</body>
+</html>

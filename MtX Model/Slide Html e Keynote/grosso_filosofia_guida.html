@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Filosofia e Visione — Appunti</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --viola: #482e92;
+    --oro: #a29160;
+    --green: #2d7a4f;
+    --red: #c0392b;
+    --ink: #0a0a0a;
+    --ink3: #444;
+    --muted: #777;
+    --line: #e4e4e4;
+    --surface: #f7f7f7;
+    --white: #ffffff;
+    --light-viola: #efe9fa;
+    --light-oro: #f3eee0;
+    --light-green: #e8f5ee;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+  }
+
+  .header {
+    background: var(--viola);
+    padding: 36px 20px 28px;
+  }
+  .header-eyebrow {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .header-div {
+    width: 24px;
+    height: 2px;
+    background: var(--oro);
+    margin-bottom: 14px;
+  }
+  .header-note {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    font-style: italic;
+  }
+
+  .tab-radio { display: none; }
+
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-lbl {
+    flex-shrink: 0;
+    padding: 12px 14px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    display: block;
+    touch-action: manipulation;
+  }
+
+  #t1:checked ~ .nav .l1 { color: var(--oro);   border-bottom-color: var(--oro); }
+  #t2:checked ~ .nav .l2 { color: var(--viola); border-bottom-color: var(--viola); }
+  #t3:checked ~ .nav .l3 { color: var(--green); border-bottom-color: var(--green); }
+  #t4:checked ~ .nav .l4 { color: var(--viola); border-bottom-color: var(--viola); }
+  #t5:checked ~ .nav .l5 { color: var(--oro);   border-bottom-color: var(--oro); }
+
+  .panel { display: none; padding: 24px 16px; }
+  #t1:checked ~ .panels .p1,
+  #t2:checked ~ .panels .p2,
+  #t3:checked ~ .panels .p3,
+  #t4:checked ~ .panels .p4,
+  #t5:checked ~ .panels .p5 { display: block; }
+
+  .panel-head {
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .panel-num {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .panel-num.oro   { color: var(--oro); }
+  .panel-num.viola { color: var(--viola); }
+  .panel-num.green { color: var(--green); }
+
+  .panel-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .panel-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .card-head {
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .card-label.oro   { color: var(--oro); }
+  .card-label.viola { color: var(--viola); }
+  .card-label.green { color: var(--green); }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .card-body { padding: 12px 14px 14px; }
+
+  .txt {
+    font-size: 14px;
+    color: var(--ink3);
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+  .txt:last-child { margin-bottom: 0; }
+  .txt strong { color: var(--ink); font-weight: 600; }
+
+  .lst { margin: 0; padding: 0; list-style: none; }
+  .lst li {
+    font-size: 14px;
+    color: var(--ink3);
+    line-height: 1.55;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--surface);
+    padding-left: 14px;
+    position: relative;
+  }
+  .lst li:last-child { border-bottom: none; }
+  .lst li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .lst li strong { color: var(--ink); font-weight: 600; }
+
+  .quote {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.6;
+    font-weight: 500;
+    font-style: italic;
+    padding: 14px 16px;
+    background: var(--light-oro);
+    border-left: 3px solid var(--oro);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+  }
+  .quote.viola {
+    background: var(--light-viola);
+    border-left-color: var(--viola);
+  }
+  .quote.green {
+    background: var(--light-green);
+    border-left-color: var(--green);
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .pair-col {
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .pair-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .pair-item {
+    font-size: 12.5px;
+    color: var(--ink3);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .callout {
+    border-left: 2px solid var(--oro);
+    background: var(--light-oro);
+    padding: 12px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: var(--ink3);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .callout strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--oro);
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+
+<input type="radio" name="t" id="t1" class="tab-radio" checked>
+<input type="radio" name="t" id="t2" class="tab-radio">
+<input type="radio" name="t" id="t3" class="tab-radio">
+<input type="radio" name="t" id="t4" class="tab-radio">
+<input type="radio" name="t" id="t5" class="tab-radio">
+
+<div class="header">
+  <div class="header-eyebrow">Uso Mister · Riordino appunti personali</div>
+  <div class="header-title">Filosofia e Visione</div>
+  <div class="header-sub">Fabio Grosso · ACF Fiorentina 2026/27</div>
+  <div class="header-div"></div>
+  <div class="header-note">Trascrizione fedele degli appunti manoscritti, organizzata per temi.</div>
+</div>
+
+<nav class="nav">
+  <label class="nav-lbl l1" for="t1">Radici</label>
+  <label class="nav-lbl l2" for="t2">Valori</label>
+  <label class="nav-lbl l3" for="t3">Gioco</label>
+  <label class="nav-lbl l4" for="t4">Allenatore-Giocatori</label>
+  <label class="nav-lbl l5" for="t5">Frasi</label>
+</nav>
+
+<div class="panels">
+
+  <!-- ① CONFERENZA -->
+  <div class="panel p1">
+    <div class="panel-head">
+      <div class="panel-num oro">01 · Radici</div>
+      <div class="panel-title">Conferenza Paratici e il pensiero di Fabio</div>
+      <div class="panel-desc">Ricerca di allineamento tra la visione della società e la propria visione — non due voci separate, ma un unico pensiero che si confronta e si posiziona.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label oro">Conferenza Paratici</div>
+        <div class="card-title">Ciò che ha detto la società</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>Costruire una Fiorentina competitiva e duratura</li>
+          <li>Le pressioni non spaventano</li>
+          <li>Concreti e credibili, con equilibrio e lucidità</li>
+          <li>Non è difficile trovare un giocatore bravo — è molto difficile costruire una squadra che funzioni</li>
+          <li>La storicità e il fascino di un club non combinano per un'entrata sbagliata</li>
+          <li><strong>Il gap c'è</strong> — vogliamo colmarlo (serve tempo)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Il pensiero di Fabio</div>
+        <div class="card-title">Allineamento nella propria visione</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Subito dopo, sullo stesso foglio — Fabio cerca dove la propria visione incontra quella della società, e dove costruisce la propria voce a partire da lì.</p>
+      </div>
+    </div>
+
+    <div class="quote viola">
+      "L'ape non può volare... ma lei non lo sa!"
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label oro">Parole chiave — Paratici</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li><strong>Ambiziosi</strong> · Coraggiosi · Generosi · Responsabili</li>
+          <li>Insieme è più bello — soprattutto quando è difficile (turbolenze)</li>
+          <li>Valorizzare il patrimonio — non fare promesse</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Nota di contesto</strong>
+      La parte superiore del foglio riporta le parole di Paratici, ascoltate durante la sua conferenza di presentazione del progetto 26/27. Il pensiero di Fabio, scritto subito sotto, cerca l'allineamento tra la propria visione e quella della società — il resto della guida (Valori, Gioco, Allenatore-Giocatori, Frasi) sviluppa quella stessa voce.
+    </div>
+  </div>
+
+  <!-- ② VALORI -->
+  <div class="panel p2">
+    <div class="panel-head">
+      <div class="panel-num viola">02 · Valori</div>
+      <div class="panel-title">Persone, gruppo, fiducia</div>
+      <div class="panel-desc">Il nucleo del pensiero sulle relazioni all'interno dello staff e della squadra.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Ritrovo 12 Luglio</div>
+        <div class="card-title">Forte, modo nostro, principi</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">"Forte" e "modo nostro" + principi → come facciamo le cose insieme. I valori sono le basi.</p>
+        <ul class="lst">
+          <li>Lavoro con le persone — scelgo i giocatori</li>
+          <li>Rispettosi, generosi → "forti quando si è deboli"</li>
+          <li>Squadra: valori, obiettivi</li>
+          <li>Intensità + coraggio (miglioramento, non mantenimento — individuale e collettivo)</li>
+          <li>Con fiducia (autentico, empatico, idea chiara)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote viola">
+      "Le emozioni spostano i dettagli!! Partecipazione, relazione"
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Il gruppo che funziona</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>Deboli e potenti in un ottimo mix — gestire caos e casualità per cogliere opportunità</li>
+          <li>Le squadre forti non sono perfette — si aiutano e cercano soluzioni insieme</li>
+          <li>Diritti uguali per tutti — altrimenti diventano "privilegi" ("io")</li>
+          <li>Coerente e leale, rispettoso</li>
+          <li>Mai superiore per arroganza, mai inferiore per consapevolezza</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote viola">
+      "È più facile ottenere ciò per cui si lavora che ciò per cui si spera..."
+    </div>
+
+    <div class="quote viola">
+      "La comodità è una minaccia più delle difficoltà!"
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">No raccomandazioni, sì compiti</div>
+        <div class="card-title">Testa e cuore</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Conosco (aumento il bagaglio) → Riconosco (trovo soluzioni) → Riconosco insieme.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ GIOCO -->
+  <div class="panel p3">
+    <div class="panel-head">
+      <div class="panel-num green">03 · Idea di Gioco</div>
+      <div class="panel-title">Nozioni sul "gioco"</div>
+      <div class="panel-desc">Principi tattici e di gestione della partita.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label green">Principi generali</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>Le partite vanno sempre vissute e vanno aggredite</li>
+          <li>È determinante come mi pongo (etica del lavoro) — come affronto, come reagisco</li>
+          <li>Libertà dentro l'organizzazione — disciplina con spazio per esprimersi. Le relazioni contano</li>
+          <li>I principi sono comuni — gli avversari decidono le soluzioni. Lettura comune e movimenti coordinati</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label green">Continuità · Presenza · Equilibrio</div>
+        <div class="card-title">"Fare" - "Gioco"</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Non montagne russe — continuità e presenza costanti. "Fare-Gioco" = dopo lo sforzo, dopo la fatica, dopo la pausa, dopo l'errore.</p>
+      </div>
+    </div>
+
+    <div class="quote green">
+      "Ormai tutti sanno tanto di te — le conoscenze che hai, la forza con cui fai, come riconosci le situazioni: il vantaggio te lo dà questo."
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label green">Costruzione e Possesso</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>Costruzione + possesso basso</li>
+          <li>Fase offensiva alta: attiro, scavalco, aggiro / penetro, cross, tiro</li>
+          <li>Gioco da vicino → cerco vuoto in più; da lontano → la palla fa la strada (bidirezionale, disegno lo spazio)</li>
+          <li>Pressioni (voce, altezza) — a uomo o a zona: hanno il portiere o no cambia tanto, i tempi fanno la differenza</li>
+          <li>1) Tolgo profondità 2) Tolgo intensità 3) Aggredisco in avanti</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label green">Palle inattive</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Falli laterali — strutture, compiti, idee comuni.</p>
+        <p class="txt"><strong>Minore è il numero di giocatori, maggiore è l'influenza che ognuno di essi ha.</strong></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label green">Il venerdì — schema in zona offensiva</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>1 giocatore: tiro, dribbling</li>
+          <li>2 giocatori: gioco e rigioco, 1-2, taglio-sfilo, entro con controllo (forte nei piedi)</li>
+          <li>3 giocatori: combinazione + terzo uomo</li>
+          <li>Entrare, penetrare, scavalcare, cross (voce, posizione)</li>
+        </ul>
+        <p class="txt" style="margin-top:8px;">"Chiamo dove voglio la palla — non vado dove va..."</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Sullo sviluppo</strong>
+      Allenare i singoli si sviluppano le squadre, non il contrario — le squadre non imparano i dettagli individuali, i giocatori sviluppano i giocatori.
+      <br><br>
+      Giocatori top = mix intelligenza e motivazione (competenze, non solo intensità).
+    </div>
+  </div>
+
+  <!-- ④ ALLENATORE-GIOCATORI -->
+  <div class="panel p4">
+    <div class="panel-head">
+      <div class="panel-num viola">04 · Allenatore ↔ Giocatori</div>
+      <div class="panel-title">Le due colonne speculari</div>
+      <div class="panel-desc">Cosa serve all'allenatore, cosa serve ai giocatori — letti in parallelo.</div>
+    </div>
+
+    <div class="pair">
+      <div class="pair-col">
+        <div class="pair-label">Allenatore</div>
+        <div class="pair-item">Serenità di chi sa cosa vuole</div>
+        <div class="pair-item">Pressione di chi sa cosa deve</div>
+        <div class="pair-item">Lucidità nelle difficoltà</div>
+        <div class="pair-item">Equilibrio (coraggio e giudizio)</div>
+        <div class="pair-item">Spessore</div>
+        <div class="pair-item">Coerente (poche regole, in cui credo)</div>
+      </div>
+      <div class="pair-col">
+        <div class="pair-label">Giocatori</div>
+        <div class="pair-item">Lavoro per aumentare le conoscenze</div>
+        <div class="pair-item">Devo prendere decisioni</div>
+        <div class="pair-item">Devo abituarmi a farlo</div>
+        <div class="pair-item">Il carattere conta più del fisico</div>
+        <div class="pair-item">Autorevole = so cosa faccio</div>
+        <div class="pair-item">Autonomo = ho la forza per farlo</div>
+      </div>
+    </div>
+
+    <p class="txt" style="padding: 0 2px;">Dedica tempo alle relazioni — farlo richiede energia.</p>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Intuizione vs Confusione</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Vedere è semplice — immaginare è top! <em>(il potenziale)</em></p>
+      </div>
+    </div>
+
+    <div class="quote viola">
+      "Non saprai mai quanto sei forte, finché forte è l'unica scelta che hai!"
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Domande da porsi</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>È utile o è comodo? (le cose vanno affrontate)</li>
+          <li>Giudico o accompagno?</li>
+          <li>Comunico o commento?</li>
+        </ul>
+        <p class="txt" style="margin-top:8px;">Termometro = registra la temperatura. Termostato = la cambia. Sii sempre te stesso.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Scienza e Arte</div>
+      </div>
+      <div class="card-body">
+        <p class="txt"><strong>Scienza</strong> — esperienza, conoscenza, aggiornamento (per tutti)</p>
+        <p class="txt"><strong>Arte</strong> — come utilizzo la scienza</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label viola">Servono</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>Le motivazioni</li>
+          <li>Il coraggio di fare</li>
+          <li>Se faccio meno, gli altri fanno di più (i "coglioni")</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ FRASI -->
+  <div class="panel p5">
+    <div class="panel-head">
+      <div class="panel-num oro">05 · Frasi e Pensieri</div>
+      <div class="panel-title">Da usare e ricordare</div>
+      <div class="panel-desc">Citazioni, aforismi e riferimenti personali — materiale per la conferenza e per i momenti chiave con la squadra.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label oro">Kipling — "If"</div>
+        <div class="card-title">Letta al figlio</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Imprevisto = esperienza. Previsto = vantaggio.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      "Una cosa giusta non diventa sbagliata solo perché non ha successo."
+    </div>
+
+    <div class="quote">
+      "Il risultato non è la misura dell'uomo — puoi dare tutto e perdere, ed è lì che si vede chi sei!"
+    </div>
+
+    <div class="quote">
+      "Saper perdere — senza alibi comodi: alibi, perdere fiducia."
+    </div>
+
+    <div class="quote">
+      "Sarai top se sai trattare trionfo e rovina allo stesso modo (se ti confrontano)."
+    </div>
+
+    <div class="quote">
+      "Sei ancora scarso se ti ferisce un insulto o ti esalta una lode."
+    </div>
+
+    <div class="quote">
+      "Se le radici sono forti, non c'è motivo di temere il vento."
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label oro">Sul risultato</div>
+      </div>
+      <div class="card-body">
+        <p class="txt">Non è importante quello che ottieni, ma quello che diventi.</p>
+        <p class="txt" style="font-size:12.5px; color:var(--muted);">(Percorsi in salita → sei tu alla vetta. Le cose belle si costruiscono con passione e fatica.)</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      "Che sia una competenza acquisita — se non ti alleni, la perdi. Che sia un talento innato — [si mantiene solo con il lavoro]."
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label oro">Per avere successo</div>
+      </div>
+      <div class="card-body">
+        <ul class="lst">
+          <li>È importante non aver paura del problema — averlo</li>
+          <li>Molti salgono sulle montagne per essere visti, pochi per vedere</li>
+          <li>Quando lasci andare ciò che sei, diventi ciò che potresti essere</li>
+          <li>Quando il sole della cultura è basso, i nani hanno l'aspetto dei giganti</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote">
+      "Accetta se le cose vanno nel verso sbagliato. Recupera e riparti. Il tempo di quel recupero fa la differenza."
+    </div>
+
+    <div class="quote">
+      "La cosa più difficile da fare e la cosa più giusta da fare — spesso sono la stessa cosa."
+    </div>
+
+    <div class="quote">
+      "In condizioni normali contano le abilità. In situazioni estreme è lo spirito che ti salva."
+    </div>
+
+    <div class="quote">
+      "Quando pensi di avere le risposte, la vita ti cambia le domande."
+    </div>
+
+    <div class="quote">
+      "Non puoi lottare mai con un maiale nel fango — entrambi vi sporcherete... ma a lui piace!"
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Possesso — Principi di Gioco</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #e0e0e0; font-family: 'Inter', Helvetica, Arial, sans-serif; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* HEADER — 80px sx/dx, 28px top */
+  .header {
+    padding: 28px 80px 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .phase-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #999; margin-bottom: 5px;
+  }
+  .slide-title { font-size: 28px; font-weight: 700; color: #0A0A0A; letter-spacing: -0.03em; line-height: 1; }
+  .slide-sub { font-size: 11px; font-weight: 400; color: #777; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 5px; }
+  .obiettivo {
+    font-size: 12px; font-weight: 500; color: #0A0A0A;
+    text-align: right; border-right: 2px solid #0A0A0A;
+    padding-right: 16px; line-height: 1.6;
+  }
+
+  /* SEPARATOR LINE — rispetta margini 80px */
+  .sep {
+    height: 1.5px;
+    background: #0A0A0A;
+    margin: 0 80px;
+    flex-shrink: 0;
+  }
+
+  /* COLUMNS — margini 80px sx/dx */
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    flex: 1;
+    overflow: hidden;
+    margin: 0 80px;
+  }
+  .col {
+    padding: 16px 18px 12px;
+    border-right: 0.5px solid #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .col:first-child { padding-left: 0; }
+  .col:last-child { border-right: none; padding-right: 0; }
+  .col.shaded { background: #F7F7F7; }
+
+  .col-head { font-size: 15px; font-weight: 700; color: #0A0A0A; margin-bottom: 3px; letter-spacing: -0.01em; }
+  .col-obj { font-size: 11.5px; font-weight: 400; color: #444; line-height: 1.5; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 0.5px solid #D0D0D0; }
+  .col-obj strong { font-weight: 600; color: #0A0A0A; }
+
+  .items { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+
+  .item { display: flex; flex-direction: column; gap: 2px; }
+  .item-title {
+    font-size: 11.5px; font-weight: 600; color: #0A0A0A;
+    display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap;
+  }
+  .item-tag { font-size: 9.5px; font-weight: 400; color: #666; font-style: italic; }
+  .item-desc { font-size: 10.5px; font-weight: 300; color: #333; line-height: 1.55; }
+  .item-sub {
+    font-size: 10px; font-weight: 300; color: #555;
+    line-height: 1.5; padding-left: 10px; position: relative;
+  }
+  .item-sub::before { content: '—'; position: absolute; left: 0; color: #bbb; font-size: 8px; top: 2px; }
+
+  .highlight-text {
+    font-size: 11.5px; font-weight: 600; font-style: italic;
+    color: #0A0A0A; margin-bottom: 6px; padding-bottom: 6px;
+    border-bottom: 0.5px solid #D0D0D0; line-height: 1.4;
+  }
+  .section-divider { height: 0.5px; background: #E8E8E8; margin: 3px 0; }
+
+  /* AZIONI — margini 80px sx/dx, 48px bottom */
+  .azioni-wrap {
+    margin: 0 80px 48px;
+    flex-shrink: 0;
+  }
+  .azioni-bar {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border-top: 1.5px solid #0A0A0A;
+    border-bottom: 0.5px solid #D0D0D0;
+  }
+  .azione { padding: 9px 12px 0; border-right: 0.5px solid #E0E0E0; }
+  .azione:first-child { padding-left: 0; }
+  .azione:last-child { border-right: none; padding-right: 0; }
+  .azione:nth-child(even) { background: #F7F7F7; }
+  .azione-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0A0A0A; margin-bottom: 2px; }
+  .azione-desc { font-size: 10px; font-weight: 300; color: #444; line-height: 1.45; }
+
+  .bottom-line { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #0A0A0A; }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <div class="header">
+    <div>
+      <div class="phase-label">Principi di gioco · Fase di possesso</div>
+      <div class="slide-title">Possesso</div>
+      <div class="slide-sub">Cosa facciamo quando abbiamo la palla</div>
+    </div>
+    <div class="obiettivo">Mantenere il possesso<br>per superare le linee avversarie</div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="cols">
+
+    <!-- SUPERIORITÀ -->
+    <div class="col">
+      <div class="col-head">Superiorità</div>
+      <div class="col-obj">Creare situazioni di <strong>vantaggio</strong></div>
+      <div class="items">
+        <div class="item">
+          <div class="item-title">Numerica <span class="item-tag">"Siamo di più"</span></div>
+          <div class="item-desc">Più giocatori in zona palla. Mantenere le distanze e fissare un avversario per creare vantaggio numerico.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Posizionale <span class="item-tag">"Siamo posizionati meglio"</span></div>
+          <div class="item-desc">Trovare l'uomo libero in posizione vantaggiosa tra le linee avversarie.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Qualitativa <span class="item-tag">"Siamo più bravi"</span></div>
+          <div class="item-desc">Sfruttare le abilità individuali superiori nei duelli e nelle situazioni 1v1.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Relazionale <span class="item-tag">"Ci relazioniamo meglio"</span></div>
+          <div class="item-desc">Percepire e riconoscere le intenzioni del compagno. Intelligenza collettiva nella circolazione palla.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIZZAZIONE -->
+    <div class="col shaded">
+      <div class="col-head">Organizzazione</div>
+      <div class="col-obj">Stabilire <strong>relazioni</strong> negli spazi di gioco</div>
+      <div class="items">
+        <div class="item">
+          <div class="item-title">Occupazione spazi di gioco</div>
+          <div class="item-sub">Statici: linee e corridoi (settori)</div>
+          <div class="item-sub">Dinamici: relazioni socio-affettive rispetto alla palla</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Scaglionamento</div>
+          <div class="item-desc">Disposizione su più linee in ampiezza e profondità. Campo grande per garantire più opzioni al possessore.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Appoggi e Mobilità</div>
+          <div class="item-desc">Legami di gioco per dare soluzioni al compagno in funzione del <em>codice palla</em>.</div>
+          <div class="item-sub">Palla aperta → mi muovo in funzione dello spazio</div>
+          <div class="item-sub">Palla chiusa → mi muovo in funzione del compagno</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Strutture dinamiche di relazione</div>
+          <div class="item-desc">Triangoli e rombi che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Progressione</div>
+          <div class="item-desc">Costruzione, sviluppo e finalizzazione attraverso occupazione dinamica e penetrazione delle linee avversarie.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUNZIONE -->
+    <div class="col">
+      <div class="col-head">Funzione</div>
+      <div class="col-obj">Generare e sfruttare lo <strong>spazio</strong></div>
+      <div class="items">
+        <div class="highlight-text">"Attrarre per liberare"</div>
+        <div class="item">
+          <div class="item-title">Attrarre</div>
+          <div class="item-desc">Portare su di sé uno o più avversari per liberare spazio, compagni o linee di passaggio.</div>
+          <div class="item-sub">Con il pallone restando fermi</div>
+          <div class="item-sub">In conduzione</div>
+          <div class="item-sub">Con il movimento senza palla</div>
+          <div class="item-sub">Con il gioco combinato</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Fissare</div>
+          <div class="item-desc">Attirare l'attenzione dell'avversario per creare spazio-tempo per i compagni.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Invadere</div>
+          <div class="item-desc">Sfruttare lo spazio liberato per progredire e superare le linee difensive avversarie.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERAZIONE -->
+    <div class="col shaded">
+      <div class="col-head">Interazione</div>
+      <div class="col-obj">Sviluppare <strong>combinazioni</strong> di gioco</div>
+      <div class="items">
+        <div class="item">
+          <div class="item-title">Il passaggio</div>
+          <div class="item-desc">Sintesi del gioco collettivo. A chi, perché, quando, dove e come passare.</div>
+          <div class="item-sub">Diagonale: profondità + ampiezza, più opzioni</div>
+          <div class="item-sub">Filtrante: crea vantaggio tra le linee</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Il 2v1</div>
+          <div class="item-desc">Superiorità numerica locale. Fissare l'avversario per liberare il compagno nello spazio.</div>
+          <div class="item-sub">In conduzione · Sovrapposizione · Triangolazione</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">La triangolazione</div>
+          <div class="item-desc">Gioco combinato: attrarre, passare, ricevere nello spazio liberato.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Il terzo uomo</div>
+          <div class="item-desc">Liberare un compagno marcato attraverso un giocatore di collegamento.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="azioni-wrap">
+    <div class="azioni-bar">
+      <div class="azione">
+        <div class="azione-title">Orientare il corpo</div>
+        <div class="azione-desc">per vedere più campo e percepire</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Smarcarsi</div>
+        <div class="azione-desc">per dare appoggio <em>(codice palla)</em></div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Trasmettere</div>
+        <div class="azione-desc">in diagonale e filtranti per progredire</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Condurre</div>
+        <div class="azione-desc">per fissare, attirare o invadere</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Dribblare</div>
+        <div class="azione-desc">per superare l'avversario</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Calciare</div>
+        <div class="azione-desc">per finalizzare da diverse angolazioni</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-line"></div>
+
+</div>
+
+</body>
+</html>

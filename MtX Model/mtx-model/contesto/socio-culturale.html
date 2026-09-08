@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="it" data-club="fiorentina">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contesto Socio-Culturale — MtX Model</title>
+<link rel="stylesheet" href="../assets/css/design-system.css">
+<style>
+  /* ---- Foto placeholder ---- */
+  .photo-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0 0 var(--gap-section);
+  }
+  .photo { margin: 0; }
+  .photo .frame {
+    aspect-ratio: 16 / 9;
+    background: var(--color-bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .photo .frame img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 4px;
+  }
+  .photo figcaption {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 8px;
+  }
+  @media (max-width: 768px) {
+    .photo-row { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Accordion ---- */
+  .accordion { margin-top: var(--gap-section); }
+  .acc-item { border-top: 0.5px solid #E0E0E0; }
+  .acc-item:last-child { border-bottom: 0.5px solid #E0E0E0; }
+  .acc-head {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    background: none;
+    border: 0;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-black);
+    padding: 18px 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .acc-head:hover { color: var(--color-accent); }
+  .acc-head:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .acc-arrow {
+    flex-shrink: 0;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    transition: transform 0.3s ease;
+  }
+  .acc-item.open .acc-arrow { transform: rotate(90deg); }
+
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.32s ease;
+  }
+  .acc-item.open .acc-panel { grid-template-rows: 1fr; }
+  .acc-body { overflow: hidden; min-height: 0; }
+  .acc-body-inner { padding: 20px 0 28px; max-width: 680px; }
+
+  .acc-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 12px;
+  }
+  .acc-body-inner p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 14px;
+  }
+  .acc-body-inner h3 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: 24px 0 10px;
+  }
+  .acc-body-inner ul {
+    list-style: none;
+    margin: 10px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .acc-body-inner ul li {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--color-text);
+    padding-left: 16px;
+    position: relative;
+  }
+  .acc-body-inner ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-faint);
+  }
+  .acc-body-inner strong { font-weight: 600; color: var(--color-black); }
+  .acc-body-inner .note {
+    border-left: 2px solid var(--color-accent);
+    padding: 2px 0 2px 14px;
+    margin: 18px 0;
+    font-size: 13.5px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+  .acc-body-inner blockquote {
+    border-left: 2px solid var(--color-black);
+    padding-left: 16px;
+    margin: 18px 0;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-black);
+  }
+  .acc-body-inner blockquote cite {
+    display: block;
+    font-style: normal;
+    font-size: 11px;
+    color: var(--color-text-faint);
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* liste con segno +/~/− */
+  .sign-list { list-style: none; margin: 10px 0 16px; display: flex; flex-direction: column; gap: 9px; }
+  .sign-list li {
+    font-size: 14px; font-weight: 300; line-height: 1.65;
+    color: var(--color-text); padding-left: 22px; position: relative;
+  }
+  .sign-list li::before {
+    position: absolute; left: 0; top: 0;
+    font-weight: 600; font-size: 13px;
+  }
+  .sign-list li.pos::before { content: '+'; color: #1a6b35; }
+  .sign-list li.watch::before { content: '~'; color: #8a5a00; }
+  .sign-list li.neg::before { content: '\2212'; color: #b71c1c; }
+
+  /* "Perché noi" — righe di risonanza */
+  .match {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 14px;
+    align-items: baseline;
+    padding: 11px 0;
+    border-bottom: 0.5px solid #E0E0E0;
+    font-size: 13.5px;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+  .match:last-of-type { border-bottom: 0; }
+  .match .from { color: var(--color-text-muted); }
+  .match .arrow { color: var(--color-accent); }
+  .match .to { font-weight: 500; color: var(--color-black); }
+  @media (max-width: 600px) {
+    .match { grid-template-columns: 1fr; gap: 2px; padding: 10px 0; }
+    .match .arrow { display: none; }
+    .match .from::after { content: ' ↓'; color: var(--color-accent); }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="home-link" href="../index.html">← Homepage</a>
+  <span class="breadcrumb"><span class="current">Contesto Socio-Culturale</span></span>
+  <span class="season">ACF Fiorentina · 2026/27</span>
+</header>
+<main>
+  <section class="page-intro">
+    <div class="kicker">Cornice esterna</div>
+    <h1>Contesto Socio-Culturale</h1>
+    <p class="subtitle">La cornice dentro cui il lavoro si inserisce.</p>
+  </section>
+
+  <div class="photo-row">
+    <figure class="photo">
+      <div class="frame"><img src="../Immagini/Firenze.jpg" alt="Firenze"></div>
+      <figcaption>Firenze</figcaption>
+    </figure>
+    <figure class="photo">
+      <div class="frame"><img src="../Immagini/Curva_Fiesole.jpg" alt="La Curva Fiesole"></div>
+      <figcaption>La tifoseria</figcaption>
+    </figure>
+    <figure class="photo">
+      <div class="frame"><img src="../Immagini/Viola_Park.jpeg" alt="Il Viola Park"></div>
+      <figcaption>Viola Park</figcaption>
+    </figure>
+  </div>
+
+  <div class="accordion">
+
+    <!-- 1 · FIRENZE (aperta di default) -->
+    <div class="acc-item open">
+      <button type="button" class="acc-head" aria-expanded="true">
+        Firenze <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">Il vincolo culturale primario</div>
+        <p>Firenze non è semplicemente la città in cui gioca la Fiorentina. È il vincolo ambientale più profondo che orienta ogni comportamento, ogni percezione, ogni aspettativa dentro e fuori dal campo. Comprendere Firenze significa comprendere il tifoso, il giocatore che vi si trasferisce e il tipo di calcio che questa città tollera o esige.</p>
+        <p class="note"><strong>Imprinting culturale chiave:</strong> a Firenze la bellezza del gesto conta quanto il risultato. Un calcio brutto che vince genera ambivalenza. Un calcio bello che perde genera discussione, non disaffezione totale. È un vincolo tattico reale, non un capriccio.</p>
+        <h3>Il carattere fiorentino</h3>
+        <ul>
+          <li><strong>Orgoglio civico</strong> — forte senso di appartenenza a una città superiore.</li>
+          <li><strong>Spirito critico</strong> — giudizio acuto e diretto; il «bischero» è una categoria morale.</li>
+          <li><strong>Anticonformismo</strong> — diffidenza verso l'omologazione, valorizzazione del «fare a modo proprio».</li>
+          <li><strong>Estetismo pratico</strong> — il bello non è ornamento ma requisito: vale nel cibo, nell'artigianato, nel calcio.</li>
+          <li><strong>Campanilismo</strong> — sospetto verso chi «viene da fuori» senza adottare i valori locali.</li>
+          <li><strong>Memoria lunga</strong> — gli errori e le promesse non mantenute non vengono dimenticati.</li>
+        </ul>
+        <h3>Firenze oggi</h3>
+        <p>La Firenze contemporanea è in tensione tra identità tradizionale e pressione globale. Il turismo di massa ha generato un senso diffuso di «assedio culturale». Il fiorentino percepisce la propria città come un patrimonio da difendere: questo rafforza il localismo e l'identificazione con la Fiorentina.</p>
+        <p>Parallelamente esiste una componente borghese-intellettuale nel pubblico viola, sensibile all'estetica, alla narrativa, al progetto. Non è solo una piazza operaia: è una piazza che capisce e apprezza la qualità delle idee.</p>
+      </div></div></div>
+    </div>
+
+    <!-- 2 · STORIA -->
+    <div class="acc-item">
+      <button type="button" class="acc-head" aria-expanded="false">
+        Storia <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">Le radici che orientano il presente</div>
+        <p>La Fiorentina nasce il 29 agosto 1926 dalla fusione del Club Sportivo Firenze e della Palestra Ginnastica Fiorentina Libertas. Dalla fondazione il club è inestricabilmente legato alla storia urbana di Firenze: una fusione tra ceto aristocratico-intellettuale e anima popolare che ne ha definito il DNA.</p>
+        <h3>Tappe storiche chiave</h3>
+        <ul>
+          <li>1929 — adozione della maglia viola (scelta deliberata).</li>
+          <li>1955/56 — primo Scudetto.</li>
+          <li>1961 — prima coppa UEFA italiana.</li>
+          <li>1968/69 — secondo e ultimo Scudetto.</li>
+          <li>2002 — fallimento e rifondazione: trauma irrisolto.</li>
+          <li>Dal 2019 — era Commisso.</li>
+        </ul>
+        <h3>Simboli identitari</h3>
+        <ul>
+          <li>Il viola — colore unico nel calcio mondiale.</li>
+          <li>Il giglio fiorentino — legame con la città.</li>
+          <li>Il Calcio Storico — radici medievali.</li>
+          <li>Il Franchi — patrimonio architettonico.</li>
+          <li>Antognoni, Batistuta — figure mitologiche.</li>
+        </ul>
+        <p class="note"><strong>Nota operativa:</strong> il fallimento del 2002 è una ferita ancora presente. Ogni volta che la società appare «lontana», quel trauma riaffiora. Il legame con la storia deve essere esplicito e autentico, non retorico.</p>
+        <h3>Il Calcio Storico Fiorentino</h3>
+        <p>Praticato dal 1530 in Piazza Santa Croce, il Calcio Storico modella un'idea di gioco come lotta autentica per onorare la propria appartenenza. Il calciante del 1530, per l'ultras della Fiesole, è la stessa figura del calciatore moderno. La posta in gioco non è mai solo sportiva.</p>
+      </div></div></div>
+    </div>
+
+    <!-- 3 · MANIFESTO -->
+    <div class="acc-item">
+      <button type="button" class="acc-head" aria-expanded="false">
+        Manifesto <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">Brand claim ufficiale — «Play to be different»</div>
+        <p>Il manifesto non è una campagna marketing. È un atto di posizionamento identitario che riprende fili profondi della cultura fiorentina e li traduce in linguaggio contemporaneo.</p>
+        <blockquote>
+          «Il Manifesto è l'affermazione dell'identità del Club, delle sue radici più profonde, ma è anche la dichiarazione di un impegno: quello a far sì che il calcio dei Viola sia sempre distintivo, autentico, vicino alle persone, espressione della bellezza della città di Firenze e dello spirito anticonformista e passionale dei fiorentini.»
+          <cite>— ACF Fiorentina, Manifesto ufficiale</cite>
+        </blockquote>
+        <h3>I quattro pilastri — lettura operativa</h3>
+        <ul>
+          <li><strong>Autenticità e unicità</strong> — non imitare le grandi; esprimere la propria identità specifica.</li>
+          <li><strong>Diversità orgogliosa</strong> — essere alternativi ai soliti schemi è un valore, non un limite.</li>
+          <li><strong>Calcio della gente</strong> — prossimità emotiva ai tifosi; calcio sincero, umano.</li>
+          <li><strong>Legame con Firenze</strong> — la bellezza della città come ispirazione estetica del gioco.</li>
+        </ul>
+        <p class="note">Il collegamento tra «Play to be different» e un approccio ecologico non è forzato: è strutturale. La squadra come ecosistema che esprime la propria unicità, come Firenze ha sempre fatto nella storia.</p>
+      </div></div></div>
+    </div>
+
+    <!-- 4 · TIFOSERIA -->
+    <div class="acc-item">
+      <button type="button" class="acc-head" aria-expanded="false">
+        Tifoseria <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">Profilo, dinamiche, implicazioni</div>
+        <p>La tifoseria viola è strutturata attorno a una concezione identitaria del tifo che fonde orgoglio cittadino, memoria storica e giudizio morale. Capire questa tifoseria significa anticiparne i comportamenti.</p>
+        <h3>La Curva Fiesole</h3>
+        <p>Nata alla fine degli anni '60, apartitica — «né di destra né di sinistra». Tre gruppi: Ultras Viola (1973, fondati da Stefano «il Pompa» Biagini), Collettivo Autonomo, 1926. Per gli ultras il calciatore non è un professionista: è il «calciante del 1530», chi gioca e lotta per la città.</p>
+        <h3>Rapporto con la proprietà</h3>
+        <p>Rottura aperta nel 2025: cessioni reiterate di giocatori simbolo, dimissioni di Palladino gestite in modo «arrogante» e la frase di Commisso («i tifosi non sono solo quelli della Curva Fiesole») percepita come disprezzo.</p>
+        <p class="note"><strong>Rischio concreto:</strong> la tifoseria entra nel 2026/27 con fiducia storicamente bassa. Il clima di accoglienza non sarà automatico: va guadagnato con comportamenti coerenti, non con comunicati.</p>
+        <h3>Il tifoso medio</h3>
+        <ul>
+          <li>Esigente — aspettative alte, sempre.</li>
+          <li>Competente — distingue qualità da risultato.</li>
+          <li>Emotivamente investito.</li>
+          <li>Fedelissimo se sente rispetto autentico.</li>
+          <li>Memoria lunga.</li>
+        </ul>
+        <h3>Non perdona mai</h3>
+        <ul>
+          <li>Mancanza di impegno.</li>
+          <li>Arroganza e distanza.</li>
+          <li>Cessioni a club rivali.</li>
+          <li>Calcio anonimo.</li>
+          <li>Promesse non mantenute.</li>
+        </ul>
+        <h3>Opportunità e rischi</h3>
+        <ul class="sign-list">
+          <li class="pos">Un calcio coraggioso e bello trova una piazza straordinariamente reattiva e generosa.</li>
+          <li class="pos">Il cambio ciclo è una finestra di credito iniziale: la tifoseria aspetta di essere sorpresa.</li>
+          <li class="pos">Un gesto autentico di prossimità vale più di dieci vittorie.</li>
+          <li class="watch">La stagione 2025/26 è stata traumatica: la piazza è ferita ma non spenta.</li>
+          <li class="neg">La fiducia della piazza va conquistata sul campo, sin dal primo giorno — e questa tifoseria non dimentica.</li>
+          <li class="neg">La curva è in conflitto con la proprietà: la continuità col passato verrà sanzionata.</li>
+        </ul>
+      </div></div></div>
+    </div>
+
+    <!-- 5 · SOCIETÀ -->
+    <div class="acc-item">
+      <button type="button" class="acc-head" aria-expanded="false">
+        Società <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">La nuova Fiorentina · aggiornato a giugno 2026</div>
+        <p>La stagione 2025/26 è stata la peggiore nella storia recente: 4 pareggi e 0 vittorie nelle prime 10 giornate, ultima in classifica, tre allenatori. Il 16 gennaio 2026 muore il presidente Rocco Commisso. Vanoli ha realizzato una salvezza «da impresa», chiudendo al 15° posto.</p>
+        <h3>Il nuovo assetto</h3>
+        <ul>
+          <li><strong>Presidente</strong> — Giuseppe B. Commisso (dal 27 gennaio 2026).</li>
+          <li><strong>Direttore Sportivo</strong> — Fabio Paratici, prima stagione.</li>
+          <li><strong>Direttore Generale</strong> — Alessandro Ferrari, confermato.</li>
+          <li><strong>Allenatore</strong> — Fabio Grosso, contratto biennale.</li>
+        </ul>
+        <h3>Il progetto Grosso</h3>
+        <p>Squadra più dinamica, intensa e moderna. Principi di gioco chiari, freschezza atletica, modulo 4-3-3 con esterni offensivi rapidi e tecnici. Sostenibilità finanziaria come vincolo.</p>
+        <p class="note"><strong>Finestra strategica:</strong> nuovo presidente, nuovo DS, nuovo allenatore dopo una stagione disastrosa. La piazza vuole essere ri-sedotta. Il progetto non deve solo essere buono: deve essere vissuto in modo coerente con i valori della città.</p>
+        <h3>Sfide strutturali</h3>
+        <ul class="sign-list">
+          <li class="watch">Budget in definizione con la proprietà.</li>
+          <li class="watch">Linee guida da definire — contesto fluido.</li>
+          <li class="neg">Spogliatoio da ricostruire culturalmente.</li>
+          <li class="neg">Franchi in ristrutturazione: atmosfera compromessa.</li>
+          <li class="pos">La stagione appena conclusa crea le condizioni per un progetto di rinascita.</li>
+        </ul>
+      </div></div></div>
+    </div>
+
+    <!-- 6 · PERCHÉ NOI -->
+    <div class="acc-item">
+      <button type="button" class="acc-head" aria-expanded="false">
+        Perché noi <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">La risonanza</div>
+        <p>Il manifesto societario e la nostra filosofia non sono due cose separate da affiancare. Risuonano sulla stessa frequenza.</p>
+        <div class="match">
+          <span class="from">Diversità orgogliosa del manifesto</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="to">Autenticità da esprimere in campo</span>
+        </div>
+        <div class="match">
+          <span class="from">Coraggio di Firenze nella storia</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="to">Coraggio di osare ogni giorno</span>
+        </div>
+        <div class="match">
+          <span class="from">Ribelli fedeli alle origini</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="to">Unione: giocare per chi ti sta accanto, con l'orgoglio di farlo insieme</span>
+        </div>
+        <div class="match">
+          <span class="from">Calcio della gente, vicino ai tifosi</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="to">Umiltà: ogni corsa è un tributo a chi ci sostiene</span>
+        </div>
+        <div class="match">
+          <span class="from">Rinascita del calcio</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="to">Ambizione di puntare sempre più in alto</span>
+        </div>
+        <p class="note">Il nostro modello non deriva dal manifesto: lo abita dall'interno. La frequenza è la stessa. Il linguaggio è il nostro.</p>
+      </div></div></div>
+    </div>
+
+    <!-- 7 · OPERATIVO -->
+    <div class="acc-item">
+      <button type="button" class="acc-head" aria-expanded="false">
+        Operativo <span class="acc-arrow" aria-hidden="true">→</span>
+      </button>
+      <div class="acc-panel"><div class="acc-body"><div class="acc-body-inner">
+        <div class="acc-eyebrow">Vincoli e bussola di lavoro</div>
+        <p>Questo contesto non è solo scenografico. È il sistema di vincoli su larga scala che orienterà ogni decisione metodologica, relazionale e comunicativa della stagione.</p>
+        <h3>Priorità per il lavoro con la squadra</h3>
+        <ul class="sign-list">
+          <li class="pos"><strong>Identità chiara</strong> — costruire una riconoscibilità di gioco autentica è la condizione per guadagnare credito nella piazza.</li>
+          <li class="pos"><strong>Prossimità umana</strong> — i giocatori devono sentire e trasmettere il legame con Firenze, non come obbligo retorico ma come comprensione autentica.</li>
+          <li class="pos"><strong>Spogliatoio come ecosistema sano</strong> — dopo una stagione di tensioni, la coesione interna è un prerequisito.</li>
+          <li class="watch"><strong>Gestione delle aspettative</strong> — allineare sin dall'inizio cosa è realisticamente costruibile, evitando promesse che creino debito narrativo.</li>
+          <li class="watch"><strong>Coraggio tattico</strong> — la piazza tollera la sconfitta se percepisce coraggio e intenzione; non tollera la timidezza.</li>
+          <li class="neg"><strong>Evitare la discontinuità simbolica</strong> — ogni segnale di «siamo come il passato» verrà letto negativamente.</li>
+        </ul>
+        <h3>Connessione con il manifesto</h3>
+        <p>Il manifesto societario è la bussola con cui la proprietà — e implicitamente la piazza — valuterà il lavoro dello staff. Un modello di gioco autentico, riconoscibile, coraggioso e bello è la traduzione calcistica di «Play to be different».</p>
+        <p class="note"><strong>Nota metodologica:</strong> l'approccio ecologico trova una corrispondenza naturale con i valori di questa piazza. Calcio come sistema vivo, emergente, autentico — non prescritto, non meccanico — è precisamente ciò che Firenze ha sempre preteso e raramente visto.</p>
+      </div></div></div>
+    </div>
+
+  </div>
+</main>
+<footer class="site-footer">
+  <nav class="footer-nav">
+    <a href="../contesto/chi-siamo.html">Chi Siamo</a>
+    <a href="../index.html">Home</a>
+  </nav>
+  <span class="footer-sign">MtX Model · Stefano Raponi · v1.0 · Settembre 2026</span>
+</footer>
+
+<script>
+  (function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll('.acc-item'));
+    function setOpen(item, open) {
+      item.classList.toggle('open', open);
+      var head = item.querySelector('.acc-head');
+      if (head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    items.forEach(function (item) {
+      var head = item.querySelector('.acc-head');
+      head.addEventListener('click', function () {
+        var willOpen = !item.classList.contains('open');
+        items.forEach(function (o) { if (o !== item) setOpen(o, false); });
+        setOpen(item, willOpen);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

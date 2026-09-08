@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recupero — Principi di Gioco</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #e0e0e0; font-family: 'Inter', Helvetica, Arial, sans-serif; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .header {
+    padding: 28px 80px 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .phase-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #999; margin-bottom: 5px; }
+  .slide-title { font-size: 28px; font-weight: 700; color: #0A0A0A; letter-spacing: -0.03em; line-height: 1; }
+  .slide-sub { font-size: 11px; font-weight: 400; color: #777; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 5px; }
+  .obiettivo { font-size: 12px; font-weight: 500; color: #0A0A0A; text-align: right; border-right: 2px solid #0A0A0A; padding-right: 16px; line-height: 1.6; }
+
+  .sep { height: 1.5px; background: #0A0A0A; margin: 0 80px; flex-shrink: 0; }
+
+  .cols { display: grid; grid-template-columns: repeat(4, 1fr); flex: 1; overflow: hidden; margin: 0 80px; }
+  .col { padding: 16px 18px 12px; border-right: 0.5px solid #E0E0E0; display: flex; flex-direction: column; overflow: hidden; }
+  .col:first-child { padding-left: 0; }
+  .col:last-child { border-right: none; padding-right: 0; }
+  .col.shaded { background: #F7F7F7; }
+
+  .col-head { font-size: 15px; font-weight: 700; color: #0A0A0A; margin-bottom: 3px; letter-spacing: -0.01em; }
+  .col-obj { font-size: 11.5px; font-weight: 400; color: #444; line-height: 1.5; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 0.5px solid #D0D0D0; }
+  .col-obj strong { font-weight: 600; color: #0A0A0A; }
+
+  .items { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+  .item { display: flex; flex-direction: column; gap: 2px; }
+  .item-title { font-size: 11.5px; font-weight: 600; color: #0A0A0A; display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; }
+  .item-tag { font-size: 9.5px; font-weight: 400; color: #666; font-style: italic; }
+  .item-desc { font-size: 10.5px; font-weight: 300; color: #333; line-height: 1.55; }
+  .item-sub { font-size: 10px; font-weight: 300; color: #555; line-height: 1.5; padding-left: 10px; position: relative; }
+  .item-sub::before { content: '—'; position: absolute; left: 0; color: #bbb; font-size: 8px; top: 2px; }
+  .highlight-text { font-size: 11.5px; font-weight: 600; font-style: italic; color: #0A0A0A; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 0.5px solid #D0D0D0; line-height: 1.4; }
+  .section-divider { height: 0.5px; background: #E8E8E8; margin: 3px 0; }
+
+  .azioni-wrap { margin: 0 80px 48px; flex-shrink: 0; }
+  .azioni-bar { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1.5px solid #0A0A0A; border-bottom: 0.5px solid #D0D0D0; }
+  .azione { padding: 9px 12px 8px; border-right: 0.5px solid #E0E0E0; }
+  .azione:first-child { padding-left: 0; }
+  .azione:last-child { border-right: none; padding-right: 0; }
+  .azione:nth-child(even) { background: #F7F7F7; }
+  .azione-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0A0A0A; margin-bottom: 2px; }
+  .azione-desc { font-size: 10px; font-weight: 300; color: #444; line-height: 1.45; }
+
+  .bottom-line { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #0A0A0A; }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <div class="header">
+    <div>
+      <div class="phase-label">Principi di gioco · Fase di recupero</div>
+      <div class="slide-title">Recupero</div>
+      <div class="slide-sub">Cosa facciamo quando non abbiamo la palla</div>
+    </div>
+    <div class="obiettivo">Recuperarla in avanti attraverso la pressione<br>per averla prima possibile</div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="cols">
+
+    <!-- SUPERIORITÀ -->
+    <div class="col">
+      <div class="col-head">Superiorità</div>
+      <div class="col-obj">Creare situazioni di <strong>vantaggio difensivo</strong></div>
+      <div class="items">
+        <div class="item">
+          <div class="item-title">Numerica <span class="item-tag">"Siamo di più"</span></div>
+          <div class="item-desc">Densità in zona palla. Saper gestire parità e inferiorità numerica.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Posizionale <span class="item-tag">"Siamo posizionati meglio"</span></div>
+          <div class="item-desc">Neutralizzare le soluzioni avversarie occupando spazi che limitano le opzioni.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Qualitativa <span class="item-tag">"Siamo più bravi"</span></div>
+          <div class="item-desc">Capacità di risolvere i duelli difensivi. Abilità individuali superiori nei contrasti.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Relazionale <span class="item-tag">"Ci relazioniamo meglio"</span></div>
+          <div class="item-desc">Collaborare nel riconoscere le intenzioni dell'avversario. Coordinazione tra difensori.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIZZAZIONE -->
+    <div class="col shaded">
+      <div class="col-head">Organizzazione</div>
+      <div class="col-obj">Stabilire <strong>relazioni difensive</strong> negli spazi di gioco</div>
+      <div class="items">
+        <div class="item">
+          <div class="item-title">Scaglionamento difensivo</div>
+          <div class="item-desc">Disposizione su più linee sfalsate per coprire lo spazio e dare coperture reciproche.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Concentrazione</div>
+          <div class="item-desc">"Corti e stretti" — ridurre lo spazio in ampiezza e profondità per creare compattezza e impenetrabilità.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Pressione in zona palla</div>
+          <div class="item-desc">Creare una zona di pressione attorno alla palla per rubare spazio-tempo all'avversario.</div>
+          <div class="item-sub">Indirizzare il gioco e recuperare il pallone</div>
+          <div class="item-sub">Forzare errori o palle lunghe</div>
+          <div class="item-sub">Guadagnare tempo per organizzarsi</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Strutture di relazione difensive</div>
+          <div class="item-desc">Linee e triangoli di pressione-copertura tra giocatori vicini. Scalate e scivolamenti coordinati.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUNZIONE -->
+    <div class="col">
+      <div class="col-head">Funzione</div>
+      <div class="col-obj">Ridurre <strong>spazio e tempo</strong> all'avversario</div>
+      <div class="items">
+        <div class="highlight-text">"Chiudere per recuperare"</div>
+        <div class="item">
+          <div class="item-title">Pressare</div>
+          <div class="item-desc">Ridurre spazio-tempo al possessore per indirizzare il gioco e recuperare palla.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Marcare</div>
+          <div class="item-desc">Prendere in consegna un avversario per garantire la parità numerica in recupero.</div>
+          <div class="item-sub">Vicino alla palla → marcatura stretta</div>
+          <div class="item-sub">Lontano dalla palla → coprire profondità</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Coprire</div>
+          <div class="item-desc">Coprire lo spazio alle spalle di un compagno che pressa o marca per dare equilibrio difensivo.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Adattabilità nella pressione</div>
+          <div class="item-desc">Quando la pressione non è efficace: azioni ritardatrici, ripiegamento o blocco difensivo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERAZIONE -->
+    <div class="col shaded">
+      <div class="col-head">Interazione</div>
+      <div class="col-obj">Sviluppare <strong>collaborazioni difensive</strong></div>
+      <div class="items">
+        <div class="item">
+          <div class="item-title">Marco-Copro</div>
+          <div class="item-desc">Primo difendente attende. Il secondo copre la profondità dal rischio di verticalizzazioni.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Marco-Marco</div>
+          <div class="item-desc">Primo difendente attacca la palla. Il secondo marca gli appoggi cercando l'anticipo.</div>
+          <div class="item-sub">Se l'avversario tenta la triangolazione</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Presso-Copro/Marco</div>
+          <div class="item-desc">Pressione ad invito per indirizzare il gioco verso una zona specifica. Il secondo copre poi esce in pressione sul ricevente.</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="item">
+          <div class="item-title">Regola generale</div>
+          <div class="item-desc">Palla libera: copro sempre la profondità. In caso di perdita del duello: rientrare e ricompattare.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="azioni-wrap">
+    <div class="azioni-bar">
+      <div class="azione">
+        <div class="azione-title">Presa di posizione</div>
+        <div class="azione-desc">tra palla, porta e avversario</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Duello</div>
+        <div class="azione-desc">per contrastare l'avversario con palla</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Marcamento</div>
+        <div class="azione-desc">per controllare l'avversario senza palla</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Contrasto indiretto</div>
+        <div class="azione-desc">coprire le linee di passaggio</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Temporeggiamento</div>
+        <div class="azione-desc">per ritardare l'azione avversaria</div>
+      </div>
+      <div class="azione">
+        <div class="azione-title">Protezione porta</div>
+        <div class="azione-desc">corpo tra attaccante e porta</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-line"></div>
+
+</div>
+
+</body>
+</html>

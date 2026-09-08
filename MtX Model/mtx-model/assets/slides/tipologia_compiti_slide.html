@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipologia di Compiti</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #e0e0e0; font-family: 'Inter', Helvetica, Arial, sans-serif; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .header { padding: 22px 80px 10px 80px; flex-shrink: 0; }
+  .slide-title { font-size: 24px; font-weight: 700; color: #0A0A0A; letter-spacing: -0.03em; line-height: 1; }
+  .slide-sub { font-size: 10px; font-weight: 400; color: #777; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 4px; }
+
+  .sep { height: 1.5px; background: #0A0A0A; margin: 0 80px; flex-shrink: 0; }
+
+  .main {
+    display: grid;
+    grid-template-columns: 0.95fr 1.2fr 0.95fr;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+    margin: 0 80px;
+    padding-top: 8px;
+    min-height: 0;
+  }
+
+  .col { display: flex; flex-direction: column; overflow: hidden; padding: 0 18px; border-right: 0.5px solid #E0E0E0; min-height: 0; }
+  .col:first-child { padding-left: 0; }
+  .col:last-child { border-right: none; padding-right: 0; }
+
+  .col-num { font-size: 8.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #999; margin-bottom: 3px; }
+  .col-head { font-size: 12.5px; font-weight: 700; color: #0A0A0A; margin-bottom: 2px; letter-spacing: -0.01em; }
+  .col-obj { font-size: 9px; font-weight: 400; color: #555; line-height: 1.4; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 0.5px solid #D0D0D0; }
+
+  .tasks { display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
+
+  .task { display: flex; flex-direction: column; gap: 1px; }
+  .task-title { font-size: 10.5px; font-weight: 700; color: #0A0A0A; }
+  .task-claim { font-size: 8.5px; font-weight: 400; color: #666; font-style: italic; }
+  .task-desc { font-size: 9px; font-weight: 300; color: #333; line-height: 1.4; }
+  .task-blist { display: flex; flex-direction: column; gap: 1px; margin-top: 1px; }
+  .task-blist .b { font-size: 8.5px; font-weight: 300; color: #333; line-height: 1.35; padding-left: 9px; position: relative; }
+  .task-blist .b::before { content: '–'; position: absolute; left: 0; color: #aaa; font-size: 8px; }
+
+  .task-divider { height: 0.5px; background: #EBEBEB; margin: 0; }
+
+  .col-single { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+  .single-task-title { font-size: 11px; font-weight: 700; color: #0A0A0A; margin-bottom: 2px; }
+  .single-task-claim { font-size: 9px; font-weight: 400; color: #666; font-style: italic; margin-bottom: 5px; }
+  .single-task-desc { font-size: 9px; font-weight: 300; color: #333; line-height: 1.4; margin-bottom: 6px; }
+  .single-blist { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+  .single-blist .b { font-size: 8.5px; font-weight: 300; color: #333; line-height: 1.4; padding-left: 9px; position: relative; }
+  .single-blist .b::before { content: '–'; position: absolute; left: 0; color: #aaa; font-size: 8px; }
+
+  /* FORME DI GIOCO — bottom row */
+  .forme-wrap { margin: 6px 80px 26px; flex-shrink: 0; }
+  .forme-bar { border-top: 1.5px solid #0A0A0A; padding-top: 8px; }
+  .forme-label-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .forme-sign { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #0A0A0A; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #0A0A0A; flex-shrink: 0; }
+  .forme-arrow-line { flex: 1; height: 1px; background: #0A0A0A; position: relative; }
+  .forme-label { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #0A0A0A; text-align: center; line-height: 1.5; }
+  .forme-label span { font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .forme-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .forma { display: flex; flex-direction: column; gap: 2px; text-align: center; }
+  .forma-title { font-size: 10.5px; font-weight: 700; color: #0A0A0A; letter-spacing: 0.04em; }
+  .forma-n { font-size: 9px; font-weight: 400; color: #666; line-height: 1.4; }
+  .forme-note { font-size: 8.5px; font-weight: 300; font-style: italic; color: #666; margin-top: 8px; text-align: center; }
+
+  .bottom-line { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #0A0A0A; }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <div class="header">
+    <div class="slide-title">Tipologia di Compiti</div>
+    <div class="slide-sub">Le unità formative della sessione di allenamento</div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="main">
+
+    <!-- 1. COMPITI INTRODUTTIVI -->
+    <div class="col">
+      <div class="col-num">01</div>
+      <div class="col-head">Introduttivi</div>
+      <div class="col-obj">Preparare il gruppo all'obiettivo della sessione</div>
+
+      <div class="tasks">
+        <div class="task">
+          <div class="task-title">Tecnica di relazione</div>
+          <div class="task-claim">"Giocare in modo efficace"</div>
+          <div class="task-desc">Compiti coordinativi e cognitivi con la palla, in relazione con compagni e/o avversari. Decisioni efficaci, non gesti fini a se stessi.</div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Giochi di tecnica</div>
+          <div class="task-claim">"Sentire il gioco"</div>
+          <div class="task-desc">Compiti tecnici ludici e/o competitivi, per stimolare e attivare l'aspetto mentale, emotivo e socio-affettivo dei giocatori.</div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Rondos</div>
+          <div class="task-claim">"Giocare per il compagno"</div>
+          <div class="task-desc">Situazioni ridotte in superiorità numerica, con vari obiettivi, forme e strutture. Giocare con e per il compagno, non per non sbagliare.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. COMPITI DI OTTIMIZZAZIONE -->
+    <div class="col">
+      <div class="col-num">02</div>
+      <div class="col-head">Di Ottimizzazione</div>
+      <div class="col-obj">Migliorare apprendimento, prestazione e comprensione del gioco</div>
+
+      <div class="tasks">
+        <div class="task">
+          <div class="task-title">Giochi di Possesso e Posizione</div>
+          <div class="task-claim">"Controllare il gioco"</div>
+          <div class="task-desc">Mantenimento del possesso in parità o superiorità numerica (jolly), con direzionalità, posizioni e obiettivi preferenziali.<br>Legami e strutture di relazione, superiorità, riaggressione, consolidamento.</div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Giochi di Progressione</div>
+          <div class="task-claim">"Penetrare per progredire"</div>
+          <div class="task-desc">Mantenimento con direzionalità per conquistare zone: passare da un settore al successivo.</div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Giochi di Situazione</div>
+          <div class="task-claim">"Comprendere il gioco"</div>
+          <div class="task-desc">Simulazione del contesto reale con obiettivi preferenziali (SSP):</div>
+          <div class="task-blist">
+            <div class="b">Costruzione, sviluppo, finalizzazione (possesso)</div>
+            <div class="b">Pressione, contenimento e difesa (recupero)</div>
+            <div class="b">Transizioni: positive e negative</div>
+          </div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Giochi di Duello</div>
+          <div class="task-claim">"Superare l'avversario"</div>
+          <div class="task-desc">Confronto diretto: 1v1 individuali e duelli collaborativi (2v1, 2v2, 3v2...).</div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Small Sided Games</div>
+          <div class="task-claim">"Giocare con intensità"</div>
+          <div class="task-desc">Campo ridotto: abilità tecnico-tattiche, cognitive, mentali e condizionali insieme. Small / Medium / Large.</div>
+        </div>
+        <div class="task-divider"></div>
+        <div class="task">
+          <div class="task-title">Esercitazioni analitiche</div>
+          <div class="task-claim">"Esplorare senza opposizione"</div>
+          <div class="task-desc">A gruppi, reparti o collettive: sviluppi in fase di possesso e difesa senza opposizione.<br>Combinazioni e finalizzazione; principi difensivi per linea e blocco difensivo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. COMPITI DI COMPLETAMENTO -->
+    <div class="col">
+      <div class="col-num">03</div>
+      <div class="col-head">Di Completamento</div>
+      <div class="col-obj">Consolidare e completare l'apprendimento</div>
+
+      <div class="col-single">
+        <div class="single-task-title">Partite</div>
+        <div class="single-task-claim">"Giocare da squadra"</div>
+        <div class="single-task-desc">Libere o condizionate, con regole per migliorare il comportamento collettivo rispetto agli obiettivi e alle situazioni impreviste.</div>
+        <div class="single-blist">
+          <div class="b">Partite a tema</div>
+          <div class="b">Partite libere</div>
+        </div>
+
+        <div class="task-divider" style="margin: 8px 0;"></div>
+
+        <div class="single-task-title">Palle inattive</div>
+        <div class="single-task-claim">"Ogni dettaglio conta"</div>
+        <div class="single-task-desc">Calci d'angolo, punizioni, rimesse laterali: situazioni ricorrenti da automatizzare attraverso lavoro specifico e ripetuto.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FORME DI GIOCO -->
+  <div class="forme-wrap">
+    <div class="forme-bar">
+      <div class="forme-label-row">
+        <div class="forme-sign">−</div>
+        <div class="forme-arrow-line"></div>
+        <div class="forme-label">Ogni attività può essere eseguita in forme di gioco<br><span>con gradi di <strong>COMPLESSITÀ</strong> differenti</span></div>
+        <div class="forme-arrow-line"></div>
+        <div class="forme-sign">+</div>
+      </div>
+      <div class="forme-row">
+        <div class="forma">
+          <div class="forma-title">Forme Ridotte</div>
+          <div class="forma-n">N° ridotti 2-5 giocatori<br>in fase di possesso</div>
+        </div>
+        <div class="forma">
+          <div class="forma-title">Forme Parziali</div>
+          <div class="forma-n">N° medi 6-9 giocatori<br>in fase di possesso</div>
+        </div>
+        <div class="forma">
+          <div class="forma-title">Forme Reali</div>
+          <div class="forma-n">N° grandi 10-11 giocatori<br>in fase di possesso</div>
+        </div>
+      </div>
+      <div class="forme-note">Obiettivo: "ridurre senza impoverire" — la complessità si riduce, ma logica, variabilità e imprevedibilità del gioco restano intatte.</div>
+    </div>
+  </div>
+
+  <div class="bottom-line"></div>
+
+</div>
+
+</body>
+</html>

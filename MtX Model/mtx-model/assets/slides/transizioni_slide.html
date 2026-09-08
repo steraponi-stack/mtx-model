@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transizioni — Principi di Gioco</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #e0e0e0; font-family: 'Inter', Helvetica, Arial, sans-serif; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .header { padding: 28px 80px 14px 80px; flex-shrink: 0; }
+  .slide-title { font-size: 28px; font-weight: 700; color: #0A0A0A; letter-spacing: -0.03em; line-height: 1; }
+  .slide-sub { font-size: 11px; font-weight: 400; color: #777; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 5px; }
+
+  .sep { height: 1.5px; background: #0A0A0A; margin: 0 80px; flex-shrink: 0; }
+
+  /* MAIN — two halves with vertical divider */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    overflow: hidden;
+    margin: 0 80px 48px;
+    padding-top: 16px;
+  }
+
+  .half { display: flex; flex-direction: column; overflow: hidden; padding: 0 24px 0 0; }
+  .half:first-child { padding-right: 28px; border-right: 0.5px solid #E0E0E0; }
+  .half:last-child { padding-left: 28px; padding-right: 0; }
+
+  .half-head { font-size: 15px; font-weight: 700; color: #0A0A0A; margin-bottom: 3px; letter-spacing: -0.01em; }
+  .half-sub { font-size: 11.5px; font-weight: 400; color: #444; line-height: 1.5; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 0.5px solid #D0D0D0; }
+
+  .stages { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
+
+  .stage { display: flex; flex-direction: column; gap: 3px; }
+  .stage-head { display: flex; align-items: baseline; gap: 8px; }
+  .stage-num {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #0A0A0A; color: #fff;
+    font-size: 9.5px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; top: 1px;
+  }
+  .stage-title { font-size: 12.5px; font-weight: 700; color: #0A0A0A; }
+  .stage-tag { font-size: 10px; font-weight: 400; color: #666; font-style: italic; }
+
+  .stage-cond { font-size: 10.5px; font-style: italic; color: #666; line-height: 1.5; margin-left: 26px; }
+  .stage-desc { font-size: 11px; font-weight: 300; color: #333; line-height: 1.55; margin-left: 26px; }
+  .stage-desc strong { font-weight: 600; color: #0A0A0A; }
+
+  .blist { display: flex; flex-direction: column; gap: 3px; margin-left: 26px; }
+  .blist .b { font-size: 10.5px; font-weight: 300; color: #333; line-height: 1.5; padding-left: 11px; position: relative; }
+  .blist .b::before { content: '–'; position: absolute; left: 0; color: #aaa; font-size: 10px; }
+
+  .stage-divider { height: 0.5px; background: #EBEBEB; margin: 0; }
+
+  .bottom-line { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #0A0A0A; }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <div class="header">
+    <div class="slide-title">Transizioni</div>
+    <div class="slide-sub">Cosa facciamo quando perdiamo o recuperiamo la palla</div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="main">
+
+    <!-- TRANSIZIONE DIFENSIVA -->
+    <div class="half">
+      <div class="half-head">Transizione Difensiva</div>
+      <div class="half-sub">Cosa facciamo quando perdiamo la palla</div>
+
+      <div class="stages">
+
+        <div class="stage">
+          <div class="stage-head">
+            <div class="stage-num">1</div>
+            <div class="stage-title">Riaggressione</div>
+            <div class="stage-tag">"Recupero immediato"</div>
+          </div>
+          <div class="stage-desc">Per recupero immediato e continuità di azione offensiva.</div>
+          <div class="blist">
+            <div class="b">Pressione sul portatore e nello spazio circostante: zona di pressione, accorciare sugli appoggi</div>
+            <div class="b">Impedire la giocata in avanti e tra le linee</div>
+            <div class="b">Forzare la giocata in zone favorevoli alla riconquista</div>
+            <div class="b">Cambiare attitudine: da possesso a recupero</div>
+          </div>
+        </div>
+
+        <div class="stage-divider"></div>
+
+        <div class="stage">
+          <div class="stage-head">
+            <div class="stage-num">2</div>
+            <div class="stage-title">Riorganizzazione · Contenimento</div>
+          </div>
+          <div class="stage-cond">Se la riaggressione è inefficace: riorganizzarsi e ritardare l'attacco avversario.</div>
+          <div class="blist">
+            <div class="b">Temporeggiare per guadagnare tempo, senza farsi saltare</div>
+            <div class="b">Contrasto indiretto per coprire gli appoggi</div>
+            <div class="b">Indirizzare il gioco in zone meno pericolose</div>
+          </div>
+        </div>
+
+        <div class="stage-divider"></div>
+
+        <div class="stage">
+          <div class="stage-head">
+            <div class="stage-num">3</div>
+            <div class="stage-title">Ripiegamento</div>
+          </div>
+          <div class="stage-cond">Se saltati o in caso di progressione avversaria: difendere bassi in protezione.</div>
+          <div class="blist">
+            <div class="b">Ricomposizione difensiva collettiva, blocco compatto</div>
+            <div class="b">Densità difensiva e protezione, forzare l'esterno</div>
+            <div class="b">Se non si recupera nei primi secondi → posizione difensiva principale; se costretti, ripiegare sulla secondaria (es. blocco basso)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TRANSIZIONE OFFENSIVA -->
+    <div class="half">
+      <div class="half-head">Transizione Offensiva</div>
+      <div class="half-sub">Cosa facciamo quando recuperiamo la palla</div>
+
+      <div class="stages">
+
+        <div class="stage">
+          <div class="stage-head">
+            <div class="stage-num">1</div>
+            <div class="stage-title">Uscire dalla pressione</div>
+            <div class="stage-tag">Lettura dello spazio</div>
+          </div>
+          <div class="stage-desc">Trasmettere la palla fuori dalla zona di pressione.</div>
+          <div class="stage-desc">Leggere spazio e situazione per scegliere tra:</div>
+          <div class="blist">
+            <div class="b">Contrattacco (campo aperto)</div>
+            <div class="b">Consolidamento (campo chiuso)</div>
+          </div>
+        </div>
+
+        <div class="stage-divider"></div>
+
+        <div class="stage">
+          <div class="stage-head">
+            <div class="stage-num">2</div>
+            <div class="stage-title">Contrattacco</div>
+            <div class="stage-tag">Campo aperto</div>
+          </div>
+          <div class="stage-cond">Avversario disorganizzato, sbilanciato, spazio alle spalle della difesa.</div>
+          <div class="blist">
+            <div class="b">Pensare verticale: attacco diretto</div>
+            <div class="b">Attaccare velocemente lo spazio davanti e i corridoi offensivi</div>
+            <div class="b">Palla profonda alle spalle della difesa, o scarico e sviluppo sul lato opposto</div>
+          </div>
+        </div>
+
+        <div class="stage-divider"></div>
+
+        <div class="stage">
+          <div class="stage-head">
+            <div class="stage-num">3</div>
+            <div class="stage-title">Consolidamento</div>
+            <div class="stage-tag">Campo chiuso</div>
+          </div>
+          <div class="stage-cond">Avversario organizzato e in equilibrio difensivo.</div>
+          <div class="blist">
+            <div class="b">Passaggio sicuro per uscire dalla zona di pressione</div>
+            <div class="b">Occupazione spazi in ampiezza e profondità</div>
+            <div class="b">Ricostruire legami e strutture offensive</div>
+            <div class="b">Mantenere il possesso per sviluppo manovrato</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-line"></div>
+
+</div>
+
+</body>
+</html>

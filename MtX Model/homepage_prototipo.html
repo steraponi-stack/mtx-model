@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MtX Model</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --gray-600: #666;
+    --gray-400: #999;
+    --gray-200: #E0E0E0;
+    --gray-100: #F5F5F5;
+    --white: #fff;
+    --accent: #0A0A0A;
+    --node-done: #0A0A0A;
+    --node-partial: #888;
+    --node-todo: #CCC;
+    --node-done-fill: #0A0A0A;
+    --node-partial-fill: #F0F0F0;
+    --node-todo-fill: #F8F8F8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .site-header {
+    padding: 28px 60px 20px;
+    border-bottom: 1.5px solid var(--black);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .site-title { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .site-sub { font-size: 11px; color: var(--gray-600); margin-top: 3px; }
+  .site-season { font-size: 11px; color: var(--gray-400); letter-spacing: 0.08em; }
+
+  /* ENTRY POINTS TOP */
+  .entry-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .entry-btn {
+    flex: 1;
+    padding: 16px 60px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    text-decoration: none;
+    border-right: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .entry-btn:last-child { border-right: none; }
+  .entry-btn:hover { background: var(--gray-100); color: var(--black); }
+  .entry-btn .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gray-400); flex-shrink: 0;
+  }
+  .entry-btn.done .dot { background: var(--black); }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 60px 60px;
+    gap: 60px;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* SVG MAP */
+  .map-container {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* LEGEND */
+  .legend {
+    position: absolute;
+    bottom: -32px;
+    left: 0;
+    display: flex;
+    gap: 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--gray-600);
+  }
+  .legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .legend-dot.done { background: var(--black); }
+  .legend-dot.partial { background: var(--gray-400); border: 1px solid var(--gray-400); }
+  .legend-dot.todo { background: var(--white); border: 1.5px solid var(--gray-200); }
+
+  /* RIGHT PANEL */
+  .panel {
+    flex: 1;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .panel-section {
+    padding: 20px 0;
+    border-bottom: 0.5px solid var(--gray-200);
+  }
+  .panel-section:first-child { padding-top: 0; }
+  .panel-section:last-child { border-bottom: none; }
+
+  .panel-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 10px;
+  }
+  .panel-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .panel-text {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+  .panel-quote {
+    font-size: 13px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--black);
+    line-height: 1.6;
+    margin-top: 8px;
+    padding-left: 12px;
+    border-left: 2px solid var(--black);
+  }
+  .panel-quote small {
+    display: block;
+    font-size: 10px;
+    font-style: normal;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
+
+  .node-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .node-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--black);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 0.5px solid var(--gray-100);
+    cursor: pointer;
+  }
+  .node-item:last-child { border-bottom: none; }
+  .node-item:hover .node-name { text-decoration: underline; }
+  .node-status {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .node-status.done { background: var(--black); }
+  .node-status.partial { background: var(--gray-400); }
+  .node-status.todo { background: var(--white); border: 1.5px solid var(--gray-200); }
+  .node-name { flex: 1; }
+  .node-tag {
+    font-size: 9px;
+    color: var(--gray-400);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* FOOTER */
+  .site-footer {
+    padding: 16px 60px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-text { font-size: 10px; color: var(--gray-400); letter-spacing: 0.08em; text-transform: uppercase; }
+  .footer-version { font-size: 10px; color: var(--gray-400); }
+
+  /* TOOLTIP */
+  .tooltip {
+    position: fixed;
+    background: var(--black);
+    color: var(--white);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 1000;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* SVG node styles */
+  .svg-node { cursor: pointer; }
+  .svg-node:hover .ring-label { font-weight: 700; }
+  .svg-node.todo { cursor: default; }
+
+  /* Active node highlight in panel */
+  .panel-section.highlight { background: var(--gray-100); padding: 12px; border-radius: 6px; border: none; }
+
+  @media (max-width: 900px) {
+    .main { flex-direction: column; padding: 30px 22px 50px; gap: 40px; }
+    .site-header { padding: 20px 22px; }
+    .entry-btn { padding: 14px 22px; }
+    .site-footer { padding: 14px 22px; }
+    .panel { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="tooltip" id="tooltip"></div>
+
+<header class="site-header">
+  <div>
+    <div class="site-title">MtX Model</div>
+    <div class="site-sub">Framework metodologico e identitario</div>
+  </div>
+  <div class="site-season">ACF Fiorentina · 2026/27</div>
+</header>
+
+<div class="entry-row">
+  <a class="entry-btn done" href="#" onclick="showSection('contesto'); return false;">
+    <span class="dot"></span>Contesto Socio-Culturale
+  </a>
+  <a class="entry-btn todo" href="#" onclick="showSection('chi-siamo'); return false;">
+    <span class="dot"></span>Chi Siamo — Staff &amp; Organigramma
+  </a>
+</div>
+
+<div class="main">
+
+  <!-- SVG MAPPA -->
+  <div class="map-container">
+    <svg width="420" height="420" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Anello esterno — Contesto -->
+      <circle cx="210" cy="210" r="195" fill="none" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="4 4"/>
+
+      <!-- Anello COSA -->
+      <circle cx="210" cy="210" r="155" fill="none" stroke="#CCC" stroke-width="1"/>
+
+      <!-- Anello COME -->
+      <circle cx="210" cy="210" r="110" fill="none" stroke="#999" stroke-width="1.5"/>
+
+      <!-- Anello PERCHÉ -->
+      <circle cx="210" cy="210" r="60" fill="#0A0A0A" stroke="none"/>
+
+      <!-- PERCHÉ label -->
+      <text x="210" y="204" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="white">PERCHÉ</text>
+      <text x="210" y="222" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Scopo · Credo</text>
+
+      <!-- Labels anelli -->
+      <text x="210" y="162" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#666" letter-spacing="2">COME</text>
+      <text x="210" y="207" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#999" letter-spacing="1">COSA</text>
+
+      <!-- COME nodes -->
+      <!-- Valori — in alto a sinistra -->
+      <g class="svg-node done" onclick="showSection('valori')"
+         onmouseenter="showTooltip(event, 'Valori — Rispetto, Coraggio, Umiltà, Unione, Ambizione')"
+         onmouseleave="hideTooltip()">
+        <circle cx="150" cy="128" r="22" fill="#0A0A0A" stroke="none"/>
+        <text x="150" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="white">Valori</text>
+        <text x="150" y="136" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="rgba(255,255,255,0.6)">✅</text>
+      </g>
+
+      <!-- Metodologia — in alto a destra -->
+      <g class="svg-node todo"
+         onmouseenter="showTooltip(event, 'Metodologia — Modello ecologico, CLA, Principi metodologici')"
+         onmouseleave="hideTooltip()">
+        <circle cx="275" cy="128" r="22" fill="#F8F8F8" stroke="#CCC" stroke-width="1.5"/>
+        <text x="275" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#999">Metodo-</text>
+        <text x="275" y="135" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#999">logia</text>
+      </g>
+
+      <!-- Modello di Gioco — in basso COME -->
+      <g class="svg-node partial" onclick="showSection('modello-gioco')"
+         onmouseenter="showTooltip(event, 'Modello di Gioco — 5P, 4 Dimensioni, Principi specifici')"
+         onmouseleave="hideTooltip()">
+        <circle cx="210" cy="293" r="26" fill="#F0F0F0" stroke="#888" stroke-width="1.5"/>
+        <text x="210" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-size="8.5" font-weight="600" fill="#555">Modello</text>
+        <text x="210" y="301" text-anchor="middle" font-family="Inter, sans-serif" font-size="8.5" font-weight="600" fill="#555">di Gioco</text>
+      </g>
+
+      <!-- COSA nodes -->
+      <!-- Modello Allenamento -->
+      <g class="svg-node partial" onclick="showSection('allenamento')"
+         onmouseenter="showTooltip(event, 'Modello di Allenamento — Morfociclo, Sessione, Compiti')"
+         onmouseleave="hideTooltip()">
+        <circle cx="110" cy="282" r="20" fill="#F0F0F0" stroke="#888" stroke-width="1.5"/>
+        <text x="110" y="279" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="600" fill="#555">Modello</text>
+        <text x="110" y="289" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="600" fill="#555">Allenamento</text>
+      </g>
+
+      <!-- Framework 2SF -->
+      <g class="svg-node todo"
+         onmouseenter="showTooltip(event, 'Framework 2SF — Sfida, Struttura, Focus, Feedback')"
+         onmouseleave="hideTooltip()">
+        <circle cx="68" cy="210" r="18" fill="#F8F8F8" stroke="#CCC" stroke-width="1.5"/>
+        <text x="68" y="207" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#CCC">Frame-</text>
+        <text x="68" y="217" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#CCC">work 2SF</text>
+      </g>
+
+      <!-- Mezzi -->
+      <g class="svg-node done" onclick="showSection('mezzi')"
+         onmouseenter="showTooltip(event, 'Mezzi di Allenamento — Nomenclatura e strutture')"
+         onmouseleave="hideTooltip()">
+        <circle cx="352" cy="210" r="18" fill="#0A0A0A" stroke="none"/>
+        <text x="352" y="207" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="white">Mezzi</text>
+        <text x="352" y="217" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="rgba(255,255,255,0.6)">✅</text>
+      </g>
+
+      <!-- Sviluppo Individuale -->
+      <g class="svg-node todo"
+         onmouseenter="showTooltip(event, 'Sviluppo Sistemico Individuale — in costruzione')"
+         onmouseleave="hideTooltip()">
+        <circle cx="310" cy="282" r="20" fill="#F8F8F8" stroke="#CCC" stroke-width="1.5"/>
+        <text x="310" y="279" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="600" fill="#CCC">Sviluppo</text>
+        <text x="310" y="289" text-anchor="middle" font-family="Inter, sans-serif" font-size="7.5" font-weight="600" fill="#CCC">Individuale</text>
+      </g>
+
+      <!-- Connectors COME -->
+      <line x1="172" y1="128" x2="188" y2="168" stroke="#DDD" stroke-width="1"/>
+      <line x1="253" y1="128" x2="222" y2="168" stroke="#DDD" stroke-width="1"/>
+      <line x1="210" y1="270" x2="210" y2="232" stroke="#DDD" stroke-width="1"/>
+
+      <!-- Connectors COSA -->
+      <line x1="125" y1="267" x2="185" y2="228" stroke="#E0E0E0" stroke-width="0.5"/>
+      <line x1="80" y1="210" x2="148" y2="210" stroke="#E0E0E0" stroke-width="0.5"/>
+      <line x1="334" y1="210" x2="270" y2="210" stroke="#E0E0E0" stroke-width="0.5"/>
+      <line x1="296" y1="267" x2="236" y2="228" stroke="#E0E0E0" stroke-width="0.5"/>
+
+    </svg>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot done"></div>Prodotto</div>
+      <div class="legend-item"><div class="legend-dot partial"></div>In aggiornamento</div>
+      <div class="legend-item"><div class="legend-dot todo"></div>In costruzione</div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel" id="panel">
+
+    <!-- DEFAULT -->
+    <div class="panel-section" id="section-default">
+      <div class="panel-label">Il sistema</div>
+      <div class="panel-title">Framework metodologico e identitario</div>
+      <div class="panel-text">Un sistema di riferimento che raccoglie la filosofia, i principi e le pratiche del gruppo di lavoro. Clicca sui nodi per esplorare ogni livello.</div>
+      <div class="panel-quote">
+        Saremo capaci di vincere se riusciremo ad essere forti quando saremo deboli.
+        <small>— Fabio Grosso</small>
+      </div>
+    </div>
+
+    <div class="panel-section" id="section-default-2">
+      <div class="panel-label">Struttura</div>
+      <div class="node-list">
+        <div class="node-item" onclick="showSection('contesto')">
+          <div class="node-status done"></div>
+          <span class="node-name">Contesto Socio-Culturale</span>
+          <span class="node-tag">Cornice</span>
+        </div>
+        <div class="node-item" onclick="showSection('valori')">
+          <div class="node-status done"></div>
+          <span class="node-name">Valori</span>
+          <span class="node-tag">Come</span>
+        </div>
+        <div class="node-item" onclick="showSection('modello-gioco')">
+          <div class="node-status partial"></div>
+          <span class="node-name">Modello di Gioco</span>
+          <span class="node-tag">Come</span>
+        </div>
+        <div class="node-item" onclick="showSection('allenamento')">
+          <div class="node-status partial"></div>
+          <span class="node-name">Modello di Allenamento</span>
+          <span class="node-tag">Cosa</span>
+        </div>
+        <div class="node-item" onclick="showSection('mezzi')">
+          <div class="node-status done"></div>
+          <span class="node-name">Mezzi e Nomenclatura</span>
+          <span class="node-tag">Cosa</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTESTO -->
+    <div class="panel-section" id="section-contesto" style="display:none">
+      <div class="panel-label">Cornice esterna</div>
+      <div class="panel-title">Contesto Socio-Culturale</div>
+      <div class="panel-text">Firenze, la Fiorentina, il centenario. Il contesto dentro cui il gruppo di lavoro si inserisce con la propria visione.</div>
+      <div class="node-list" style="margin-top:14px;">
+        <a class="node-item" href="fiorentina_contesto_mobile.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Guida contesto Fiorentina</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- CHI SIAMO -->
+    <div class="panel-section" id="section-chi-siamo" style="display:none">
+      <div class="panel-label">Cornice esterna</div>
+      <div class="panel-title">Chi Siamo</div>
+      <div class="panel-text">Staff tecnico, organigramma, ruoli e compiti. Struttura T-shaped con le quattro aree di coordinamento.</div>
+      <div class="node-list" style="margin-top:14px;">
+        <div class="node-item">
+          <div class="node-status todo"></div>
+          <span class="node-name">Organigramma staff</span>
+          <span class="node-tag">In costruzione</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALORI -->
+    <div class="panel-section" id="section-valori" style="display:none">
+      <div class="panel-label">Come — Valori</div>
+      <div class="panel-title">I 5 Valori</div>
+      <div class="panel-text">I principi che guidano i comportamenti e ci rendono unici e riconoscibili.</div>
+      <div class="node-list" style="margin-top:14px;">
+        <a class="node-item" href="fiorentina_identita_guide.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Guida Identità completa</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <div class="node-item"><div class="node-status done"></div><span class="node-name">Rispetto</span><span class="node-tag">Più di ogni regola</span></div>
+        <div class="node-item"><div class="node-status done"></div><span class="node-name">Coraggio</span><span class="node-tag">Affronta ogni momento</span></div>
+        <div class="node-item"><div class="node-status done"></div><span class="node-name">Umiltà</span><span class="node-tag">A testa alta</span></div>
+        <div class="node-item"><div class="node-status done"></div><span class="node-name">Unione</span><span class="node-tag">Gioca per il compagno</span></div>
+        <div class="node-item"><div class="node-status done"></div><span class="node-name">Ambizione</span><span class="node-tag">Punta in alto</span></div>
+      </div>
+    </div>
+
+    <!-- MODELLO DI GIOCO -->
+    <div class="panel-section" id="section-modello-gioco" style="display:none">
+      <div class="panel-label">Come — Modello di Gioco</div>
+      <div class="panel-title">Modello di Gioco</div>
+      <div class="panel-text">Intenzione, principi fondamentali, dimensioni e principi specifici per fase.</div>
+      <div class="node-list" style="margin-top:14px;">
+        <a class="node-item" href="modello_di_gioco_slide.html" target="_blank">
+          <div class="node-status partial"></div>
+          <span class="node-name">Slide Modello di Gioco</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <a class="node-item" href="possesso_slide.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Principi — Possesso</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <a class="node-item" href="recupero_slide.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Principi — Recupero</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <a class="node-item" href="transizioni_slide.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Transizioni</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <div class="node-item"><div class="node-status todo"></div><span class="node-name">5 Principi — approfondimento</span><span class="node-tag">In costruzione</span></div>
+        <div class="node-item"><div class="node-status todo"></div><span class="node-name">4 Dimensioni — approfondimento</span><span class="node-tag">In costruzione</span></div>
+      </div>
+    </div>
+
+    <!-- ALLENAMENTO -->
+    <div class="panel-section" id="section-allenamento" style="display:none">
+      <div class="panel-label">Cosa — Pratiche</div>
+      <div class="panel-title">Modello di Allenamento</div>
+      <div class="panel-text">Come il modello di gioco si traduce in allenamento. Morfociclo, sessione, tipologia compiti.</div>
+      <div class="node-list" style="margin-top:14px;">
+        <a class="node-item" href="tipologia_compiti_slide.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Tipologia Compiti</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <div class="node-item"><div class="node-status todo"></div><span class="node-name">Morfociclo — progettazione</span><span class="node-tag">In costruzione</span></div>
+        <div class="node-item"><div class="node-status todo"></div><span class="node-name">Struttura della sessione</span><span class="node-tag">In costruzione</span></div>
+        <div class="node-item"><div class="node-status todo"></div><span class="node-name">Framework 2SF</span><span class="node-tag">In costruzione</span></div>
+      </div>
+    </div>
+
+    <!-- MEZZI -->
+    <div class="panel-section" id="section-mezzi" style="display:none">
+      <div class="panel-label">Cosa — Pratiche</div>
+      <div class="panel-title">Mezzi e Nomenclatura</div>
+      <div class="panel-text">Il sistema di nomenclatura per fasi di gioco, mezzi di allenamento, strutture e forme.</div>
+      <div class="node-list" style="margin-top:14px;">
+        <a class="node-item" href="nomenclatura_guide.html" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">Guida Nomenclatura</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+        <a class="node-item" href="nomenclatura_mezzi_fasi.pdf" target="_blank">
+          <div class="node-status done"></div>
+          <span class="node-name">PDF stampabile</span>
+          <span class="node-tag">Apri →</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-text">MtX Model · Stefano Raponi</div>
+  <div class="footer-version">Prototipo v0.1 · Settembre 2026</div>
+</footer>
+
+<script>
+  const sections = ['default', 'default-2', 'contesto', 'chi-siamo', 'valori', 'modello-gioco', 'allenamento', 'mezzi'];
+
+  function showSection(name) {
+    sections.forEach(s => {
+      const el = document.getElementById('section-' + s);
+      if (el) el.style.display = 'none';
+    });
+    const target = document.getElementById('section-' + name);
+    if (target) target.style.display = 'block';
+    if (name === 'default') {
+      document.getElementById('section-default-2').style.display = 'block';
+    }
+  }
+
+  function showTooltip(event, text) {
+    const t = document.getElementById('tooltip');
+    t.textContent = text;
+    t.style.left = (event.clientX + 12) + 'px';
+    t.style.top = (event.clientY - 8) + 'px';
+    t.style.opacity = '1';
+  }
+
+  function hideTooltip() {
+    document.getElementById('tooltip').style.opacity = '0';
+  }
+
+  // Show default on load
+  showSection('default');
+</script>
+
+</body>
+</html>
