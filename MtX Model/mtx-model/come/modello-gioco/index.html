@@ -114,45 +114,122 @@
     font-family: var(--font-primary);
   }
 
-  /* ===== flusso narrativo 5 principi ===== */
-  .principi-flow {
-    list-style: none;
-    counter-reset: pflow;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 18px 0 0;
+  /* ===== layout a due colonne: grafico + accordion ===== */
+  .mdg-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 24px;
+    align-items: start;
+    margin-bottom: var(--gap-section);
   }
-  .principi-flow li {
-    counter-increment: pflow;
-    position: relative;
-    padding-left: 30px;
-    font-size: 15px;
+  .mdg-graphic-col { position: sticky; top: 24px; }
+  @media (max-width: 1023px) {
+    .mdg-layout { grid-template-columns: 1fr; gap: 32px; }
+    .mdg-graphic-col { position: static; }
+  }
+
+  /* ===== colonna accordion — titoli di gruppo ===== */
+  .mdg-acc-heading {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    margin-bottom: var(--gap-item);
+  }
+  .mdg-acc-heading-divider { margin-top: var(--gap-section); }
+  .mdg-acc-lead {
+    font-size: var(--text-base);
     font-weight: var(--weight-light);
-    line-height: 1.6;
-    color: var(--color-text);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+    margin: -8px 0 var(--gap-item);
   }
-  .principi-flow li::before {
-    content: counter(pflow);
-    position: absolute;
-    left: 0;
-    top: 0;
+
+  /* ===== righe accordion (principi + dimensioni) ===== */
+  .mdg-acc-list { display: flex; flex-direction: column; }
+  .mdg-acc-row { border-bottom: var(--border-subtle); }
+  .mdg-acc-row:first-child { border-top: var(--border-subtle); }
+
+  .mdg-acc-summary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .mdg-acc-summary .acc-num {
+    flex: 0 0 auto;
+    width: 16px;
     font-size: 12px;
     font-weight: var(--weight-bold);
     color: var(--color-text-faint);
   }
-  .principi-flow li strong { font-weight: var(--weight-semibold); color: var(--color-black); }
+  .mdg-acc-summary .acc-title {
+    flex: 0 0 auto;
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+  }
+  .mdg-acc-summary .acc-desc {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mdg-acc-summary .acc-chevron {
+    flex: 0 0 auto;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .mdg-acc-row.is-open .acc-chevron { transform: rotate(180deg); }
+  .mdg-acc-summary:hover .acc-title { color: var(--color-accent); }
 
-  /* ===== griglie card (piena larghezza) ===== */
-  .card-grid { display: grid; gap: 16px; margin-bottom: 16px; }
-  .card-grid:last-child { margin-bottom: 0; }
-  .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
-  .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
-  .card-grid-2x2 { grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 700px) {
-    .card-grid-2, .card-grid-3, .card-grid-2x2 { grid-template-columns: 1fr; }
+  .mdg-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .mdg-acc-row.is-open .mdg-acc-body { grid-template-rows: 1fr; }
+  .mdg-acc-body-inner { overflow: hidden; min-height: 0; }
+  .mdg-acc-detail {
+    padding: 14px 4px 20px 34px;
+    border-top: var(--border-subtle);
+  }
+  .mdg-acc-detail p {
+    font-size: 14px;
+    font-weight: var(--weight-light);
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+  }
+  .mdg-acc-detail p:last-of-type { margin-bottom: 0; }
+  .mdg-punch {
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    font-style: italic;
+    color: var(--color-black);
+    border-left: 2px solid var(--color-black);
+    padding-left: 12px;
+    margin-top: 12px;
+    line-height: var(--leading-normal);
   }
 
+  /* ===== griglie card (piena larghezza — riuso per il ciclo del gioco) ===== */
+  .card-grid { display: grid; gap: 16px; }
+  .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 700px) {
+    .card-grid-4 { grid-template-columns: 1fr; }
+  }
   .mdg-card {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
@@ -173,87 +250,6 @@
     line-height: 1.6;
     color: var(--color-text-muted);
     margin-top: 8px;
-  }
-
-  /* ===== accordion (riuso dal pattern del sito) ===== */
-  .deepen-group { margin-top: 14px; }
-  .deepen-btn {
-    font-family: var(--font-primary);
-    font-size: 11px;
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    background: none;
-    border: none;
-    padding: 6px 0 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .deepen-btn .arrow { transition: transform 0.3s ease; display: inline-block; }
-  .deepen.is-open .deepen-btn .arrow { transform: rotate(90deg); }
-  .deepen-btn:hover { color: var(--color-black); }
-
-  .deepen-body {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.3s ease;
-  }
-  .deepen.is-open .deepen-body { grid-template-rows: 1fr; }
-  .deepen-body-inner { overflow: hidden; min-height: 0; }
-  .deepen-body-inner .deepen-box {
-    background: var(--color-bg-subtle);
-    border-radius: var(--radius-card);
-    padding: 20px;
-    margin-top: 14px;
-  }
-  .deepen-box p {
-    font-size: 14px;
-    font-weight: var(--weight-light);
-    line-height: 1.75;
-    color: var(--color-text-muted);
-    margin-bottom: 10px;
-  }
-  .deepen-box p:last-of-type { margin-bottom: 0; }
-  .mdg-punch {
-    font-size: 14px;
-    font-weight: var(--weight-semibold);
-    font-style: italic;
-    color: var(--color-black);
-    border-left: 2px solid var(--color-black);
-    padding-left: 12px;
-    margin-top: 12px;
-    line-height: var(--leading-normal);
-  }
-
-  /* ===== SEZIONE 5 — ciclo del gioco ===== */
-  .cycle-list { display: flex; flex-direction: column; gap: 0; }
-  .cycle-card {
-    display: flex;
-    align-items: baseline;
-    gap: 20px;
-    padding: 18px 4px;
-    border-bottom: var(--border-subtle);
-    flex-wrap: wrap;
-  }
-  .cycle-card:first-child { border-top: var(--border-subtle); }
-  .cycle-card .cy-q {
-    font-size: 15px;
-    font-weight: var(--weight-semibold);
-    color: var(--color-black);
-    flex: 0 0 auto;
-    min-width: 220px;
-  }
-  .cycle-card .cy-a {
-    font-size: 14px;
-    font-weight: var(--weight-light);
-    color: var(--color-text-muted);
-    flex: 1 1 260px;
-  }
-  @media (max-width: 640px) {
-    .cycle-card .cy-q { min-width: 0; }
   }
 
   /* ===== SEZIONE 6 — slide ===== */
@@ -283,226 +279,193 @@
     <blockquote class="mdg-intenzione">«Avere la palla per giocare in modo propositivo ed essere protagonisti»</blockquote>
   </section>
 
-  <!-- SEZIONE 2 — Il grafico -->
-  <section class="mdg-section">
-    <figure class="mdg-figure">
-      <img src="../../assets/img/modello-gioco-grafico.png"
-           alt="Grafico concentrico del Modello di Gioco: al centro X, poi percezione e azione, poi partecipazione e legame, poi intensità e penetrazione; le 4 dimensioni (mobilità, ritmo, continuità, adattabilità) nell'anello esterno; intorno le 4 fasi del ciclo di gioco (attacco organizzato, transizione difensiva, difesa organizzata, transizione offensiva)."
-           role="button" tabindex="0" aria-label="Ingrandisci il grafico"
-           onerror="this.closest('.mdg-figure').innerHTML='&lt;div class=\'mdg-missing\'&gt;&lt;strong&gt;Grafico non disponibile&lt;/strong&gt;Carica &lt;code&gt;modello-gioco-grafico.png&lt;/code&gt; in &lt;code&gt;assets/img/&lt;/code&gt;.&lt;/div&gt;';">
-      <figcaption>Il grafico concentrico del modello di gioco. <span aria-hidden="true">· Clicca per ingrandire</span></figcaption>
-    </figure>
-    <p class="mdg-graphic-note">Al centro: X — la qualità emergente dall'auto-organizzazione dei giocatori. L'X-point.</p>
-  </section>
+  <!-- SEZIONE 2+3+4 — Grafico (sticky) + accordion Principi/Dimensioni -->
+  <section class="mdg-layout">
 
-  <!-- SEZIONE 3 — I 5 Principi -->
-  <section class="mdg-section mdg-section-narrow">
-    <h2>I 5 Principi</h2>
-    <ol class="principi-flow">
-      <li><strong>Percepire</strong> le informazioni rilevanti per agire meglio</li>
-      <li><strong>Tutti sempre nel gioco</strong> — in possesso e recupero</li>
-      <li><strong>Completamente coinvolti</strong> — tecnico, mentale, fisico, emotivo</li>
-      <li><strong>Sempre legati</strong> — il filo invisibile che genera strutture di interazione e sinergie di gioco</li>
-      <li><strong>Per penetrare lo spazio avversario</strong> — con palla (per progredire) e senza (per recuperare)</li>
-    </ol>
-  </section>
-
-  <section class="mdg-section">
-    <div class="card-grid card-grid-2">
-      <div class="mdg-card">
-        <div class="mc-title">Percezione</div>
-        <div class="mc-desc">Percepire le informazioni rilevanti per agire meglio</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Le affordance sono le opportunità di azione che l'ambiente offre momento per momento — lo spazio libero, il compagno smarcato, il pressing che invita il dribbling. Non si analizzano: si percepiscono direttamente.</p>
-                  <p>Per percepire bene serve un corpo ben orientato: schiena non rivolta al gioco, testa che gira prima di ricevere (scanning). Chi guarda trova lo spazio. Chi non guarda lo perde.</p>
-                  <p>Il dominio cognitivo — le esperienze accumulate — determina quante opportunità riesci a vedere nello stesso campo.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mdg-card">
-        <div class="mc-title">Partecipazione</div>
-        <div class="mc-desc">Tutti sempre nel gioco, in fase di possesso e di recupero</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Il ciclo del gioco non ha pause. In possesso tutti creano legami e opzioni. In recupero tutti reagiscono e si riorganizzano. Non esistono giocatori «fuori dal gioco» finché la partita è in corso.</p>
-                  <p>Una squadra con dieci giocatori attivi e uno passivo ha un'inefficienza che l'avversario troverà.</p>
-                  <blockquote class="mdg-punch">«Non esiste un momento in cui non stai giocando.»</blockquote>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Colonna sinistra — il grafico -->
+    <div class="mdg-graphic-col">
+      <figure class="mdg-figure">
+        <img src="../../assets/img/modello-gioco-grafico.png"
+             alt="Grafico concentrico del Modello di Gioco: al centro X, poi percezione e azione, poi partecipazione e legame, poi intensità e penetrazione; le 4 dimensioni (mobilità, ritmo, continuità, adattabilità) nell'anello esterno; intorno le 4 fasi del ciclo di gioco (attacco organizzato, transizione difensiva, difesa organizzata, transizione offensiva)."
+             role="button" tabindex="0" aria-label="Ingrandisci il grafico"
+             onerror="this.closest('.mdg-figure').innerHTML='&lt;div class=\'mdg-missing\'&gt;&lt;strong&gt;Grafico non disponibile&lt;/strong&gt;Carica &lt;code&gt;modello-gioco-grafico.png&lt;/code&gt; in &lt;code&gt;assets/img/&lt;/code&gt;.&lt;/div&gt;';">
+        <figcaption>Il grafico concentrico del modello di gioco. <span aria-hidden="true">· Clicca per ingrandire</span></figcaption>
+      </figure>
+      <p class="mdg-graphic-note">Al centro: X — la qualità emergente dall'auto-organizzazione dei giocatori. L'X-point.</p>
     </div>
 
-    <div class="card-grid card-grid-3">
-      <div class="mdg-card">
-        <div class="mc-title">Intensità</div>
-        <div class="mc-desc">Completamente coinvolti — tecnico, mentale, fisico, emotivo</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Non è correre di più. È essere completamente presenti — tecnicamente precisi, mentalmente lucidi, fisicamente disponibili, emotivamente stabili — simultaneamente.</p>
-                  <p>L'intensità decade dopo un errore, un gol subito, un momento difficile. Riagganciarla subito è la differenza tra una squadra e un gruppo.</p>
-                  <blockquote class="mdg-punch">«Non correre di più. Essere completamente lì.»</blockquote>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mdg-card">
-        <div class="mc-title">Legame</div>
-        <div class="mc-desc">Il filo invisibile che genera strutture di interazione e sinergie di gioco</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Il legame ha due dimensioni: socio-affettiva (fiducia, conoscenza reciproca, comunicazione non verbale) e spazio-temporale (posizioni, posture, distanze, movimento).</p>
-                  <p>Il legame è alla base dell'organizzazione di gioco e delle strutture dinamiche di interazione — triangoli, rombi, blocchi — che collegano i giocatori e producono sinergie negli spazi di gioco.</p>
-                  <p>La sinergia — quando il tutto supera la somma delle parti — nasce qui.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mdg-card">
-        <div class="mc-title">Penetrazione</div>
-        <div class="mc-desc">Penetrare lo spazio avversario — con palla (per progredire) e senza (per recuperare)</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Con palla: passaggio filtrante, conduzione in profondità, combinazione che supera il blocco difensivo. L'obiettivo è lo spazio vitale avversario.</p>
-                  <p>Senza palla: pressione che rompe i legami difensivi e recupera il pallone — pressione sul possessore per rubare spazio e tempo.</p>
-                  <p>Il possesso non è fine a sé stesso. Ogni azione costruisce le condizioni per penetrare.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- Colonna destra — accordion Principi + Dimensioni -->
+    <div class="mdg-acc-col">
 
-  <!-- SEZIONE 4 — Le 4 Dimensioni -->
-  <section class="mdg-section mdg-section-narrow">
-    <h2>Le 4 Dimensioni</h2>
-    <p class="lead" style="margin-top:0;">Le richieste ai giocatori nel mettere in pratica i principi — qualità che attraversano ogni momento del gioco.</p>
-  </section>
+      <h2 class="mdg-acc-heading">I 5 Principi</h2>
+      <div class="mdg-acc-list">
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">1</span>
+            <span class="acc-title">Percezione</span>
+            <span class="acc-desc">Percepire le informazioni rilevanti per agire meglio</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Le affordance sono le opportunità di azione che l'ambiente offre momento per momento — lo spazio libero, il compagno smarcato, il pressing che invita il dribbling. Non si analizzano: si percepiscono direttamente.</p>
+                <p>Per percepire bene serve un corpo ben orientato: schiena non rivolta al gioco, testa che gira prima di ricevere (scanning). Chi guarda trova lo spazio. Chi non guarda lo perde.</p>
+                <p>Il dominio cognitivo — le esperienze accumulate — determina quante opportunità riesci a vedere nello stesso campo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <section class="mdg-section">
-    <div class="card-grid card-grid-2x2">
-      <div class="mdg-card">
-        <div class="mc-title">Ritmo</div>
-        <div class="mc-desc">La struttura che connette</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Ogni squadra ha un ritmo efficace. Quello che conta è saperlo variare: alzarlo per penetrare prima che la difesa si riorganizzi, abbassarlo per attrarre la pressione e creare spazio.</p>
-                  <p>Il ritmo è anche comunicazione — un passaggio veloce dice «attacca subito», uno lento dice «aspetta». La squadra che legge il ritmo si muove come un organismo unico.</p>
-                  <blockquote class="mdg-punch">«Saperlo variare è saperlo usare.»</blockquote>
-                </div>
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">2</span>
+            <span class="acc-title">Partecipazione</span>
+            <span class="acc-desc">Tutti sempre nel gioco, in fase di possesso e di recupero</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Il ciclo del gioco non ha pause. In possesso tutti creano legami e opzioni. In recupero tutti reagiscono e si riorganizzano. Non esistono giocatori «fuori dal gioco» finché la partita è in corso.</p>
+                <p>Una squadra con dieci giocatori attivi e uno passivo ha un'inefficienza che l'avversario troverà.</p>
+                <blockquote class="mdg-punch">«Non esiste un momento in cui non stai giocando.»</blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">3</span>
+            <span class="acc-title">Intensità</span>
+            <span class="acc-desc">Completamente coinvolti — tecnico, mentale, fisico, emotivo</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Non è correre di più. È essere completamente presenti — tecnicamente precisi, mentalmente lucidi, fisicamente disponibili, emotivamente stabili — simultaneamente.</p>
+                <p>L'intensità decade dopo un errore, un gol subito, un momento difficile. Riagganciarla subito è la differenza tra una squadra e un gruppo.</p>
+                <blockquote class="mdg-punch">«Non correre di più. Essere completamente lì.»</blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">4</span>
+            <span class="acc-title">Legame</span>
+            <span class="acc-desc">Il filo invisibile che genera strutture di interazione e sinergie di gioco</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Il legame ha due dimensioni: socio-affettiva (fiducia, conoscenza reciproca, comunicazione non verbale) e spazio-temporale (posizioni, posture, distanze, movimento).</p>
+                <p>Il legame è alla base dell'organizzazione di gioco e delle strutture dinamiche di interazione — triangoli, rombi, blocchi — che collegano i giocatori e producono sinergie negli spazi di gioco.</p>
+                <p>La sinergia — quando il tutto supera la somma delle parti — nasce qui.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">5</span>
+            <span class="acc-title">Penetrazione</span>
+            <span class="acc-desc">Penetrare lo spazio avversario — con palla (per progredire) e senza (per recuperare)</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Con palla: passaggio filtrante, conduzione in profondità, combinazione che supera il blocco difensivo. L'obiettivo è lo spazio vitale avversario.</p>
+                <p>Senza palla: pressione che rompe i legami difensivi e recupera il pallone — pressione sul possessore per rubare spazio e tempo.</p>
+                <p>Il possesso non è fine a sé stesso. Ogni azione costruisce le condizioni per penetrare.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="mdg-card">
-        <div class="mc-title">Mobilità</div>
-        <div class="mc-desc">Strutture dinamiche in funzione della palla</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>La mobilità non è movimento per il movimento. È il principio che regola come i giocatori si muovono in funzione della palla, dei compagni e degli avversari — generando spazi dinamici di interazione.</p>
-                  <p>Codice palla: palla aperta → mi muovo in funzione dello spazio. Palla chiusa → mi muovo in funzione del compagno.</p>
-                  <blockquote class="mdg-punch">«Non occupare lo spazio. Generarlo.»</blockquote>
-                </div>
+
+      <h2 class="mdg-acc-heading mdg-acc-heading-divider">Le 4 Dimensioni</h2>
+      <p class="mdg-acc-lead">Le richieste ai giocatori nel mettere in pratica i principi — qualità che attraversano ogni momento del gioco.</p>
+      <div class="mdg-acc-list">
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">6</span>
+            <span class="acc-title">Mobilità</span>
+            <span class="acc-desc">Strutture dinamiche in funzione della palla</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>La mobilità non è movimento per il movimento. È il principio che regola come i giocatori si muovono in funzione della palla, dei compagni e degli avversari — generando spazi dinamici di interazione.</p>
+                <p>Codice palla: palla aperta → mi muovo in funzione dello spazio. Palla chiusa → mi muovo in funzione del compagno.</p>
+                <blockquote class="mdg-punch">«Non occupare lo spazio. Generarlo.»</blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">7</span>
+            <span class="acc-title">Ritmo</span>
+            <span class="acc-desc">La struttura che connette</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Ogni squadra ha un ritmo efficace. Quello che conta è saperlo variare: alzarlo per penetrare prima che la difesa si riorganizzi, abbassarlo per attrarre la pressione e creare spazio.</p>
+                <p>Il ritmo è anche comunicazione — un passaggio veloce dice «attacca subito», uno lento dice «aspetta». La squadra che legge il ritmo si muove come un organismo unico.</p>
+                <blockquote class="mdg-punch">«Saperlo variare è saperlo usare.»</blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">8</span>
+            <span class="acc-title">Continuità</span>
+            <span class="acc-desc">Continuità di azione nelle fasi di gioco</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>La continuità è il filo che attraversa tutte le fasi. In possesso ogni azione costruisce la successiva. In recupero la reazione è immediata — senza pause, senza lamentele.</p>
+                <p>Una squadra continua è riconoscibile: mantiene il suo modo di giocare indipendentemente dal risultato o dal momento della partita.</p>
+                <blockquote class="mdg-punch">«La continuità è l'espressione visibile dell'identità.»</blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdg-acc-row">
+          <button class="mdg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-num">9</span>
+            <span class="acc-title">Adattabilità</span>
+            <span class="acc-desc">Trovare nuove soluzioni di fronte agli imprevisti</span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="mdg-acc-body">
+            <div class="mdg-acc-body-inner">
+              <div class="mdg-acc-detail">
+                <p>Il gioco è variabile per definizione. L'adattabilità è la capacità di rispondere a quella variabilità senza perdere l'identità — non eseguendo schemi alternativi, ma auto-organizzandosi attorno ai principi condivisi.</p>
+                <p>Un sistema adattivo è robusto: assorbe l'errore del singolo con l'intelligenza collettiva, trasforma l'imprevisto in opportunità.</p>
+                <blockquote class="mdg-punch">«Non eseguire schemi. Trovare soluzioni.»</blockquote>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="mdg-card">
-        <div class="mc-title">Continuità</div>
-        <div class="mc-desc">Continuità di azione nelle fasi di gioco</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>La continuità è il filo che attraversa tutte le fasi. In possesso ogni azione costruisce la successiva. In recupero la reazione è immediata — senza pause, senza lamentele.</p>
-                  <p>Una squadra continua è riconoscibile: mantiene il suo modo di giocare indipendentemente dal risultato o dal momento della partita.</p>
-                  <blockquote class="mdg-punch">«La continuità è l'espressione visibile dell'identità.»</blockquote>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mdg-card">
-        <div class="mc-title">Adattabilità</div>
-        <div class="mc-desc">Trovare nuove soluzioni di fronte agli imprevisti</div>
-        <div class="deepen-group">
-          <div class="deepen">
-            <button class="deepen-btn" type="button" aria-expanded="false">
-              <span class="label">Approfondisci</span> <span class="arrow">→</span>
-            </button>
-            <div class="deepen-body">
-              <div class="deepen-body-inner">
-                <div class="deepen-box">
-                  <p>Il gioco è variabile per definizione. L'adattabilità è la capacità di rispondere a quella variabilità senza perdere l'identità — non eseguendo schemi alternativi, ma auto-organizzandosi attorno ai principi condivisi.</p>
-                  <p>Un sistema adattivo è robusto: assorbe l'errore del singolo con l'intelligenza collettiva, trasforma l'imprevisto in opportunità.</p>
-                  <blockquote class="mdg-punch">«Non eseguire schemi. Trovare soluzioni.»</blockquote>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </section>
 
@@ -513,22 +476,22 @@
   </section>
 
   <section class="mdg-section">
-    <div class="cycle-list">
-      <div class="cycle-card">
-        <div class="cy-q">Abbiamo la palla →</div>
-        <div class="cy-a">Mantenimento per penetrare (Attacco Organizzato)</div>
+    <div class="card-grid card-grid-4">
+      <div class="mdg-card">
+        <div class="mc-title">Abbiamo la palla →</div>
+        <div class="mc-desc">Mantenimento per penetrare (Attacco Organizzato)</div>
       </div>
-      <div class="cycle-card">
-        <div class="cy-q">Perdiamo la palla →</div>
-        <div class="cy-a">Reazione immediata / Riorganizzazione (Transizione Difensiva)</div>
+      <div class="mdg-card">
+        <div class="mc-title">Perdiamo la palla →</div>
+        <div class="mc-desc">Reazione immediata / Riorganizzazione (Transizione Difensiva)</div>
       </div>
-      <div class="cycle-card">
-        <div class="cy-q">Non abbiamo la palla →</div>
-        <div class="cy-a">Pressione / Contenimento / Protezione (Difesa Organizzata)</div>
+      <div class="mdg-card">
+        <div class="mc-title">Non abbiamo la palla →</div>
+        <div class="mc-desc">Pressione / Contenimento / Protezione (Difesa Organizzata)</div>
       </div>
-      <div class="cycle-card">
-        <div class="cy-q">Recuperiamo la palla →</div>
-        <div class="cy-a">Contrattacco / Consolidamento (Transizione Offensiva)</div>
+      <div class="mdg-card">
+        <div class="mc-title">Recuperiamo la palla →</div>
+        <div class="mc-desc">Contrattacco / Consolidamento (Transizione Offensiva)</div>
       </div>
     </div>
   </section>
@@ -569,13 +532,21 @@
 
 <script src="../../assets/js/slide-fit.js"></script>
 <script>
-  document.querySelectorAll('.deepen-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var deepen = btn.closest('.deepen');
-      var open = deepen.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.querySelector('.label').textContent = open ? 'Richiudi' : 'Approfondisci';
-      btn.querySelector('.arrow').textContent = open ? '←' : '→';
+  document.querySelectorAll('.mdg-acc-col').forEach(function (col) {
+    var rows = col.querySelectorAll('.mdg-acc-row');
+    rows.forEach(function (row) {
+      var btn = row.querySelector('.mdg-acc-summary');
+      btn.addEventListener('click', function () {
+        var wasOpen = row.classList.contains('is-open');
+        rows.forEach(function (r) {
+          r.classList.remove('is-open');
+          r.querySelector('.mdg-acc-summary').setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          row.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
   });
 
