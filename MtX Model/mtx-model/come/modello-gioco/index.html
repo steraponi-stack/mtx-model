@@ -6,23 +6,25 @@
 <title>Modello di Gioco — MtX Model</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
+  /* ===== container principale — più largo solo su questa pagina ===== */
+  main { max-width: 1280px; }
+
   /* ===== intro narrativa (720px) ===== */
   .mdg-intro { max-width: 720px; margin: 0 auto var(--gap-section); }
   .mdg-intro h1 {
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     font-weight: var(--weight-bold);
     letter-spacing: -0.02em;
     line-height: var(--leading-tight);
     color: var(--color-black);
   }
-  .mdg-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: var(--leading-loose); margin-top: 18px; }
-  .mdg-intro .lead + .lead { margin-top: 8px; }
+  .mdg-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: 1.5; margin-top: 14px; }
 
   /* ===== sezione generica ===== */
   .mdg-section { margin-bottom: var(--gap-section); }
   .mdg-section-narrow { max-width: 720px; margin: 0 auto var(--gap-section); }
   .mdg-section h2 {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     font-weight: var(--weight-bold);
     letter-spacing: -0.02em;
     color: var(--color-black);
@@ -43,8 +45,7 @@
 
   /* ===== SEZIONE 2 — il grafico ===== */
   .mdg-figure {
-    max-width: 640px;
-    margin: 0 auto;
+    margin: 0;
     background: #fff;
     border: var(--border-subtle);
     border-radius: var(--radius-card);
@@ -56,7 +57,7 @@
     font-size: var(--text-xs);
     color: var(--color-text-faint);
     letter-spacing: 0.04em;
-    text-align: center;
+    text-align: left;
     padding: 10px 14px;
     border-top: var(--border-subtle);
   }
@@ -68,9 +69,8 @@
   }
   .mdg-missing strong { display: block; color: var(--color-black); font-weight: var(--weight-semibold); margin-bottom: 6px; }
   .mdg-graphic-note {
-    max-width: 560px;
-    margin: 18px auto 0;
-    text-align: center;
+    margin: 18px 0 0;
+    text-align: left;
     font-size: 14px;
     font-style: italic;
     color: var(--color-text-muted);
@@ -114,11 +114,11 @@
     font-family: var(--font-primary);
   }
 
-  /* ===== layout a due colonne: grafico + accordion ===== */
+  /* ===== layout a tre colonne: grafico + accordion principi + accordion dimensioni ===== */
   .mdg-layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 24px;
+    grid-template-columns: minmax(200px, 240px) 1fr 1fr;
+    gap: 32px;
     align-items: start;
     margin-bottom: var(--gap-section);
   }
@@ -130,13 +130,12 @@
 
   /* ===== colonna accordion — titoli di gruppo ===== */
   .mdg-acc-heading {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     font-weight: var(--weight-bold);
     letter-spacing: -0.02em;
     color: var(--color-black);
     margin-bottom: var(--gap-item);
   }
-  .mdg-acc-heading-divider { margin-top: var(--gap-section); }
   .mdg-acc-lead {
     font-size: var(--text-base);
     font-weight: var(--weight-light);
@@ -153,9 +152,9 @@
   .mdg-acc-summary {
     width: 100%;
     display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 4px;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 4px;
     background: none;
     border: none;
     font-family: var(--font-primary);
@@ -165,28 +164,32 @@
   .mdg-acc-summary .acc-num {
     flex: 0 0 auto;
     width: 16px;
+    margin-top: 2px;
     font-size: 12px;
     font-weight: var(--weight-bold);
     color: var(--color-text-faint);
   }
+  .mdg-acc-summary .acc-head {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
   .mdg-acc-summary .acc-title {
-    flex: 0 0 auto;
     font-size: 15px;
     font-weight: var(--weight-semibold);
     color: var(--color-black);
   }
   .mdg-acc-summary .acc-desc {
-    flex: 1 1 auto;
-    min-width: 0;
     font-size: 13px;
     font-weight: var(--weight-light);
     color: var(--color-text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.45;
   }
   .mdg-acc-summary .acc-chevron {
     flex: 0 0 auto;
+    margin-top: 2px;
     font-size: 13px;
     color: var(--color-text-faint);
     transition: transform 0.3s ease;
@@ -202,7 +205,7 @@
   .mdg-acc-row.is-open .mdg-acc-body { grid-template-rows: 1fr; }
   .mdg-acc-body-inner { overflow: hidden; min-height: 0; }
   .mdg-acc-detail {
-    padding: 14px 4px 20px 34px;
+    padding: 14px 4px 20px 32px;
     border-top: var(--border-subtle);
   }
   .mdg-acc-detail p {
@@ -224,32 +227,69 @@
     line-height: var(--leading-normal);
   }
 
-  /* ===== griglie card (piena larghezza — riuso per il ciclo del gioco) ===== */
-  .card-grid { display: grid; gap: 16px; }
+  /* ===== SEZIONE 5 — Il Ciclo del Gioco: griglia di mini-accordion ===== */
+  .card-grid { display: grid; gap: 12px; }
   .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
   @media (max-width: 700px) {
     .card-grid-4 { grid-template-columns: 1fr; }
   }
-  .mdg-card {
+  .cycle-acc {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
-    padding: 20px;
+    overflow: hidden;
+  }
+  .cycle-acc-summary {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 12px 30px 12px 14px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+    position: relative;
   }
-  .mdg-card .mc-title {
+  .cycle-acc-summary .cy-title {
     font-size: 11px;
     font-weight: var(--weight-bold);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-black);
   }
-  .mdg-card .mc-desc {
-    font-size: 14px;
+  .cycle-acc-summary .cy-sub {
+    font-size: 13px;
     font-weight: var(--weight-light);
-    line-height: 1.6;
+    line-height: 1.5;
     color: var(--color-text-muted);
-    margin-top: 8px;
+  }
+  .cycle-acc-summary .cy-chevron {
+    position: absolute;
+    top: 13px;
+    right: 12px;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .cycle-acc.is-open .cy-chevron { transform: rotate(180deg); }
+  .cycle-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .cycle-acc.is-open .cycle-acc-body { grid-template-rows: 1fr; }
+  .cycle-acc-body-inner { overflow: hidden; min-height: 0; }
+  .cycle-acc-detail {
+    padding: 10px 14px 14px;
+    border-top: var(--border-subtle);
+  }
+  .cycle-acc-detail p {
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    line-height: 1.7;
+    color: var(--color-text-muted);
   }
 
   /* ===== SEZIONE 6 — slide ===== */
@@ -269,8 +309,7 @@
   <section class="mdg-intro">
     <div class="kicker">Come</div>
     <h1>Modello di Gioco</h1>
-    <p class="lead">Come traduciamo l'intenzione in principi di gioco.</p>
-    <p class="lead">Un linguaggio condiviso che guida i giocatori nella ricerca delle soluzioni più efficaci.</p>
+    <p class="lead">Come traduciamo l'intenzione in principi di gioco.<br>Un linguaggio condiviso che guida i giocatori nella ricerca delle soluzioni più efficaci.</p>
   </section>
 
   <!-- SEZIONE 1 — Intenzione di gioco -->
@@ -294,7 +333,7 @@
       <p class="mdg-graphic-note">Al centro: X — la qualità emergente dall'auto-organizzazione dei giocatori. L'X-point.</p>
     </div>
 
-    <!-- Colonna destra — accordion Principi + Dimensioni -->
+    <!-- Colonna centrale — accordion I 5 Principi -->
     <div class="mdg-acc-col">
 
       <h2 class="mdg-acc-heading">I 5 Principi</h2>
@@ -302,8 +341,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">1</span>
-            <span class="acc-title">Percezione</span>
-            <span class="acc-desc">Percepire le informazioni rilevanti per agire meglio</span>
+            <span class="acc-head">
+              <span class="acc-title">Percezione</span>
+              <span class="acc-desc">Percepire le informazioni rilevanti per agire meglio</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -320,8 +361,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">2</span>
-            <span class="acc-title">Partecipazione</span>
-            <span class="acc-desc">Tutti sempre nel gioco, in fase di possesso e di recupero</span>
+            <span class="acc-head">
+              <span class="acc-title">Partecipazione</span>
+              <span class="acc-desc">Tutti sempre nel gioco, in fase di possesso e di recupero</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -338,8 +381,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">3</span>
-            <span class="acc-title">Intensità</span>
-            <span class="acc-desc">Completamente coinvolti — tecnico, mentale, fisico, emotivo</span>
+            <span class="acc-head">
+              <span class="acc-title">Intensità</span>
+              <span class="acc-desc">Completamente coinvolti — tecnico, mentale, fisico, emotivo</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -356,8 +401,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">4</span>
-            <span class="acc-title">Legame</span>
-            <span class="acc-desc">Il filo invisibile che genera strutture di interazione e sinergie di gioco</span>
+            <span class="acc-head">
+              <span class="acc-title">Legame</span>
+              <span class="acc-desc">Il filo invisibile che genera strutture di interazione e sinergie di gioco</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -374,8 +421,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">5</span>
-            <span class="acc-title">Penetrazione</span>
-            <span class="acc-desc">Penetrare lo spazio avversario — con palla (per progredire) e senza (per recuperare)</span>
+            <span class="acc-head">
+              <span class="acc-title">Penetrazione</span>
+              <span class="acc-desc">Penetrare lo spazio avversario — con palla (per progredire) e senza (per recuperare)</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -389,15 +438,21 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <h2 class="mdg-acc-heading mdg-acc-heading-divider">Le 4 Dimensioni</h2>
+    <!-- Colonna destra — accordion Le 4 Dimensioni -->
+    <div class="mdg-acc-col">
+
+      <h2 class="mdg-acc-heading">Le 4 Dimensioni</h2>
       <p class="mdg-acc-lead">Le richieste ai giocatori nel mettere in pratica i principi — qualità che attraversano ogni momento del gioco.</p>
       <div class="mdg-acc-list">
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">6</span>
-            <span class="acc-title">Mobilità</span>
-            <span class="acc-desc">Strutture dinamiche in funzione della palla</span>
+            <span class="acc-head">
+              <span class="acc-title">Mobilità</span>
+              <span class="acc-desc">Strutture dinamiche in funzione della palla</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -414,8 +469,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">7</span>
-            <span class="acc-title">Ritmo</span>
-            <span class="acc-desc">La struttura che connette</span>
+            <span class="acc-head">
+              <span class="acc-title">Ritmo</span>
+              <span class="acc-desc">La struttura che connette</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -432,8 +489,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">8</span>
-            <span class="acc-title">Continuità</span>
-            <span class="acc-desc">Continuità di azione nelle fasi di gioco</span>
+            <span class="acc-head">
+              <span class="acc-title">Continuità</span>
+              <span class="acc-desc">Continuità di azione nelle fasi di gioco</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -450,8 +509,10 @@
         <div class="mdg-acc-row">
           <button class="mdg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-num">9</span>
-            <span class="acc-title">Adattabilità</span>
-            <span class="acc-desc">Trovare nuove soluzioni di fronte agli imprevisti</span>
+            <span class="acc-head">
+              <span class="acc-title">Adattabilità</span>
+              <span class="acc-desc">Trovare nuove soluzioni di fronte agli imprevisti</span>
+            </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="mdg-acc-body">
@@ -477,21 +538,53 @@
 
   <section class="mdg-section">
     <div class="card-grid card-grid-4">
-      <div class="mdg-card">
-        <div class="mc-title">Abbiamo la palla →</div>
-        <div class="mc-desc">Mantenimento per penetrare (Attacco Organizzato)</div>
+      <div class="cycle-acc">
+        <button class="cycle-acc-summary" type="button" aria-expanded="false">
+          <span class="cy-title">Abbiamo la palla →</span>
+          <span class="cy-sub">Mantenimento per penetrare (Attacco Organizzato)</span>
+          <span class="cy-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="cycle-acc-body">
+          <div class="cycle-acc-body-inner">
+            <div class="cycle-acc-detail"></div>
+          </div>
+        </div>
       </div>
-      <div class="mdg-card">
-        <div class="mc-title">Perdiamo la palla →</div>
-        <div class="mc-desc">Reazione immediata / Riorganizzazione (Transizione Difensiva)</div>
+      <div class="cycle-acc">
+        <button class="cycle-acc-summary" type="button" aria-expanded="false">
+          <span class="cy-title">Perdiamo la palla →</span>
+          <span class="cy-sub">Reazione immediata / Riorganizzazione (Transizione Difensiva)</span>
+          <span class="cy-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="cycle-acc-body">
+          <div class="cycle-acc-body-inner">
+            <div class="cycle-acc-detail"></div>
+          </div>
+        </div>
       </div>
-      <div class="mdg-card">
-        <div class="mc-title">Non abbiamo la palla →</div>
-        <div class="mc-desc">Pressione / Contenimento / Protezione (Difesa Organizzata)</div>
+      <div class="cycle-acc">
+        <button class="cycle-acc-summary" type="button" aria-expanded="false">
+          <span class="cy-title">Non abbiamo la palla →</span>
+          <span class="cy-sub">Pressione / Contenimento / Protezione (Difesa Organizzata)</span>
+          <span class="cy-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="cycle-acc-body">
+          <div class="cycle-acc-body-inner">
+            <div class="cycle-acc-detail"></div>
+          </div>
+        </div>
       </div>
-      <div class="mdg-card">
-        <div class="mc-title">Recuperiamo la palla →</div>
-        <div class="mc-desc">Contrattacco / Consolidamento (Transizione Offensiva)</div>
+      <div class="cycle-acc">
+        <button class="cycle-acc-summary" type="button" aria-expanded="false">
+          <span class="cy-title">Recuperiamo la palla →</span>
+          <span class="cy-sub">Contrattacco / Consolidamento (Transizione Offensiva)</span>
+          <span class="cy-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="cycle-acc-body">
+          <div class="cycle-acc-body-inner">
+            <div class="cycle-acc-detail"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -547,6 +640,14 @@
           btn.setAttribute('aria-expanded', 'true');
         }
       });
+    });
+  });
+
+  document.querySelectorAll('.cycle-acc').forEach(function (cell) {
+    var btn = cell.querySelector('.cycle-acc-summary');
+    btn.addEventListener('click', function () {
+      var open = cell.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   });
 
