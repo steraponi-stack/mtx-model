@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recupero — Organizzazione di Gioco — MtX Model</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+  main { max-width: 1280px; }
+
+  .odg-intro { max-width: 720px; margin: 0 0 var(--gap-section); }
+  .odg-intro h1 {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-tight);
+    color: var(--color-black);
+  }
+  .odg-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: 1.5; margin-top: 14px; }
+
+  .odg-section { margin-bottom: var(--gap-section); }
+  .odg-section-narrow { max-width: 720px; margin: 0 0 var(--gap-section); }
+  .odg-section h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    margin-bottom: var(--gap-item);
+  }
+
+  .odg-obiettivo {
+    font-size: 18px;
+    font-weight: var(--weight-semibold);
+    font-style: italic;
+    color: var(--color-black);
+    border-left: 2px solid var(--color-black);
+    padding-left: 18px;
+    line-height: var(--leading-normal);
+  }
+
+  .odg-acc-col { max-width: 820px; }
+  .odg-acc-heading {
+    font-size: 11px;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 10px;
+  }
+
+  .odg-acc-list { display: flex; flex-direction: column; }
+  .odg-acc-row { border-bottom: var(--border-subtle); }
+  .odg-acc-row:first-child { border-top: var(--border-subtle); }
+
+  .odg-acc-summary {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .odg-acc-summary .acc-head {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .odg-acc-summary .acc-title {
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+  }
+  .odg-acc-summary .acc-desc {
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+  .odg-acc-summary .acc-chevron {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .odg-acc-row.is-open .acc-chevron { transform: rotate(180deg); }
+  .odg-acc-summary:hover .acc-title { color: var(--color-accent); }
+
+  .odg-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .odg-acc-row.is-open .odg-acc-body { grid-template-rows: 1fr; }
+  .odg-acc-body-inner { overflow: hidden; min-height: 0; }
+  .odg-acc-detail {
+    padding: 6px 4px 24px;
+    border-top: var(--border-subtle);
+  }
+
+  .odg-item { padding: 14px 0; border-bottom: var(--border-subtle); }
+  .odg-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .odg-item:first-child { padding-top: 14px; }
+  .odg-item-title {
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .odg-item-tag { font-size: 12px; font-weight: var(--weight-light); font-style: italic; color: var(--color-text-muted); }
+  .odg-item-desc { font-size: 13.5px; font-weight: var(--weight-light); line-height: 1.65; color: var(--color-text-muted); margin-top: 4px; }
+  .odg-item-sub {
+    font-size: 12.5px; font-weight: var(--weight-light); line-height: 1.6; color: #555;
+    padding-left: 15px; position: relative; margin-top: 4px;
+  }
+  .odg-item-sub::before { content: '—'; position: absolute; left: 0; color: #bbb; }
+  .odg-highlight {
+    font-size: 14px; font-weight: var(--weight-semibold); font-style: italic; color: var(--color-black);
+    margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
+  }
+
+  .odg-sub-block { margin-bottom: 26px; }
+  .odg-sub-block:last-child { margin-bottom: 0; }
+  .odg-sub-block-title {
+    font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--color-text-faint); margin-bottom: 6px;
+  }
+  .odg-sub-block-obj {
+    font-size: 13.5px; font-weight: var(--weight-light); color: #444; line-height: 1.5;
+    margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
+  }
+  .odg-sub-block-obj strong { font-weight: var(--weight-semibold); color: var(--color-black); }
+
+  .card-grid { display: grid; gap: 10px; }
+  .card-grid-6 { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 900px) { .card-grid-6 { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .card-grid-6 { grid-template-columns: repeat(2, 1fr); } }
+  .odg-mini-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+  }
+  .odg-mini-card .m-title {
+    font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-black);
+  }
+  .odg-mini-card .m-desc { font-size: 12px; font-weight: var(--weight-light); line-height: 1.5; color: var(--color-text-muted); margin-top: 5px; }
+
+  .odg-note {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--color-text-faint);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="home-link" href="../../index.html">← Homepage</a>
+  <span class="breadcrumb"><span class="current">Come</span><span class="sep">/</span><a href="index.html">Organizzazione di Gioco</a><span class="sep">/</span><span class="current">Recupero</span></span>
+  <span class="season">MtX Model</span>
+</header>
+
+<main>
+
+  <section class="odg-intro">
+    <div class="kicker">Organizzazione di Gioco</div>
+    <h1>Recupero</h1>
+    <p class="lead">Cosa facciamo quando non abbiamo la palla.</p>
+  </section>
+
+  <section class="odg-section odg-section-narrow">
+    <h2>Obiettivo</h2>
+    <blockquote class="odg-obiettivo">«Recuperarla in avanti attraverso la pressione per averla prima possibile»</blockquote>
+  </section>
+
+  <!-- I 3 principi -->
+  <section class="odg-section">
+    <div class="odg-acc-col">
+      <h2 class="odg-acc-heading">I 3 Principi</h2>
+      <div class="odg-acc-list">
+
+        <!-- SUPERIORITÀ -->
+        <div class="odg-acc-row">
+          <button class="odg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-head">
+              <span class="acc-title">Superiorità</span>
+              <span class="acc-desc">Creare situazioni di vantaggio difensivo</span>
+            </span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="odg-acc-body">
+            <div class="odg-acc-body-inner">
+              <div class="odg-acc-detail">
+
+                <div class="odg-item">
+                  <div class="odg-item-title">Numerica <span class="odg-item-tag">"Siamo di più"</span></div>
+                  <div class="odg-item-desc">Densità in zona palla. Saper gestire parità e inferiorità numerica.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Posizionale <span class="odg-item-tag">"Siamo posizionati meglio"</span></div>
+                  <div class="odg-item-desc">Neutralizzare le soluzioni avversarie occupando spazi che limitano le opzioni.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Qualitativa <span class="odg-item-tag">"Siamo più bravi"</span></div>
+                  <div class="odg-item-desc">Capacità di risolvere i duelli difensivi. Abilità individuali superiori nei contrasti.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Relazionale <span class="odg-item-tag">"Ci relazioniamo meglio"</span></div>
+                  <div class="odg-item-desc">Collaborare nel riconoscere le intenzioni dell'avversario. Coordinazione tra difensori.</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STRUTTURE -->
+        <div class="odg-acc-row">
+          <button class="odg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-head">
+              <span class="acc-title">Strutture</span>
+              <span class="acc-desc">Stabilire relazioni difensive negli spazi di gioco</span>
+            </span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="odg-acc-body">
+            <div class="odg-acc-body-inner">
+              <div class="odg-acc-detail">
+
+                <div class="odg-sub-block">
+                  <div class="odg-sub-block-title">Occupazione</div>
+
+                  <div class="odg-item">
+                    <div class="odg-item-title">Scaglionamento difensivo</div>
+                    <div class="odg-item-desc">Disposizione su più linee sfalsate per coprire lo spazio e dare coperture reciproche.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Concentrazione</div>
+                    <div class="odg-item-desc">"Corti e stretti" — ridurre lo spazio in ampiezza e profondità per creare compattezza e impenetrabilità.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Pressione in zona palla</div>
+                    <div class="odg-item-desc">Creare una zona di pressione attorno alla palla per rubare spazio-tempo all'avversario.</div>
+                    <div class="odg-item-sub">Indirizzare il gioco e recuperare il pallone</div>
+                    <div class="odg-item-sub">Forzare errori o palle lunghe</div>
+                    <div class="odg-item-sub">Guadagnare tempo per organizzarsi</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Strutture di relazione difensive</div>
+                    <div class="odg-item-desc">Linee e triangoli di pressione-copertura tra giocatori vicini. Scalate e scivolamenti coordinati.</div>
+                  </div>
+
+                </div>
+
+                <div class="odg-sub-block">
+                  <div class="odg-sub-block-title">Funzione</div>
+                  <div class="odg-sub-block-obj">Ridurre <strong>spazio e tempo</strong> all'avversario</div>
+
+                  <div class="odg-highlight">"Chiudere per recuperare"</div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Pressare</div>
+                    <div class="odg-item-desc">Ridurre spazio-tempo al possessore per indirizzare il gioco e recuperare palla.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Marcare</div>
+                    <div class="odg-item-desc">Prendere in consegna un avversario per garantire la parità numerica in recupero.</div>
+                    <div class="odg-item-sub">Vicino alla palla → marcatura stretta</div>
+                    <div class="odg-item-sub">Lontano dalla palla → coprire profondità</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Coprire</div>
+                    <div class="odg-item-desc">Coprire lo spazio alle spalle di un compagno che pressa o marca per dare equilibrio difensivo.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Adattabilità nella pressione</div>
+                    <div class="odg-item-desc">Quando la pressione non è efficace: azioni ritardatrici, ripiegamento o blocco difensivo.</div>
+                  </div>
+
+                </div>
+
+                <div class="odg-sub-block">
+                  <div class="odg-sub-block-title">Interazione</div>
+                  <div class="odg-sub-block-obj">Sviluppare <strong>collaborazioni difensive</strong></div>
+
+                  <div class="odg-item">
+                    <div class="odg-item-title">Marco-Copro</div>
+                    <div class="odg-item-desc">Primo difendente attende. Il secondo copre la profondità dal rischio di verticalizzazioni.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Marco-Marco</div>
+                    <div class="odg-item-desc">Primo difendente attacca la palla. Il secondo marca gli appoggi cercando l'anticipo.</div>
+                    <div class="odg-item-sub">Se l'avversario tenta la triangolazione</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Presso-Copro/Marco</div>
+                    <div class="odg-item-desc">Pressione ad invito per indirizzare il gioco verso una zona specifica. Il secondo copre poi esce in pressione sul ricevente.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Regola generale</div>
+                    <div class="odg-item-desc">Palla libera: copro sempre la profondità. In caso di perdita del duello: rientrare e ricompattare.</div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRESSIONE -->
+        <div class="odg-acc-row">
+          <button class="odg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-head">
+              <span class="acc-title">Progressione</span>
+              <span class="acc-desc">Pressing, contenimento, protezione secondo la zona</span>
+            </span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="odg-acc-body">
+            <div class="odg-acc-body-inner">
+              <div class="odg-acc-detail">
+                <div class="odg-item" style="padding-top:0;">
+                  <div class="odg-item-desc">Adattare l'intensità della pressione in funzione della zona del campo e del momento della fase difensiva — dal pressing alto (blocco alto) che aggredisce vicino alla porta avversaria, al contenimento (blocco medio) che gestisce spazio e tempo in zona centrale, fino alla protezione (blocco basso) che difende gli spazi vicino alla propria porta.</div>
+                  <div class="odg-note">Nota: a differenza di Possesso, la slide sorgente non ha un item "Progressione" esplicito in Organizzazione — questo testo è una sintesi a partire da "Adattabilità nella pressione" e dai concetti di pressing/blocco alto-medio-basso citati nel brief. Da verificare e completare con Stefano.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div style="border-top:var(--border-subtle); margin:0 0 var(--gap-section);"></div>
+
+  <!-- 6 principi individuali -->
+  <section class="odg-section odg-section-narrow">
+    <h2>I Principi Individuali</h2>
+  </section>
+
+  <section class="odg-section">
+    <div class="card-grid card-grid-6">
+      <div class="odg-mini-card">
+        <div class="m-title">Presa di posizione</div>
+        <div class="m-desc">tra palla, porta e avversario</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Duello</div>
+        <div class="m-desc">per contrastare l'avversario con palla</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Marcamento</div>
+        <div class="m-desc">per controllare l'avversario senza palla</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Contrasto indiretto</div>
+        <div class="m-desc">coprire le linee di passaggio</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Temporeggiamento</div>
+        <div class="m-desc">per ritardare l'azione avversaria</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Protezione della porta</div>
+        <div class="m-desc">corpo tra attaccante e porta</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <nav class="footer-nav">
+    <a href="index.html">← Organizzazione di Gioco</a>
+    <a href="possesso.html">Possesso</a>
+    <a href="transizioni.html">Transizioni</a>
+  </nav>
+  <span class="footer-sign">MtX Model · Stefano Raponi · v1.0 · Settembre 2026</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.odg-acc-col').forEach(function (col) {
+    var rows = col.querySelectorAll('.odg-acc-row');
+    rows.forEach(function (row) {
+      var btn = row.querySelector('.odg-acc-summary');
+      btn.addEventListener('click', function () {
+        var wasOpen = row.classList.contains('is-open');
+        rows.forEach(function (r) {
+          r.classList.remove('is-open');
+          r.querySelector('.odg-acc-summary').setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          row.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

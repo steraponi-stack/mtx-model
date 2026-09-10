@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transizioni — Organizzazione di Gioco — MtX Model</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+  main { max-width: 1280px; }
+
+  .odg-intro { max-width: 720px; margin: 0 0 var(--gap-section); }
+  .odg-intro h1 {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-tight);
+    color: var(--color-black);
+  }
+  .odg-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: 1.5; margin-top: 14px; }
+
+  .odg-section { margin-bottom: var(--gap-section); }
+
+  /* ===== due colonne: Difensiva / Offensiva ===== */
+  .odg-trans-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 900px) {
+    .odg-trans-layout { grid-template-columns: 1fr; gap: 36px; }
+  }
+
+  .odg-trans-half h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    margin-bottom: 4px;
+  }
+  .odg-trans-half .half-sub {
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    color: var(--color-text-muted);
+    margin-bottom: var(--gap-item);
+  }
+
+  /* ===== stadi numerati (accordion) ===== */
+  .odg-acc-list { display: flex; flex-direction: column; }
+  .odg-acc-row { border-bottom: var(--border-subtle); }
+  .odg-acc-row:first-child { border-top: var(--border-subtle); }
+
+  .odg-acc-summary {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .odg-acc-summary .stage-num {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-black);
+    color: #fff;
+    font-size: 11px;
+    font-weight: var(--weight-bold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .odg-acc-summary .acc-head {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .odg-acc-summary .acc-title {
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .odg-acc-summary .stage-tag { font-size: 12px; font-weight: var(--weight-light); font-style: italic; color: var(--color-text-muted); }
+  .odg-acc-summary .acc-desc {
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+  .odg-acc-summary .acc-desc.is-cond { font-style: italic; }
+  .odg-acc-summary .acc-chevron {
+    flex: 0 0 auto;
+    margin-top: 3px;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .odg-acc-row.is-open .acc-chevron { transform: rotate(180deg); }
+  .odg-acc-summary:hover .acc-title { color: var(--color-accent); }
+
+  .odg-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .odg-acc-row.is-open .odg-acc-body { grid-template-rows: 1fr; }
+  .odg-acc-body-inner { overflow: hidden; min-height: 0; }
+  .odg-acc-detail {
+    padding: 4px 4px 20px 34px;
+    border-top: var(--border-subtle);
+  }
+  .odg-acc-detail .stage-desc {
+    font-size: 13.5px;
+    font-weight: var(--weight-light);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    margin: 12px 0 8px;
+  }
+  .odg-blist { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .odg-blist li {
+    list-style: none;
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    padding-left: 14px;
+    position: relative;
+  }
+  .odg-blist li::before { content: '–'; position: absolute; left: 0; color: #bbb; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="home-link" href="../../index.html">← Homepage</a>
+  <span class="breadcrumb"><span class="current">Come</span><span class="sep">/</span><a href="index.html">Organizzazione di Gioco</a><span class="sep">/</span><span class="current">Transizioni</span></span>
+  <span class="season">MtX Model</span>
+</header>
+
+<main>
+
+  <section class="odg-intro">
+    <div class="kicker">Organizzazione di Gioco</div>
+    <h1>Transizioni</h1>
+    <p class="lead">Cosa facciamo quando perdiamo o recuperiamo la palla.</p>
+  </section>
+
+  <section class="odg-section">
+    <div class="odg-trans-layout">
+
+      <!-- TRANSIZIONE DIFENSIVA -->
+      <div class="odg-trans-half">
+        <h2>Transizione Difensiva</h2>
+        <div class="half-sub">Cosa facciamo quando perdiamo la palla</div>
+
+        <div class="odg-acc-list">
+
+          <div class="odg-acc-row">
+            <button class="odg-acc-summary" type="button" aria-expanded="false">
+              <span class="stage-num">1</span>
+              <span class="acc-head">
+                <span class="acc-title">Riaggressione <span class="stage-tag">"Recupero immediato"</span></span>
+                <span class="acc-desc">Per recupero immediato e continuità di azione offensiva.</span>
+              </span>
+              <span class="acc-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="odg-acc-body">
+              <div class="odg-acc-body-inner">
+                <div class="odg-acc-detail">
+                  <ul class="odg-blist">
+                    <li>Pressione sul portatore e nello spazio circostante: zona di pressione, accorciare sugli appoggi</li>
+                    <li>Impedire la giocata in avanti e tra le linee</li>
+                    <li>Forzare la giocata in zone favorevoli alla riconquista</li>
+                    <li>Cambiare attitudine: da possesso a recupero</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="odg-acc-row">
+            <button class="odg-acc-summary" type="button" aria-expanded="false">
+              <span class="stage-num">2</span>
+              <span class="acc-head">
+                <span class="acc-title">Riorganizzazione · Contenimento</span>
+                <span class="acc-desc is-cond">Se la riaggressione è inefficace: riorganizzarsi e ritardare l'attacco avversario.</span>
+              </span>
+              <span class="acc-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="odg-acc-body">
+              <div class="odg-acc-body-inner">
+                <div class="odg-acc-detail">
+                  <ul class="odg-blist">
+                    <li>Temporeggiare per guadagnare tempo, senza farsi saltare</li>
+                    <li>Contrasto indiretto per coprire gli appoggi</li>
+                    <li>Indirizzare il gioco in zone meno pericolose</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="odg-acc-row">
+            <button class="odg-acc-summary" type="button" aria-expanded="false">
+              <span class="stage-num">3</span>
+              <span class="acc-head">
+                <span class="acc-title">Ripiegamento</span>
+                <span class="acc-desc is-cond">Se saltati o in caso di progressione avversaria: difendere bassi in protezione.</span>
+              </span>
+              <span class="acc-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="odg-acc-body">
+              <div class="odg-acc-body-inner">
+                <div class="odg-acc-detail">
+                  <ul class="odg-blist">
+                    <li>Ricomposizione difensiva collettiva, blocco compatto</li>
+                    <li>Densità difensiva e protezione, forzare l'esterno</li>
+                    <li>Se non si recupera nei primi secondi → posizione difensiva principale; se costretti, ripiegare sulla secondaria (es. blocco basso)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TRANSIZIONE OFFENSIVA -->
+      <div class="odg-trans-half">
+        <h2>Transizione Offensiva</h2>
+        <div class="half-sub">Cosa facciamo quando recuperiamo la palla</div>
+
+        <div class="odg-acc-list">
+
+          <div class="odg-acc-row">
+            <button class="odg-acc-summary" type="button" aria-expanded="false">
+              <span class="stage-num">1</span>
+              <span class="acc-head">
+                <span class="acc-title">Uscire dalla pressione <span class="stage-tag">Lettura dello spazio</span></span>
+                <span class="acc-desc">Trasmettere la palla fuori dalla zona di pressione.</span>
+              </span>
+              <span class="acc-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="odg-acc-body">
+              <div class="odg-acc-body-inner">
+                <div class="odg-acc-detail">
+                  <p class="stage-desc">Leggere spazio e situazione per scegliere tra:</p>
+                  <ul class="odg-blist">
+                    <li>Contrattacco (campo aperto)</li>
+                    <li>Consolidamento (campo chiuso)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="odg-acc-row">
+            <button class="odg-acc-summary" type="button" aria-expanded="false">
+              <span class="stage-num">2</span>
+              <span class="acc-head">
+                <span class="acc-title">Contrattacco <span class="stage-tag">Campo aperto</span></span>
+                <span class="acc-desc is-cond">Avversario disorganizzato, sbilanciato, spazio alle spalle della difesa.</span>
+              </span>
+              <span class="acc-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="odg-acc-body">
+              <div class="odg-acc-body-inner">
+                <div class="odg-acc-detail">
+                  <ul class="odg-blist">
+                    <li>Pensare verticale: attacco diretto</li>
+                    <li>Attaccare velocemente lo spazio davanti e i corridoi offensivi</li>
+                    <li>Palla profonda alle spalle della difesa, o scarico e sviluppo sul lato opposto</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="odg-acc-row">
+            <button class="odg-acc-summary" type="button" aria-expanded="false">
+              <span class="stage-num">3</span>
+              <span class="acc-head">
+                <span class="acc-title">Consolidamento <span class="stage-tag">Campo chiuso</span></span>
+                <span class="acc-desc is-cond">Avversario organizzato e in equilibrio difensivo.</span>
+              </span>
+              <span class="acc-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="odg-acc-body">
+              <div class="odg-acc-body-inner">
+                <div class="odg-acc-detail">
+                  <ul class="odg-blist">
+                    <li>Passaggio sicuro per uscire dalla zona di pressione</li>
+                    <li>Occupazione spazi in ampiezza e profondità</li>
+                    <li>Ricostruire legami e strutture offensive</li>
+                    <li>Mantenere il possesso per sviluppo manovrato</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <nav class="footer-nav">
+    <a href="index.html">← Organizzazione di Gioco</a>
+    <a href="possesso.html">Possesso</a>
+    <a href="recupero.html">Recupero</a>
+  </nav>
+  <span class="footer-sign">MtX Model · Stefano Raponi · v1.0 · Settembre 2026</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.odg-trans-half').forEach(function (col) {
+    var rows = col.querySelectorAll('.odg-acc-row');
+    rows.forEach(function (row) {
+      var btn = row.querySelector('.odg-acc-summary');
+      btn.addEventListener('click', function () {
+        var wasOpen = row.classList.contains('is-open');
+        rows.forEach(function (r) {
+          r.classList.remove('is-open');
+          r.querySelector('.odg-acc-summary').setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          row.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
