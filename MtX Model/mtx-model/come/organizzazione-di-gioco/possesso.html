@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Possesso — Organizzazione di Gioco — MtX Model</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+  main { max-width: 1280px; }
+
+  .odg-intro { max-width: 720px; margin: 0 0 var(--gap-section); }
+  .odg-intro h1 {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-tight);
+    color: var(--color-black);
+  }
+  .odg-intro .lead { font-size: var(--text-md); font-weight: var(--weight-light); color: var(--color-text); line-height: 1.5; margin-top: 14px; }
+
+  .odg-section { margin-bottom: var(--gap-section); }
+  .odg-section-narrow { max-width: 720px; margin: 0 0 var(--gap-section); }
+  .odg-section h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    margin-bottom: var(--gap-item);
+  }
+
+  .odg-obiettivo {
+    font-size: 18px;
+    font-weight: var(--weight-semibold);
+    font-style: italic;
+    color: var(--color-black);
+    border-left: 2px solid var(--color-black);
+    padding-left: 18px;
+    line-height: var(--leading-normal);
+  }
+
+  /* ===== colonna accordion — i 3 principi ===== */
+  .odg-acc-col { max-width: 820px; }
+  .odg-acc-heading {
+    font-size: 11px;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: 10px;
+  }
+
+  .odg-acc-list { display: flex; flex-direction: column; }
+  .odg-acc-row { border-bottom: var(--border-subtle); }
+  .odg-acc-row:first-child { border-top: var(--border-subtle); }
+
+  .odg-acc-summary {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .odg-acc-summary .acc-head {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .odg-acc-summary .acc-title {
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+  }
+  .odg-acc-summary .acc-desc {
+    font-size: 13px;
+    font-weight: var(--weight-light);
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+  .odg-acc-summary .acc-chevron {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .odg-acc-row.is-open .acc-chevron { transform: rotate(180deg); }
+  .odg-acc-summary:hover .acc-title { color: var(--color-accent); }
+
+  .odg-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .odg-acc-row.is-open .odg-acc-body { grid-template-rows: 1fr; }
+  .odg-acc-body-inner { overflow: hidden; min-height: 0; }
+  .odg-acc-detail {
+    padding: 6px 4px 24px;
+    border-top: var(--border-subtle);
+  }
+
+  /* ===== item di dettaglio (dentro un principio, o dentro un sotto-componente) ===== */
+  .odg-item { padding: 14px 0; border-bottom: var(--border-subtle); }
+  .odg-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .odg-item:first-child { padding-top: 14px; }
+  .odg-item-title {
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .odg-item-tag { font-size: 12px; font-weight: var(--weight-light); font-style: italic; color: var(--color-text-muted); }
+  .odg-item-desc { font-size: 13.5px; font-weight: var(--weight-light); line-height: 1.65; color: var(--color-text-muted); margin-top: 4px; }
+  .odg-item-sub {
+    font-size: 12.5px; font-weight: var(--weight-light); line-height: 1.6; color: #555;
+    padding-left: 15px; position: relative; margin-top: 4px;
+  }
+  .odg-item-sub::before { content: '—'; position: absolute; left: 0; color: #bbb; }
+  .odg-highlight {
+    font-size: 14px; font-weight: var(--weight-semibold); font-style: italic; color: var(--color-black);
+    margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
+  }
+
+  /* ===== sotto-componenti di Strutture ===== */
+  .odg-sub-block { margin-bottom: 26px; }
+  .odg-sub-block:last-child { margin-bottom: 0; }
+  .odg-sub-block-title {
+    font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--color-text-faint); margin-bottom: 6px;
+  }
+  .odg-sub-block-obj {
+    font-size: 13.5px; font-weight: var(--weight-light); color: #444; line-height: 1.5;
+    margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
+  }
+  .odg-sub-block-obj strong { font-weight: var(--weight-semibold); color: var(--color-black); }
+
+  /* ===== fascia in fondo — 6 principi individuali ===== */
+  .card-grid { display: grid; gap: 10px; }
+  .card-grid-6 { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 900px) { .card-grid-6 { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .card-grid-6 { grid-template-columns: repeat(2, 1fr); } }
+  .odg-mini-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+  }
+  .odg-mini-card .m-title {
+    font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-black);
+  }
+  .odg-mini-card .m-desc { font-size: 12px; font-weight: var(--weight-light); line-height: 1.5; color: var(--color-text-muted); margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="home-link" href="../../index.html">← Homepage</a>
+  <span class="breadcrumb"><span class="current">Come</span><span class="sep">/</span><a href="index.html">Organizzazione di Gioco</a><span class="sep">/</span><span class="current">Possesso</span></span>
+  <span class="season">MtX Model</span>
+</header>
+
+<main>
+
+  <section class="odg-intro">
+    <div class="kicker">Organizzazione di Gioco</div>
+    <h1>Possesso</h1>
+    <p class="lead">Cosa facciamo quando abbiamo la palla.</p>
+  </section>
+
+  <section class="odg-section odg-section-narrow">
+    <h2>Obiettivo</h2>
+    <blockquote class="odg-obiettivo">«Mantenere il possesso per superare le linee avversarie»</blockquote>
+  </section>
+
+  <!-- I 3 principi -->
+  <section class="odg-section">
+    <div class="odg-acc-col">
+      <h2 class="odg-acc-heading">I 3 Principi</h2>
+      <div class="odg-acc-list">
+
+        <!-- SUPERIORITÀ -->
+        <div class="odg-acc-row">
+          <button class="odg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-head">
+              <span class="acc-title">Superiorità</span>
+              <span class="acc-desc">Creare situazioni di vantaggio</span>
+            </span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="odg-acc-body">
+            <div class="odg-acc-body-inner">
+              <div class="odg-acc-detail">
+
+                <div class="odg-item">
+                  <div class="odg-item-title">Numerica <span class="odg-item-tag">"Siamo di più"</span></div>
+                  <div class="odg-item-desc">Più giocatori in zona palla. Mantenere le distanze e fissare un avversario per creare vantaggio numerico.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Posizionale <span class="odg-item-tag">"Siamo posizionati meglio"</span></div>
+                  <div class="odg-item-desc">Trovare l'uomo libero in posizione vantaggiosa tra le linee avversarie.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Qualitativa <span class="odg-item-tag">"Siamo più bravi"</span></div>
+                  <div class="odg-item-desc">Sfruttare le abilità individuali superiori nei duelli e nelle situazioni 1v1.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Relazionale <span class="odg-item-tag">"Ci relazioniamo meglio"</span></div>
+                  <div class="odg-item-desc">Percepire e riconoscere le intenzioni del compagno. Intelligenza collettiva nella circolazione palla.</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STRUTTURE -->
+        <div class="odg-acc-row">
+          <button class="odg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-head">
+              <span class="acc-title">Strutture</span>
+              <span class="acc-desc">Stabilire relazioni negli spazi di gioco</span>
+            </span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="odg-acc-body">
+            <div class="odg-acc-body-inner">
+              <div class="odg-acc-detail">
+
+                <div class="odg-sub-block">
+                  <div class="odg-sub-block-title">Occupazione</div>
+
+                  <div class="odg-item">
+                    <div class="odg-item-title">Occupazione spazi di gioco</div>
+                    <div class="odg-item-sub">Statici: linee e corridoi (settori)</div>
+                    <div class="odg-item-sub">Dinamici: relazioni socio-affettive rispetto alla palla</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Scaglionamento</div>
+                    <div class="odg-item-desc">Disposizione su più linee in ampiezza e profondità. Campo grande per garantire più opzioni al possessore.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Appoggi e Mobilità</div>
+                    <div class="odg-item-desc">Legami di gioco per dare soluzioni al compagno in funzione del <em>codice palla</em>.</div>
+                    <div class="odg-item-sub">Palla aperta → mi muovo in funzione dello spazio</div>
+                    <div class="odg-item-sub">Palla chiusa → mi muovo in funzione del compagno</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Strutture dinamiche di relazione</div>
+                    <div class="odg-item-desc">Triangoli e rombi che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
+                  </div>
+
+                </div>
+
+                <div class="odg-sub-block">
+                  <div class="odg-sub-block-title">Funzione</div>
+                  <div class="odg-sub-block-obj">Generare e sfruttare lo <strong>spazio</strong></div>
+
+                  <div class="odg-highlight">"Attrarre per liberare"</div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Attrarre</div>
+                    <div class="odg-item-desc">Portare su di sé uno o più avversari per liberare spazio, compagni o linee di passaggio.</div>
+                    <div class="odg-item-sub">Con il pallone restando fermi</div>
+                    <div class="odg-item-sub">In conduzione</div>
+                    <div class="odg-item-sub">Con il movimento senza palla</div>
+                    <div class="odg-item-sub">Con il gioco combinato</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Fissare</div>
+                    <div class="odg-item-desc">Attirare l'attenzione dell'avversario per creare spazio-tempo per i compagni.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Invadere</div>
+                    <div class="odg-item-desc">Sfruttare lo spazio liberato per progredire e superare le linee difensive avversarie.</div>
+                  </div>
+
+                </div>
+
+                <div class="odg-sub-block">
+                  <div class="odg-sub-block-title">Interazione</div>
+                  <div class="odg-sub-block-obj">Sviluppare <strong>combinazioni</strong> di gioco</div>
+
+                  <div class="odg-item">
+                    <div class="odg-item-title">Il passaggio</div>
+                    <div class="odg-item-desc">Sintesi del gioco collettivo. A chi, perché, quando, dove e come passare.</div>
+                    <div class="odg-item-sub">Diagonale: profondità + ampiezza, più opzioni</div>
+                    <div class="odg-item-sub">Filtrante: crea vantaggio tra le linee</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Il 2v1</div>
+                    <div class="odg-item-desc">Superiorità numerica locale. Fissare l'avversario per liberare il compagno nello spazio.</div>
+                    <div class="odg-item-sub">In conduzione · Sovrapposizione · Triangolazione</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">La triangolazione</div>
+                    <div class="odg-item-desc">Gioco combinato: attrarre, passare, ricevere nello spazio liberato.</div>
+                  </div>
+                  <div class="odg-item">
+                    <div class="odg-item-title">Il terzo uomo</div>
+                    <div class="odg-item-desc">Liberare un compagno marcato attraverso un giocatore di collegamento.</div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRESSIONE -->
+        <div class="odg-acc-row">
+          <button class="odg-acc-summary" type="button" aria-expanded="false">
+            <span class="acc-head">
+              <span class="acc-title">Progressione</span>
+              <span class="acc-desc">Costruzione, sviluppo e finalizzazione</span>
+            </span>
+            <span class="acc-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="odg-acc-body">
+            <div class="odg-acc-body-inner">
+              <div class="odg-acc-detail">
+                <div class="odg-item" style="padding-top:0;">
+                  <div class="odg-item-desc">Costruzione, sviluppo e finalizzazione attraverso occupazione dinamica e penetrazione delle linee avversarie.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div style="border-top:var(--border-subtle); margin:0 0 var(--gap-section);"></div>
+
+  <!-- 6 principi individuali -->
+  <section class="odg-section odg-section-narrow">
+    <h2>I Principi Individuali</h2>
+  </section>
+
+  <section class="odg-section">
+    <div class="card-grid card-grid-6">
+      <div class="odg-mini-card">
+        <div class="m-title">Orientare il corpo</div>
+        <div class="m-desc">per vedere più campo e percepire</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Smarcarsi</div>
+        <div class="m-desc">per dare appoggio (codice palla)</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Trasmettere</div>
+        <div class="m-desc">in diagonale e filtranti per progredire</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Condurre</div>
+        <div class="m-desc">per fissare, attirare o invadere</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Dribblare</div>
+        <div class="m-desc">per superare l'avversario</div>
+      </div>
+      <div class="odg-mini-card">
+        <div class="m-title">Calciare</div>
+        <div class="m-desc">per finalizzare da diverse angolazioni</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <nav class="footer-nav">
+    <a href="index.html">← Organizzazione di Gioco</a>
+    <a href="recupero.html">Recupero</a>
+    <a href="transizioni.html">Transizioni</a>
+  </nav>
+  <span class="footer-sign">MtX Model · Stefano Raponi · v1.0 · Settembre 2026</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.odg-acc-col').forEach(function (col) {
+    var rows = col.querySelectorAll('.odg-acc-row');
+    rows.forEach(function (row) {
+      var btn = row.querySelector('.odg-acc-summary');
+      btn.addEventListener('click', function () {
+        var wasOpen = row.classList.contains('is-open');
+        rows.forEach(function (r) {
+          r.classList.remove('is-open');
+          r.querySelector('.odg-acc-summary').setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          row.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
