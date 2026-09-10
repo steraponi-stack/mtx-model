@@ -130,18 +130,73 @@
     margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
   }
 
-  /* ===== sotto-componenti di Strutture ===== */
-  .odg-sub-block { margin-bottom: 26px; }
-  .odg-sub-block:last-child { margin-bottom: 0; }
-  .odg-sub-block-title {
-    font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--color-text-faint); margin-bottom: 6px;
+  /* ===== sotto-accordion annidati di Strutture (Occupazione / Funzione / Interazione) ===== */
+  .odg-sub-acc-list { display: flex; flex-direction: column; gap: 8px; }
+  .odg-sub-acc {
+    border-left: 2px solid var(--color-border);
+    padding-left: 16px;
   }
+  .odg-sub-acc-summary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .odg-sub-acc-summary .sub-acc-title {
+    font-size: 12px;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+  .odg-sub-acc.is-open .sub-acc-title { color: var(--color-black); }
+  .odg-sub-acc-summary .sub-acc-chevron {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .odg-sub-acc.is-open .sub-acc-chevron { transform: rotate(180deg); }
+
+  .odg-sub-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .odg-sub-acc.is-open .odg-sub-acc-body { grid-template-rows: 1fr; }
+  .odg-sub-acc-body-inner { overflow: hidden; min-height: 0; }
+  .odg-sub-acc-detail { padding: 2px 4px 18px; }
+
   .odg-sub-block-obj {
     font-size: 13.5px; font-weight: var(--weight-light); color: #444; line-height: 1.5;
     margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
   }
   .odg-sub-block-obj strong { font-weight: var(--weight-semibold); color: var(--color-black); }
+
+  /* ===== spazio per immagini (opzionali, da popolare in seguito) ===== */
+  .odg-item-img {
+    max-width: 140px;
+    height: auto;
+    display: block;
+    float: right;
+    margin: 0 0 8px 14px;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
+  .odg-sub-acc-thumb { display: block; margin-bottom: 14px; }
+  .odg-sub-acc-thumb img {
+    max-width: 280px;
+    height: auto;
+    display: block;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
 
   /* ===== fascia in fondo — 6 principi individuali ===== */
   .card-grid { display: grid; gap: 10px; }
@@ -234,77 +289,113 @@
             <div class="odg-acc-body-inner">
               <div class="odg-acc-detail">
 
-                <div class="odg-sub-block">
-                  <div class="odg-sub-block-title">Occupazione</div>
+                <div class="odg-sub-acc-list">
 
-                  <div class="odg-item">
-                    <div class="odg-item-title">Occupazione spazi di gioco</div>
-                    <div class="odg-item-sub">Statici: linee e corridoi (settori)</div>
-                    <div class="odg-item-sub">Dinamici: relazioni socio-affettive rispetto alla palla</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Scaglionamento</div>
-                    <div class="odg-item-desc">Disposizione su più linee in ampiezza e profondità. Campo grande per garantire più opzioni al possessore.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Appoggi e Mobilità</div>
-                    <div class="odg-item-desc">Legami di gioco per dare soluzioni al compagno in funzione del <em>codice palla</em>.</div>
-                    <div class="odg-item-sub">Palla aperta → mi muovo in funzione dello spazio</div>
-                    <div class="odg-item-sub">Palla chiusa → mi muovo in funzione del compagno</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Strutture dinamiche di relazione</div>
-                    <div class="odg-item-desc">Triangoli e rombi che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
-                  </div>
-
-                </div>
-
-                <div class="odg-sub-block">
-                  <div class="odg-sub-block-title">Funzione</div>
-                  <div class="odg-sub-block-obj">Generare e sfruttare lo <strong>spazio</strong></div>
-
-                  <div class="odg-highlight">"Attrarre per liberare"</div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Attrarre</div>
-                    <div class="odg-item-desc">Portare su di sé uno o più avversari per liberare spazio, compagni o linee di passaggio.</div>
-                    <div class="odg-item-sub">Con il pallone restando fermi</div>
-                    <div class="odg-item-sub">In conduzione</div>
-                    <div class="odg-item-sub">Con il movimento senza palla</div>
-                    <div class="odg-item-sub">Con il gioco combinato</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Fissare</div>
-                    <div class="odg-item-desc">Attirare l'attenzione dell'avversario per creare spazio-tempo per i compagni.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Invadere</div>
-                    <div class="odg-item-desc">Sfruttare lo spazio liberato per progredire e superare le linee difensive avversarie.</div>
+                  <!-- OCCUPAZIONE -->
+                  <div class="odg-sub-acc">
+                    <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
+                      <span class="sub-acc-title">Occupazione offensiva</span>
+                      <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="odg-sub-acc-body">
+                      <div class="odg-sub-acc-body-inner">
+                        <div class="odg-sub-acc-detail">
+                          <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Occupazione offensiva sul campo"></a> -->
+                          <div class="odg-item" style="padding-top:0;">
+                            <div class="odg-item-desc">Posizioni, posture, distanze e movimento per occupare gli spazi di gioco offensivi:</div>
+                            <div class="odg-item-sub">Statici: linee e corridoi (Settori - Matrice)</div>
+                            <div class="odg-item-sub">Dinamici: relazioni socio-affettive rispetto alla palla (intervento, aiuto reciproco, cooperazione)</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Scaglionamento offensivo</div>
+                            <!-- immagine inline opzionale: <img class="odg-item-img" src="..." alt="Scaglionamento offensivo"> -->
+                            <div class="odg-item-desc">Disposizione su più linee in ampiezza e profondità. Campo grande per garantire più opzioni al possessore.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Appoggi</div>
+                            <div class="odg-item-desc">Legami di gioco attorno alla palla per dare appoggio e soluzioni al possessore.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Mobilità</div>
+                            <div class="odg-item-desc">Per organizzare e trasformare le strutture in funzione del codice palla e dell'intenzione del compagno:</div>
+                            <div class="odg-item-sub">Palla aperta → mi muovo in funzione dello spazio</div>
+                            <div class="odg-item-sub">Palla chiusa → mi muovo in funzione del compagno</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Strutture dinamiche offensive <span class="odg-item-tag">SDIF</span></div>
+                            <div class="odg-item-desc">Triangoli, rombi e blocchi di giocatori che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                </div>
+                  <!-- FUNZIONE -->
+                  <div class="odg-sub-acc">
+                    <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
+                      <span class="sub-acc-title">Funzione</span>
+                      <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="odg-sub-acc-body">
+                      <div class="odg-sub-acc-body-inner">
+                        <div class="odg-sub-acc-detail">
+                          <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Funzione"></a> -->
+                          <div class="odg-sub-block-obj">Generare e sfruttare lo <strong>spazio</strong></div>
+                          <div class="odg-highlight">"Attrarre per liberare"</div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Attrarre</div>
+                            <div class="odg-item-desc">Portare su di sé uno o più avversari per liberare spazio, compagni o linee di passaggio.</div>
+                            <div class="odg-item-sub">Con il pallone restando fermi</div>
+                            <div class="odg-item-sub">In conduzione</div>
+                            <div class="odg-item-sub">Con il movimento senza palla</div>
+                            <div class="odg-item-sub">Con il gioco combinato</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Fissare</div>
+                            <div class="odg-item-desc">Attirare l'attenzione dell'avversario per creare spazio-tempo per i compagni.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Invadere</div>
+                            <div class="odg-item-desc">Sfruttare lo spazio liberato per progredire e superare le linee difensive avversarie.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                <div class="odg-sub-block">
-                  <div class="odg-sub-block-title">Interazione</div>
-                  <div class="odg-sub-block-obj">Sviluppare <strong>combinazioni</strong> di gioco</div>
-
-                  <div class="odg-item">
-                    <div class="odg-item-title">Il passaggio</div>
-                    <div class="odg-item-desc">Sintesi del gioco collettivo. A chi, perché, quando, dove e come passare.</div>
-                    <div class="odg-item-sub">Diagonale: profondità + ampiezza, più opzioni</div>
-                    <div class="odg-item-sub">Filtrante: crea vantaggio tra le linee</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Il 2v1</div>
-                    <div class="odg-item-desc">Superiorità numerica locale. Fissare l'avversario per liberare il compagno nello spazio.</div>
-                    <div class="odg-item-sub">In conduzione · Sovrapposizione · Triangolazione</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">La triangolazione</div>
-                    <div class="odg-item-desc">Gioco combinato: attrarre, passare, ricevere nello spazio liberato.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Il terzo uomo</div>
-                    <div class="odg-item-desc">Liberare un compagno marcato attraverso un giocatore di collegamento.</div>
+                  <!-- INTERAZIONE -->
+                  <div class="odg-sub-acc">
+                    <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
+                      <span class="sub-acc-title">Interazione</span>
+                      <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="odg-sub-acc-body">
+                      <div class="odg-sub-acc-body-inner">
+                        <div class="odg-sub-acc-detail">
+                          <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Interazione"></a> -->
+                          <div class="odg-sub-block-obj">Sviluppare <strong>combinazioni</strong> di gioco</div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Il passaggio</div>
+                            <div class="odg-item-desc">Sintesi del gioco collettivo. A chi, perché, quando, dove e come passare.</div>
+                            <div class="odg-item-sub">Diagonale: profondità + ampiezza, più opzioni</div>
+                            <div class="odg-item-sub">Filtrante: crea vantaggio tra le linee</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Il 2v1</div>
+                            <div class="odg-item-desc">Superiorità numerica locale. Fissare l'avversario per liberare il compagno nello spazio.</div>
+                            <div class="odg-item-sub">In conduzione · Sovrapposizione · Triangolazione</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">La triangolazione</div>
+                            <div class="odg-item-desc">Gioco combinato: attrarre, passare, ricevere nello spazio liberato.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Il terzo uomo</div>
+                            <div class="odg-item-desc">Liberare un compagno marcato attraverso un giocatore di collegamento.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -401,6 +492,14 @@
           btn.setAttribute('aria-expanded', 'true');
         }
       });
+    });
+  });
+
+  document.querySelectorAll('.odg-sub-acc').forEach(function (sub) {
+    var btn = sub.querySelector('.odg-sub-acc-summary');
+    btn.addEventListener('click', function () {
+      var open = sub.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   });
 </script>
