@@ -128,17 +128,73 @@
     margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
   }
 
-  .odg-sub-block { margin-bottom: 26px; }
-  .odg-sub-block:last-child { margin-bottom: 0; }
-  .odg-sub-block-title {
-    font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--color-text-faint); margin-bottom: 6px;
+  /* ===== sotto-accordion annidati di Strutture (Occupazione / Funzione / Interazione) ===== */
+  .odg-sub-acc-list { display: flex; flex-direction: column; gap: 8px; }
+  .odg-sub-acc {
+    border-left: 2px solid var(--color-border);
+    padding-left: 16px;
   }
+  .odg-sub-acc-summary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-primary);
+    text-align: left;
+    cursor: pointer;
+  }
+  .odg-sub-acc-summary .sub-acc-title {
+    font-size: 12px;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+  }
+  .odg-sub-acc.is-open .sub-acc-title { color: var(--color-black); }
+  .odg-sub-acc-summary .sub-acc-chevron {
+    font-size: 12px;
+    color: var(--color-text-faint);
+    transition: transform 0.3s ease;
+  }
+  .odg-sub-acc.is-open .sub-acc-chevron { transform: rotate(180deg); }
+
+  .odg-sub-acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .odg-sub-acc.is-open .odg-sub-acc-body { grid-template-rows: 1fr; }
+  .odg-sub-acc-body-inner { overflow: hidden; min-height: 0; }
+  .odg-sub-acc-detail { padding: 2px 4px 18px; }
+
   .odg-sub-block-obj {
     font-size: 13.5px; font-weight: var(--weight-light); color: #444; line-height: 1.5;
     margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
   }
   .odg-sub-block-obj strong { font-weight: var(--weight-semibold); color: var(--color-black); }
+
+  /* ===== spazio per immagini (opzionali, da popolare in seguito) ===== */
+  .odg-item-img {
+    max-width: 140px;
+    height: auto;
+    display: block;
+    float: right;
+    margin: 0 0 8px 14px;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
+  .odg-sub-acc-thumb { display: block; margin-bottom: 14px; }
+  .odg-sub-acc-thumb img {
+    max-width: 280px;
+    height: auto;
+    display: block;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
 
   .card-grid { display: grid; gap: 10px; }
   .card-grid-6 { grid-template-columns: repeat(6, 1fr); }
@@ -153,13 +209,6 @@
     font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-black);
   }
   .odg-mini-card .m-desc { font-size: 12px; font-weight: var(--weight-light); line-height: 1.5; color: var(--color-text-muted); margin-top: 5px; }
-
-  .odg-note {
-    font-size: 12px;
-    font-style: italic;
-    color: var(--color-text-faint);
-    margin-top: 10px;
-  }
 </style>
 </head>
 <body>
@@ -237,77 +286,114 @@
             <div class="odg-acc-body-inner">
               <div class="odg-acc-detail">
 
-                <div class="odg-sub-block">
-                  <div class="odg-sub-block-title">Occupazione</div>
+                <div class="odg-sub-acc-list">
 
-                  <div class="odg-item">
-                    <div class="odg-item-title">Scaglionamento difensivo</div>
-                    <div class="odg-item-desc">Disposizione su più linee sfalsate per coprire lo spazio e dare coperture reciproche.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Concentrazione</div>
-                    <div class="odg-item-desc">"Corti e stretti" — ridurre lo spazio in ampiezza e profondità per creare compattezza e impenetrabilità.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Pressione in zona palla</div>
-                    <div class="odg-item-desc">Creare una zona di pressione attorno alla palla per rubare spazio-tempo all'avversario.</div>
-                    <div class="odg-item-sub">Indirizzare il gioco e recuperare il pallone</div>
-                    <div class="odg-item-sub">Forzare errori o palle lunghe</div>
-                    <div class="odg-item-sub">Guadagnare tempo per organizzarsi</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Strutture di relazione difensive</div>
-                    <div class="odg-item-desc">Linee e triangoli di pressione-copertura tra giocatori vicini. Scalate e scivolamenti coordinati.</div>
-                  </div>
-
-                </div>
-
-                <div class="odg-sub-block">
-                  <div class="odg-sub-block-title">Funzione</div>
-                  <div class="odg-sub-block-obj">Ridurre <strong>spazio e tempo</strong> all'avversario</div>
-
-                  <div class="odg-highlight">"Chiudere per recuperare"</div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Pressare</div>
-                    <div class="odg-item-desc">Ridurre spazio-tempo al possessore per indirizzare il gioco e recuperare palla.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Marcare</div>
-                    <div class="odg-item-desc">Prendere in consegna un avversario per garantire la parità numerica in recupero.</div>
-                    <div class="odg-item-sub">Vicino alla palla → marcatura stretta</div>
-                    <div class="odg-item-sub">Lontano dalla palla → coprire profondità</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Coprire</div>
-                    <div class="odg-item-desc">Coprire lo spazio alle spalle di un compagno che pressa o marca per dare equilibrio difensivo.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Adattabilità nella pressione</div>
-                    <div class="odg-item-desc">Quando la pressione non è efficace: azioni ritardatrici, ripiegamento o blocco difensivo.</div>
+                  <!-- OCCUPAZIONE -->
+                  <div class="odg-sub-acc">
+                    <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
+                      <span class="sub-acc-title">Occupazione difensiva</span>
+                      <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="odg-sub-acc-body">
+                      <div class="odg-sub-acc-body-inner">
+                        <div class="odg-sub-acc-detail">
+                          <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Occupazione difensiva sul campo"></a> -->
+                          <div class="odg-item" style="padding-top:0;">
+                            <div class="odg-item-desc">Posizioni, posture, distanze e movimento per occupare gli spazi di gioco statici (struttura globale difensiva) e dinamici difensivi.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Compattezza e scaglionamento</div>
+                            <!-- immagine inline opzionale: <img class="odg-item-img" src="..." alt="Compattezza e scaglionamento"> -->
+                            <div class="odg-item-desc">Ridurre lo spazio tra le linee in ampiezza e profondità — "campo piccolo" — per impenetrabilità centrale e disposizione su linee di coperture reciproche.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Pressione</div>
+                            <div class="odg-item-desc">Pressione costante al possessore e agli appoggi attorno alla palla per rubare spazio-tempo all'avversario al fine di:</div>
+                            <div class="odg-item-sub">Indirizzare il gioco e recuperare il pallone</div>
+                            <div class="odg-item-sub">Forzare errori o palle lunghe</div>
+                            <div class="odg-item-sub">Guadagnare tempo per organizzarsi</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Profondità</div>
+                            <div class="odg-item-desc">Salire/togliere la profondità e ridurre gli interspazi in funzione del codice palla e dell'intenzione dell'avversario:</div>
+                            <div class="odg-item-sub">Palla aperta → scappo e tolgo lo spazio in profondità</div>
+                            <div class="odg-item-sub">Palla chiusa → salgo e guadagno spazio in avanti</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Strutture dinamiche difensive <span class="odg-item-tag">SDIF</span></div>
+                            <div class="odg-item-desc">Linee e triangoli di pressione-copertura tra giocatori vicini. Scalate e scivolamenti coordinati.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                </div>
+                  <!-- FUNZIONE -->
+                  <div class="odg-sub-acc">
+                    <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
+                      <span class="sub-acc-title">Funzione</span>
+                      <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="odg-sub-acc-body">
+                      <div class="odg-sub-acc-body-inner">
+                        <div class="odg-sub-acc-detail">
+                          <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Funzione"></a> -->
+                          <div class="odg-sub-block-obj">Ridurre <strong>spazio e tempo</strong> all'avversario</div>
+                          <div class="odg-highlight">"Chiudere per recuperare"</div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Pressare</div>
+                            <div class="odg-item-desc">Ridurre spazio-tempo al possessore per indirizzare il gioco e recuperare palla.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Marcare</div>
+                            <div class="odg-item-desc">Prendere in consegna un avversario per garantire la parità numerica in recupero.</div>
+                            <div class="odg-item-sub">Vicino alla palla → marcatura stretta</div>
+                            <div class="odg-item-sub">Lontano dalla palla → coprire profondità</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Coprire</div>
+                            <div class="odg-item-desc">Coprire lo spazio alle spalle di un compagno che pressa o marca per dare equilibrio difensivo.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Adattabilità nella pressione</div>
+                            <div class="odg-item-desc">Quando la pressione non è efficace: azioni ritardatrici, ripiegamento o blocco difensivo.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                <div class="odg-sub-block">
-                  <div class="odg-sub-block-title">Interazione</div>
-                  <div class="odg-sub-block-obj">Sviluppare <strong>collaborazioni difensive</strong></div>
-
-                  <div class="odg-item">
-                    <div class="odg-item-title">Marco-Copro</div>
-                    <div class="odg-item-desc">Primo difendente attende. Il secondo copre la profondità dal rischio di verticalizzazioni.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Marco-Marco</div>
-                    <div class="odg-item-desc">Primo difendente attacca la palla. Il secondo marca gli appoggi cercando l'anticipo.</div>
-                    <div class="odg-item-sub">Se l'avversario tenta la triangolazione</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Presso-Copro/Marco</div>
-                    <div class="odg-item-desc">Pressione ad invito per indirizzare il gioco verso una zona specifica. Il secondo copre poi esce in pressione sul ricevente.</div>
-                  </div>
-                  <div class="odg-item">
-                    <div class="odg-item-title">Regola generale</div>
-                    <div class="odg-item-desc">Palla libera: copro sempre la profondità. In caso di perdita del duello: rientrare e ricompattare.</div>
+                  <!-- INTERAZIONE -->
+                  <div class="odg-sub-acc">
+                    <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
+                      <span class="sub-acc-title">Interazione</span>
+                      <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="odg-sub-acc-body">
+                      <div class="odg-sub-acc-body-inner">
+                        <div class="odg-sub-acc-detail">
+                          <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Interazione"></a> -->
+                          <div class="odg-sub-block-obj">Sviluppare <strong>collaborazioni difensive</strong></div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Marco-Copro</div>
+                            <div class="odg-item-desc">Primo difendente attende. Il secondo copre la profondità dal rischio di verticalizzazioni.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Marco-Marco</div>
+                            <div class="odg-item-desc">Primo difendente attacca la palla. Il secondo marca gli appoggi cercando l'anticipo.</div>
+                            <div class="odg-item-sub">Se l'avversario tenta la triangolazione</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Presso-Copro/Marco</div>
+                            <div class="odg-item-desc">Pressione ad invito per indirizzare il gioco verso una zona specifica. Il secondo copre poi esce in pressione sul ricevente.</div>
+                          </div>
+                          <div class="odg-item">
+                            <div class="odg-item-title">Regola generale</div>
+                            <div class="odg-item-desc">Palla libera: copro sempre la profondità. In caso di perdita del duello: rientrare e ricompattare.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -330,8 +416,19 @@
             <div class="odg-acc-body-inner">
               <div class="odg-acc-detail">
                 <div class="odg-item" style="padding-top:0;">
-                  <div class="odg-item-desc">Adattare l'intensità della pressione in funzione della zona del campo e del momento della fase difensiva — dal pressing alto (blocco alto) che aggredisce vicino alla porta avversaria, al contenimento (blocco medio) che gestisce spazio e tempo in zona centrale, fino alla protezione (blocco basso) che difende gli spazi vicino alla propria porta.</div>
-                  <div class="odg-note">Nota: a differenza di Possesso, la slide sorgente non ha un item "Progressione" esplicito in Organizzazione — questo testo è una sintesi a partire da "Adattabilità nella pressione" e dai concetti di pressing/blocco alto-medio-basso citati nel brief. Da verificare e completare con Stefano.</div>
+                  <div class="odg-item-desc">Adattare l'intensità della pressione in funzione della zona del campo e del momento della fase difensiva.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Pressing alto (blocco alto)</div>
+                  <div class="odg-item-desc">Per aggredire alti e recuperare la palla vicino alla porta avversaria.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Contenimento (blocco medio)</div>
+                  <div class="odg-item-desc">Gestione dello spazio e tempo in zona centrale per limitare la progressione dell'avversario.</div>
+                </div>
+                <div class="odg-item">
+                  <div class="odg-item-title">Protezione (blocco basso)</div>
+                  <div class="odg-item-desc">Per difesa dello spazio e della porta su forcing avversario.</div>
                 </div>
               </div>
             </div>
@@ -405,6 +502,14 @@
           btn.setAttribute('aria-expanded', 'true');
         }
       });
+    });
+  });
+
+  document.querySelectorAll('.odg-sub-acc').forEach(function (sub) {
+    var btn = sub.querySelector('.odg-sub-acc-summary');
+    btn.addEventListener('click', function () {
+      var open = sub.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   });
 </script>
