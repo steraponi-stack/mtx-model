@@ -3,10 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MtX Model — Framework metodologico e identitario</title>
+<title>MtX Model — Meet The X-point.</title>
 <link rel="stylesheet" href="assets/css/design-system.css">
 <script src="assets/js/nav.js" defer></script>
 <style>
+  /* --- Intro — MtX Model / Meet The X-point --- */
+  .home-intro {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px var(--margin-page-desktop) 0;
+  }
+  .home-intro h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-tight);
+    color: var(--color-black);
+  }
+  .home-intro-tagline {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-light);
+    color: var(--color-text-muted);
+    margin-top: 8px;
+  }
+  .home-intro-body { margin-top: var(--gap-item); max-width: 68ch; }
+  .home-intro-body p {
+    font-size: var(--text-base);
+    font-weight: var(--weight-light);
+    line-height: var(--leading-loose);
+    color: var(--color-text);
+    margin-bottom: var(--gap-item);
+  }
+  .home-intro-body strong { font-weight: var(--weight-semibold); color: var(--color-black); }
+  .home-intro-quote {
+    max-width: 68ch;
+    margin: 24px 0;
+  }
+  .home-intro-quote p {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    font-style: italic;
+    line-height: var(--leading-tight);
+    color: var(--color-black);
+    padding-left: 18px;
+    border-left: 3px solid var(--color-accent);
+  }
+  .home-intro-quote cite {
+    display: block;
+    font-style: normal;
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    padding-left: 21px;
+  }
+  .home-intro-closing {
+    font-size: var(--text-base);
+    font-weight: var(--weight-light);
+    line-height: var(--leading-loose);
+    color: var(--color-text);
+    max-width: 68ch;
+    margin-bottom: var(--gap-section);
+  }
+  .home-principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: var(--gap-section);
+  }
+  .home-principle {
+    border-top: var(--border-main);
+    padding-top: 14px;
+  }
+  .home-principle-title {
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+    margin-bottom: 8px;
+  }
+  .home-principle-desc {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-light);
+    line-height: var(--leading-loose);
+    color: var(--color-text-muted);
+  }
+  @media (max-width: 900px) {
+    .home-intro { padding: 40px var(--margin-page-mobile) 0; }
+    .home-principles { grid-template-columns: 1fr; gap: 28px; }
+  }
+
   /* --- Layout homepage (specifico, non nel design system) --- */
   .home-main {
     flex: 1;
@@ -102,8 +188,43 @@
 <div class="tooltip" id="tooltip" role="status"></div>
 
 <header class="site-header">
-  <span class="breadcrumb"><span class="current">Framework metodologico e identitario</span></span>
+  <span class="breadcrumb"><span class="current">MtX Model</span></span>
 </header>
+
+<section class="home-intro">
+  <h1>MtX Model</h1>
+  <p class="home-intro-tagline">Meet The X-point.</p>
+
+  <div class="home-intro-body">
+    <p>Il calcio è un ecosistema vivente.</p>
+    <p>Non una macchina da ottimizzare, non uno schema da replicare. Un sistema complesso in cui giocatori, spazio, tempo e relazioni si influenzano continuamente e reciprocamente — come in ogni ecosistema naturale.</p>
+    <p>In questo sistema esiste un punto critico: l'<strong>X-point</strong>.</p>
+    <p>Non è solo un'ubicazione sul campo. È il momento spazio-temporale in cui la percezione individuale si connette con quella collettiva — in cui lo spazio fisico (la matrice di linee e corridoi che struttura il campo) incontra lo spazio dinamico delle relazioni socio-affettive, emotive e tecnico-tattiche tra i giocatori.</p>
+    <p>Quando un giocatore trova l'X-point, non agisce da solo. Riconosce la situazione, si connette con i compagni negli spazi di gioco — statici e dinamici — e da questa connessione emerge qualcosa che nessuno dei singoli avrebbe potuto produrre: <strong>intelligenza collettiva</strong>. Una qualità emergente che è più della somma delle parti.</p>
+  </div>
+
+  <blockquote class="home-intro-quote">
+    <p>«Conoscere, riconoscere, risolvere insieme.»</p>
+    <cite>— Fabio Grosso</cite>
+  </blockquote>
+
+  <p class="home-intro-closing">Questo è il principio che guida il MtX Model: creare le condizioni perché l'X-point emerga continuamente, attraverso strutture dinamiche di interazione funzionale, principi di gioco condivisi e una cultura identitaria che trasforma un gruppo in una squadra.</p>
+
+  <div class="home-principles">
+    <div class="home-principle">
+      <div class="home-principle-title">Il campo come matrice</div>
+      <div class="home-principle-desc">Linee e corridoi definiscono gli spazi statici. I giocatori li animano con movimenti e relazioni in funzione della palla, dei compagni e degli avversari, generando spazi dinamici di interazione. L'organizzazione non è uno schema fisso — è un processo continuo di auto-organizzazione guidato dall'intenzione collettiva.</div>
+    </div>
+    <div class="home-principle">
+      <div class="home-principle-title">Il vantaggio come emergenza</div>
+      <div class="home-principle-desc">La superiorità spazio-temporale sull'avversario non si costruisce individualmente. Emerge quando i giocatori condividono la stessa lettura del gioco, gli stessi principi, lo stesso impulso a connettersi. È il risultato dell'intelligenza del sistema, non del talento dei singoli.</div>
+    </div>
+    <div class="home-principle">
+      <div class="home-principle-title">Il modello come ecosistema</div>
+      <div class="home-principle-desc">Il MtX Model non è un manuale di istruzioni. È un framework vivente che cresce con il gruppo, si adatta ai contesti, integra metodologia, identità, principi di gioco e pratiche di allenamento in un sistema coerente e navigabile.</div>
+    </div>
+  </div>
+</section>
 
 <div class="home-main">
 
@@ -197,18 +318,6 @@
 
   <!-- ============ PANEL ============ -->
   <div class="panel" id="panel">
-    <div class="panel-block" id="p-default">
-      <div class="panel-kicker">Il sistema</div>
-      <div class="panel-title">Framework metodologico e identitario</div>
-      <div class="panel-text">Un ipertesto navigabile che raccoglie filosofia, principi e pratiche del gruppo di lavoro. Si entra dalla mappa e si scende per livelli. Passa sui nodi per una descrizione, clicca per aprire la sezione.</div>
-      <div class="panel-quote">
-        Saremo capaci di vincere se riusciremo ad essere forti quando saremo deboli.
-        <small>— Fabio Grosso</small>
-      </div>
-      <div style="margin-top:16px;">
-        <a href="perche-mtx.html" class="panel-title">Scopri il principio MtX</a>
-      </div>
-    </div>
     <div class="panel-block" id="p-default-list">
       <div class="panel-kicker">Centro</div>
       <div class="node-list">
@@ -271,7 +380,7 @@
 
   var panel = document.getElementById('panel');
   var tooltip = document.getElementById('tooltip');
-  var defaultBlocks = ['p-default', 'p-default-list'].map(function (id) { return document.getElementById(id); });
+  var defaultBlocks = ['p-default-list'].map(function (id) { return document.getElementById(id); });
 
   function renderPanel(key) {
     var n = NODES[key];

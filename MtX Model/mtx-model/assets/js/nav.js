@@ -71,11 +71,19 @@
       '.mtx-nav-list { list-style: none; display: flex; align-items: stretch; gap: 4px; margin: 0; padding: 0; }',
       '.mtx-nav-item { position: relative; }',
       '.mtx-nav-row { display: flex; align-items: center; }',
-      '.mtx-nav-label { font-size: var(--text-sm, 12px); font-weight: var(--weight-semibold, 600); color: var(--color-text-muted, #666); text-decoration: none; padding: 8px 6px; background: none; border: none; font-family: inherit; cursor: pointer; white-space: nowrap; }',
+      /* .mtx-nav-label è condivisa da <a> e <button class="mtx-nav-label-btn"> — un
+         <button> porta di default line-height/font UA diversi da un <a>, che
+         sfalsavano verticalmente le voci con dropdown rispetto a quelle senza.
+         all:unset azzera tutto lo stile nativo del bottone prima di riapplicare
+         esplicitamente solo le proprietà volute, così i due elementi risultano
+         identici a parità di classe. */
+      '.mtx-nav-label { all: unset; box-sizing: border-box; display: inline-block; font-family: inherit; line-height: inherit; font-size: var(--text-sm, 12px); font-weight: var(--weight-semibold, 600); color: var(--color-text-muted, #666); text-decoration: none; padding: 8px 6px; cursor: pointer; white-space: nowrap; }',
       'a.mtx-nav-label:hover, button.mtx-nav-label-btn:hover { color: var(--color-black, #0A0A0A); }',
       '.mtx-nav-item.is-open > .mtx-nav-row .mtx-nav-label { color: var(--color-black, #0A0A0A); }',
-      '.mtx-nav-label-disabled { font-size: var(--text-sm, 12px); font-weight: var(--weight-semibold, 600); color: var(--color-border-mid, #CCC); padding: 8px 6px; white-space: nowrap; cursor: default; }',
-      '.mtx-nav-caret-btn { display: inline-flex; background: none; border: none; padding: 8px 4px; color: var(--color-text-faint, #999); font-size: 11px; }',
+      '.mtx-nav-label-disabled { all: unset; box-sizing: border-box; display: inline-block; font-family: inherit; line-height: inherit; font-size: var(--text-sm, 12px); font-weight: var(--weight-semibold, 600); color: var(--color-border-mid, #CCC); padding: 8px 6px; white-space: nowrap; cursor: default; }',
+      /* Stesso discorso per la freccia: un <button> reale (voci con sottomenu)
+         e lo <span> segnaposto (voci senza) devono avere identico box model. */
+      '.mtx-nav-caret-btn { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; line-height: inherit; font-size: 11px; color: var(--color-text-faint, #999); padding: 8px 4px; cursor: pointer; }',
       '.mtx-nav-row-toggle { cursor: pointer; }',
       '.mtx-nav-row-toggle .mtx-nav-caret-btn { cursor: pointer; }',
       '.mtx-nav-caret-spacer { visibility: hidden; cursor: default; }',
@@ -89,8 +97,12 @@
       '.mtx-nav-sub .mtx-nav-sub { border-left: 2px solid var(--color-border, #E0E0E0); padding-left: 12px; margin-left: 10px; }',
       /* Desktop: dropdown flottante a livello 0, accordion in-flow sotto */
       '@media (min-width: 901px) {',
-      '  .mtx-nav-list > .mtx-nav-item > .mtx-nav-panel { position: absolute; top: 100%; left: 0; min-width: 230px; background: var(--color-bg, #fff); border: var(--border-subtle, 0.5px solid #E0E0E0); border-top: none; box-shadow: 0 10px 24px rgba(0,0,0,0.08); grid-template-rows: 0fr; }',
-      '  .mtx-nav-list > .mtx-nav-item.is-open > .mtx-nav-panel { grid-template-rows: 1fr; }',
+      /* Il bordo va sul pannello SOLO quando è aperto: un box con
+         grid-template-rows:0fr ha altezza 0, ma un border resta comunque
+         visibile come riga sottile anche a 0px — era questa la "riga sotto
+         le voci con freccia" (le uniche ad avere un .mtx-nav-panel nel DOM). */
+      '  .mtx-nav-list > .mtx-nav-item > .mtx-nav-panel { position: absolute; top: 100%; left: 0; min-width: 230px; background: var(--color-bg, #fff); grid-template-rows: 0fr; }',
+      '  .mtx-nav-list > .mtx-nav-item.is-open > .mtx-nav-panel { grid-template-rows: 1fr; border: var(--border-subtle, 0.5px solid #E0E0E0); border-top: none; box-shadow: 0 10px 24px rgba(0,0,0,0.08); }',
       '  .mtx-nav-sub > .mtx-nav-item { padding: 2px 14px; }',
       '  .mtx-nav-sub > .mtx-nav-item > .mtx-nav-row .mtx-nav-label,',
       '  .mtx-nav-sub > .mtx-nav-item > .mtx-nav-row .mtx-nav-label-disabled { display: block; padding: 8px 2px; white-space: normal; }',
@@ -104,6 +116,13 @@
       '  .mtx-nav-item { border-top: var(--border-subtle, 0.5px solid #E0E0E0); }',
       '  .mtx-nav-row { justify-content: space-between; }',
       '  .mtx-nav-label, .mtx-nav-label-disabled { padding: 12px 4px; flex: 1; }',
+      /* Eccezione: una voce che è insieme link E genitore di un sottomenu
+         (es. "Organizzazione di Gioco") non può avere l\'etichetta a flex:1 —
+         riempirebbe l\'intera riga e non lascerebbe spazio vuoto da toccare
+         per aprire il sottomenu senza navigare. L\'etichetta torna alla sua
+         larghezza naturale, lasciando un\'ampia zona vuota prima della
+         freccia: lì il click sulla riga apre/chiude, sul testo naviga. */
+      '  .mtx-nav-row-toggle a.mtx-nav-label { flex: none; }',
       '  .mtx-nav-sub > .mtx-nav-item { padding-left: 14px; }',
       '}'
     ].join('\n');
