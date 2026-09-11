@@ -195,7 +195,7 @@
       <h2 class="odg-acc-heading">I 3 Principi Generali</h2>
       <div class="odg-acc-list">
 
-        <div class="odg-acc-row">
+        <div class="odg-acc-row" id="superiorita">
           <button class="odg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-head">
               <span class="acc-title">Superiorità</span>
@@ -213,7 +213,7 @@
           </div>
         </div>
 
-        <div class="odg-acc-row">
+        <div class="odg-acc-row" id="strutture">
           <button class="odg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-head">
               <span class="acc-title">Strutture</span>
@@ -229,15 +229,15 @@
                 <div class="odg-sub-list">
                   <div>
                     <div class="sub-name">Occupazione</div>
-                    <div class="sub-desc">Come occupiamo lo spazio: scaglionamento, appoggi e mobilità, strutture dinamiche di relazione.</div>
+                    <div class="sub-desc">Come occupiamo lo spazio.</div>
                   </div>
                   <div>
                     <div class="sub-name">Funzione</div>
-                    <div class="sub-desc">Cosa produce quello spazio: generarlo e sfruttarlo in possesso, ridurlo all'avversario in recupero.</div>
+                    <div class="sub-desc">Come gestiamo lo spazio.</div>
                   </div>
                   <div>
                     <div class="sub-name">Interazione</div>
-                    <div class="sub-desc">Come i giocatori collaborano dentro quello spazio: combinazioni in possesso, coperture e scalate in recupero.</div>
+                    <div class="sub-desc">Come collaboriamo nello spazio.</div>
                   </div>
                 </div>
               </div>
@@ -245,7 +245,7 @@
           </div>
         </div>
 
-        <div class="odg-acc-row">
+        <div class="odg-acc-row" id="progressione">
           <button class="odg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-head">
               <span class="acc-title">Progressione</span>
@@ -317,6 +317,16 @@
       });
     });
   });
+
+  // Apre e scrolla al principio indicato dall'hash (es. arrivando da un link esterno)
+  if (location.hash) {
+    var target = document.querySelector('.odg-acc-row' + location.hash);
+    if (target) {
+      target.classList.add('is-open');
+      target.querySelector('.odg-acc-summary').setAttribute('aria-expanded', 'true');
+      target.scrollIntoView({ block: 'start' });
+    }
+  }
 </script>
 
 </body>
