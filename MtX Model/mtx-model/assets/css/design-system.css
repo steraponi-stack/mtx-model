@@ -136,7 +136,10 @@ main {
 }
 
 .page-intro { margin-bottom: var(--gap-section); }
-.page-intro .kicker {
+
+/* Eyebrow riutilizzabile — etichetta di categoria sopra il titolo di pagina.
+   Stessa regola ovunque compaia .kicker, non solo dentro .page-intro. */
+.kicker {
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   letter-spacing: 0.16em;
