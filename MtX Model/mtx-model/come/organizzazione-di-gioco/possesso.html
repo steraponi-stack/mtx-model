@@ -132,6 +132,11 @@
     margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
   }
   .odg-item-indent { border-left: 2px solid var(--color-border); padding-left: 16px; }
+  /* terzo livello — dentro Occupazione: bordo più sottile del livello 1 (non
+     lo stesso spessore ripetuto), per non appesantire con linee identiche annidate */
+  .odg-item-indent-2 { border-left: 1px solid var(--color-border); padding-left: 16px; }
+  /* riga introduttiva dentro Occupazione — solo rientro, nessun bordo proprio */
+  .odg-item-indent-plain { padding-left: 16px; }
 
   /* ===== sotto-accordion annidati di Strutture (Occupazione / Funzione / Interazione) ===== */
   .odg-sub-acc-list { display: flex; flex-direction: column; gap: 8px; }
@@ -304,21 +309,21 @@
                       <div class="odg-sub-acc-body-inner">
                         <div class="odg-sub-acc-detail">
                           <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Occupazione offensiva sul campo"></a> -->
-                          <div class="odg-item" style="padding-top:0;">
+                          <div class="odg-item odg-item-indent-plain" style="padding-top:0;">
                             <div class="odg-item-desc"><strong>Posizioni, posture, distanze e movimento</strong> per occupare gli spazi di gioco offensivi:</div>
                             <div class="odg-item-sub">Statici: linee e corridoi (Settori - Matrice)</div>
                             <div class="odg-item-sub">Dinamici: relazioni socio-affettive rispetto alla palla (intervento, aiuto reciproco, cooperazione)</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Scaglionamento offensivo</div>
                             <!-- immagine inline opzionale: <img class="odg-item-img" src="..." alt="Scaglionamento offensivo"> -->
                             <div class="odg-item-desc">Disposizione su più linee in ampiezza e profondità. Campo grande per garantire più opzioni al possessore.</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Appoggi</div>
                             <div class="odg-item-desc">Legami di gioco attorno alla palla per dare appoggio e soluzioni al possessore.</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Mobilità</div>
                             <div class="odg-item-desc">Per organizzare e trasformare le strutture in funzione del codice palla e dell'intenzione del compagno:</div>
                             <div class="odg-item-desc" style="margin-top:8px;">Codice palla:</div>
@@ -328,7 +333,7 @@
                             <div class="odg-item-sub">Mi muovo per ricevere</div>
                             <div class="odg-item-sub">Mi muovo per creare spazio</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Strutture dinamiche offensive <span class="odg-item-tag">SDIF</span></div>
                             <div class="odg-item-desc">Triangoli, rombi e blocchi di giocatori che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
                           </div>
