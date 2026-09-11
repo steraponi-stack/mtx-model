@@ -120,6 +120,7 @@
   }
   .odg-item-tag { font-size: 12px; font-weight: var(--weight-light); font-style: italic; color: var(--color-text-muted); }
   .odg-item-desc { font-size: 13.5px; font-weight: var(--weight-light); line-height: 1.65; color: var(--color-text-muted); margin-top: 4px; }
+  .odg-item-desc strong { font-weight: var(--weight-semibold); color: var(--color-black); }
   .odg-item-sub {
     font-size: 12.5px; font-weight: var(--weight-light); line-height: 1.6; color: #555;
     padding-left: 15px; position: relative; margin-top: 4px;
@@ -281,7 +282,7 @@
           <button class="odg-acc-summary" type="button" aria-expanded="false">
             <span class="acc-head">
               <span class="acc-title">Strutture</span>
-              <span class="acc-desc">Stabilire relazioni negli spazi di gioco</span>
+              <span class="acc-desc">Stabilire legami negli spazi di gioco</span>
             </span>
             <span class="acc-chevron" aria-hidden="true">⌄</span>
           </button>
@@ -294,7 +295,7 @@
                   <!-- OCCUPAZIONE -->
                   <div class="odg-sub-acc">
                     <button class="odg-sub-acc-summary" type="button" aria-expanded="false">
-                      <span class="sub-acc-title">Occupazione offensiva</span>
+                      <span class="sub-acc-title">Occupazione</span>
                       <span class="sub-acc-chevron" aria-hidden="true">⌄</span>
                     </button>
                     <div class="odg-sub-acc-body">
@@ -302,7 +303,7 @@
                         <div class="odg-sub-acc-detail">
                           <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Occupazione offensiva sul campo"></a> -->
                           <div class="odg-item" style="padding-top:0;">
-                            <div class="odg-item-desc">Posizioni, posture, distanze e movimento per occupare gli spazi di gioco offensivi:</div>
+                            <div class="odg-item-desc"><strong>Posizioni, posture, distanze e movimento</strong> per occupare gli spazi di gioco offensivi:</div>
                             <div class="odg-item-sub">Statici: linee e corridoi (Settori - Matrice)</div>
                             <div class="odg-item-sub">Dinamici: relazioni socio-affettive rispetto alla palla (intervento, aiuto reciproco, cooperazione)</div>
                           </div>
@@ -318,8 +319,12 @@
                           <div class="odg-item">
                             <div class="odg-item-title">Mobilità</div>
                             <div class="odg-item-desc">Per organizzare e trasformare le strutture in funzione del codice palla e dell'intenzione del compagno:</div>
+                            <div class="odg-item-desc" style="margin-top:8px;">Codice palla:</div>
                             <div class="odg-item-sub">Palla aperta → mi muovo in funzione dello spazio</div>
                             <div class="odg-item-sub">Palla chiusa → mi muovo in funzione del compagno</div>
+                            <div class="odg-item-desc" style="margin-top:8px;">Intenzione del compagno:</div>
+                            <div class="odg-item-sub">Mi muovo per ricevere</div>
+                            <div class="odg-item-sub">Mi muovo per creare spazio</div>
                           </div>
                           <div class="odg-item">
                             <div class="odg-item-title">Strutture dinamiche offensive <span class="odg-item-tag">SDIF</span></div>
@@ -495,11 +500,21 @@
     });
   });
 
-  document.querySelectorAll('.odg-sub-acc').forEach(function (sub) {
-    var btn = sub.querySelector('.odg-sub-acc-summary');
-    btn.addEventListener('click', function () {
-      var open = sub.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.querySelectorAll('.odg-sub-acc-list').forEach(function (list) {
+    var subs = list.querySelectorAll('.odg-sub-acc');
+    subs.forEach(function (sub) {
+      var btn = sub.querySelector('.odg-sub-acc-summary');
+      btn.addEventListener('click', function () {
+        var wasOpen = sub.classList.contains('is-open');
+        subs.forEach(function (s) {
+          s.classList.remove('is-open');
+          s.querySelector('.odg-sub-acc-summary').setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          sub.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
   });
 </script>
