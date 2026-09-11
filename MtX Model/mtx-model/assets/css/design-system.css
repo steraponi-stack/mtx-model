@@ -115,14 +115,6 @@ a { color: inherit; }
 .site-header .breadcrumb a:hover { color: var(--color-black); text-decoration: underline; }
 .site-header .breadcrumb .sep { margin: 0 8px; color: var(--color-text-faint); }
 .site-header .breadcrumb .current { color: var(--color-black); font-weight: var(--weight-medium); }
-.site-header .season {
-  margin-left: auto;
-  font-size: var(--text-xs);
-  color: var(--color-text-faint);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
 
 /* ============================================================
    MAIN + SEZIONI
@@ -488,7 +480,6 @@ a.node-card:hover { background: var(--color-bg-subtle); }
     padding: 18px var(--margin-page-mobile);
     gap: 6px 14px;
   }
-  .site-header .season { margin-left: 0; width: 100%; order: 3; }
   .site-footer { padding: 20px var(--margin-page-mobile); }
   .page-intro .subtitle { font-size: var(--text-md); }
   .node-card .node-tag { display: none; }

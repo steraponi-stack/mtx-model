@@ -20,31 +20,6 @@
     width: 100%;
   }
 
-  .entry-row {
-    display: flex;
-    border-bottom: var(--border-subtle);
-  }
-  .entry-btn {
-    flex: 1;
-    padding: 16px var(--margin-page-desktop);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-right: var(--border-subtle);
-    transition: background .15s, color .15s;
-  }
-  .entry-btn:last-child { border-right: none; }
-  .entry-btn:hover { background: var(--color-bg-subtle); color: var(--color-black); }
-  .entry-btn .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-text-faint); flex-shrink: 0; }
-  .entry-btn.done .dot { background: var(--color-black); }
-  .entry-btn.todo .dot { background: var(--color-bg); border: 1.5px solid var(--color-border-mid); }
-
   .map-wrap {
     flex-shrink: 0;
     position: relative;
@@ -118,7 +93,6 @@
   @media (max-width: 900px) {
     .home-main { flex-direction: column; gap: 40px; padding: 32px var(--margin-page-mobile) 48px; }
     .panel { max-width: 100%; width: 100%; }
-    .entry-btn { padding: 14px var(--margin-page-mobile); }
     .map-wrap svg { height: auto; width: min(88vw, 460px); }
   }
 </style>
@@ -128,19 +102,8 @@
 <div class="tooltip" id="tooltip" role="status"></div>
 
 <header class="site-header">
-  <span class="home-link">MtX Model</span>
   <span class="breadcrumb"><span class="current">Framework metodologico e identitario</span></span>
-  <span class="season">MtX Model</span>
 </header>
-
-<nav class="entry-row" aria-label="Cornice esterna">
-  <a class="entry-btn done" href="contesto/socio-culturale.html">
-    <span class="dot"></span> Contesto Socio-Culturale
-  </a>
-  <a class="entry-btn todo" href="contesto/chi-siamo.html">
-    <span class="dot"></span> Chi Siamo — Staff &amp; Organigramma
-  </a>
-</nav>
 
 <div class="home-main">
 

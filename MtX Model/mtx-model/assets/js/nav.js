@@ -19,14 +19,9 @@
   var BASE = scriptEl.src.replace(/assets\/js\/nav\.js(?:\?.*)?$/, '');
 
   var MENU = [
+    { label: 'Identità', href: 'perche/scopo.html' },
     {
-      label: 'Perché',
-      items: [
-        { label: 'Identità', href: 'perche/scopo.html' }
-      ]
-    },
-    {
-      label: 'Come',
+      label: 'Principi',
       items: [
         { label: 'Metodologia', href: 'come/metodologia/index.html' },
         { label: 'Modello di Gioco', href: 'come/modello-gioco/index.html' },
@@ -43,7 +38,7 @@
       ]
     },
     {
-      label: 'Cosa',
+      label: 'Strumenti',
       items: [
         { label: 'Sviluppo Individuale', href: 'cosa/sviluppo-individuale.html' },
         { label: 'Mezzi Allenamento', href: 'cosa/mezzi.html' },
@@ -80,7 +75,10 @@
       'a.mtx-nav-label:hover, button.mtx-nav-label-btn:hover { color: var(--color-black, #0A0A0A); }',
       '.mtx-nav-item.is-open > .mtx-nav-row .mtx-nav-label { color: var(--color-black, #0A0A0A); }',
       '.mtx-nav-label-disabled { font-size: var(--text-sm, 12px); font-weight: var(--weight-semibold, 600); color: var(--color-border-mid, #CCC); padding: 8px 6px; white-space: nowrap; cursor: default; }',
-      '.mtx-nav-caret-btn { background: none; border: none; cursor: pointer; padding: 8px 4px; color: var(--color-text-faint, #999); font-size: 11px; }',
+      '.mtx-nav-caret-btn { display: inline-flex; background: none; border: none; padding: 8px 4px; color: var(--color-text-faint, #999); font-size: 11px; }',
+      '.mtx-nav-row-toggle { cursor: pointer; }',
+      '.mtx-nav-row-toggle .mtx-nav-caret-btn { cursor: pointer; }',
+      '.mtx-nav-caret-spacer { visibility: hidden; cursor: default; }',
       '.mtx-nav-caret { display: inline-block; transition: transform .2s ease; }',
       '.mtx-nav-item.is-open > .mtx-nav-row .mtx-nav-caret { transform: rotate(180deg); }',
       '.mtx-nav-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }',
@@ -118,7 +116,7 @@
       if (sib === li) return;
       sib.classList.remove('is-open');
       var sibCaret = sib.querySelector(':scope > .mtx-nav-row > .mtx-nav-caret-btn');
-      if (sibCaret) sibCaret.setAttribute('aria-expanded', 'false');
+      if (sibCaret && sibCaret.tagName === 'BUTTON') sibCaret.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -126,7 +124,7 @@
     root.querySelectorAll('.mtx-nav-item.is-open').forEach(function (li) {
       li.classList.remove('is-open');
       var caret = li.querySelector(':scope > .mtx-nav-row > .mtx-nav-caret-btn');
-      if (caret) caret.setAttribute('aria-expanded', 'false');
+      if (caret && caret.tagName === 'BUTTON') caret.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -160,6 +158,9 @@
       row.appendChild(b);
     }
 
+    // Slot per la freccia — riservato su ogni voce, anche quando vuoto
+    // (nessun sottomenu), così le voci senza dropdown restano allineate
+    // con quelle che ce l'hanno.
     if (hasChildren) {
       var caretBtn = document.createElement('button');
       caretBtn.type = 'button';
@@ -168,6 +169,7 @@
       caretBtn.setAttribute('aria-label', 'Espandi ' + item.label);
       caretBtn.innerHTML = '<span class="mtx-nav-caret" aria-hidden="true">⌄</span>';
       row.appendChild(caretBtn);
+      row.classList.add('mtx-nav-row-toggle');
 
       var panel = document.createElement('div');
       panel.className = 'mtx-nav-panel';
@@ -192,6 +194,17 @@
       caretBtn.addEventListener('click', toggle);
       var labelBtn = row.querySelector('.mtx-nav-label-btn');
       if (labelBtn) labelBtn.addEventListener('click', toggle);
+      // Il target di tocco copre l'intera riga, non solo la freccia: un
+      // click sullo spazio vuoto tra etichetta e freccia apre/chiude
+      // comunque (i listener su etichetta/freccia fermano la propagazione,
+      // quindi qui arrivano solo i click "a vuoto", senza doppio toggle).
+      row.addEventListener('click', toggle);
+    } else {
+      var spacer = document.createElement('span');
+      spacer.className = 'mtx-nav-caret-btn mtx-nav-caret-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+      spacer.innerHTML = '<span class="mtx-nav-caret" aria-hidden="true">⌄</span>';
+      row.appendChild(spacer);
     }
 
     return li;
