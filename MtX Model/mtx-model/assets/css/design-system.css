@@ -59,7 +59,6 @@
   --radius-card:         6px;
   --border-main:         1.5px solid var(--color-black);
   --border-subtle:       0.5px solid var(--color-border);
-  --border-bottom-bar:   3px solid var(--color-black);
 
   --maxw-content: 860px;
 }
@@ -90,7 +89,7 @@ a { color: inherit; }
    ============================================================ */
 .site-header {
   padding: 24px var(--margin-page-desktop) 18px;
-  border-bottom: var(--border-main);
+  border-bottom: var(--border-subtle);
   display: flex;
   align-items: baseline;
   gap: 20px;
@@ -429,7 +428,7 @@ a.node-card:hover { background: var(--color-bg-subtle); }
    FOOTER
    ============================================================ */
 .site-footer {
-  border-top: var(--border-bottom-bar);
+  border-top: var(--border-main);
   padding: 22px var(--margin-page-desktop);
   display: flex;
   gap: 20px;
