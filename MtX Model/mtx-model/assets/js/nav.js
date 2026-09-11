@@ -26,8 +26,15 @@
         { label: 'Metodologia', href: 'come/metodologia/index.html' },
         { label: 'Modello di Gioco', href: 'come/modello-gioco/index.html' },
         {
+          /* Niente href qui — prima questa voce era insieme link e genitore
+             di sottomenu, e toccare il testo (cioè quasi tutta la riga)
+             navigava invece di aprire/chiudere: era questo il bug del tap
+             "solo sull'icona", segnalato più volte. Ora è un gruppo puro,
+             come Principi/Strumenti: tutta la riga apre/chiude, senza
+             ambiguità. La pagina hub resta raggiungibile da altrove (card
+             in home, breadcrumb e footer delle pagine Possesso/Recupero/
+             Transizioni). */
           label: 'Organizzazione di Gioco',
-          href: 'come/organizzazione-di-gioco/index.html',
           items: [
             { label: 'Possesso', href: 'come/organizzazione-di-gioco/possesso.html' },
             { label: 'Recupero', href: 'come/organizzazione-di-gioco/recupero.html' },
@@ -116,13 +123,6 @@
       '  .mtx-nav-item { border-top: var(--border-subtle, 0.5px solid #E0E0E0); }',
       '  .mtx-nav-row { justify-content: space-between; }',
       '  .mtx-nav-label, .mtx-nav-label-disabled { padding: 12px 4px; flex: 1; }',
-      /* Eccezione: una voce che è insieme link E genitore di un sottomenu
-         (es. "Organizzazione di Gioco") non può avere l\'etichetta a flex:1 —
-         riempirebbe l\'intera riga e non lascerebbe spazio vuoto da toccare
-         per aprire il sottomenu senza navigare. L\'etichetta torna alla sua
-         larghezza naturale, lasciando un\'ampia zona vuota prima della
-         freccia: lì il click sulla riga apre/chiude, sul testo naviga. */
-      '  .mtx-nav-row-toggle a.mtx-nav-label { flex: none; }',
       '  .mtx-nav-sub > .mtx-nav-item { padding-left: 14px; }',
       '}'
     ].join('\n');
