@@ -130,6 +130,11 @@
     margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--border-subtle);
   }
   .odg-item-indent { border-left: 2px solid var(--color-border); padding-left: 16px; }
+  /* terzo livello — dentro Occupazione: bordo più sottile del livello 1 (non
+     lo stesso spessore ripetuto), per non appesantire con linee identiche annidate */
+  .odg-item-indent-2 { border-left: 1px solid var(--color-border); padding-left: 16px; }
+  /* riga introduttiva dentro Occupazione — solo rientro, nessun bordo proprio */
+  .odg-item-indent-plain { padding-left: 16px; }
 
   /* ===== sotto-accordion annidati di Strutture (Occupazione / Funzione / Interazione) ===== */
   .odg-sub-acc-list { display: flex; flex-direction: column; gap: 8px; }
@@ -301,28 +306,28 @@
                       <div class="odg-sub-acc-body-inner">
                         <div class="odg-sub-acc-detail">
                           <!-- thumbnail riassuntivo opzionale: <a class="odg-sub-acc-thumb" href="..."><img src="..." alt="Occupazione difensiva sul campo"></a> -->
-                          <div class="odg-item" style="padding-top:0;">
+                          <div class="odg-item odg-item-indent-plain" style="padding-top:0;">
                             <div class="odg-item-desc"><strong>Posizioni, posture, distanze e movimento</strong> per occupare gli spazi di gioco statici (struttura globale difensiva) e dinamici difensivi.</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Compattezza e scaglionamento</div>
                             <!-- immagine inline opzionale: <img class="odg-item-img" src="..." alt="Compattezza e scaglionamento"> -->
                             <div class="odg-item-desc">Ridurre lo spazio tra le linee in ampiezza e profondità — "campo piccolo" — per impenetrabilità centrale e disposizione su linee di coperture reciproche.</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Pressione</div>
                             <div class="odg-item-desc">Pressione costante al possessore e agli appoggi attorno alla palla per rubare spazio-tempo all'avversario al fine di:</div>
                             <div class="odg-item-sub">Indirizzare il gioco e recuperare il pallone</div>
                             <div class="odg-item-sub">Forzare errori o palle lunghe</div>
                             <div class="odg-item-sub">Guadagnare tempo per organizzarsi</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Profondità</div>
                             <div class="odg-item-desc">Salire/togliere la profondità e ridurre gli interspazi in funzione del codice palla e dell'intenzione dell'avversario:</div>
                             <div class="odg-item-sub">Palla aperta → scappo e tolgo lo spazio in profondità</div>
                             <div class="odg-item-sub">Palla chiusa → salgo e guadagno spazio in avanti</div>
                           </div>
-                          <div class="odg-item">
+                          <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Strutture dinamiche difensive <span class="odg-item-tag">SDIF</span></div>
                             <div class="odg-item-desc">Linee e triangoli di pressione-copertura tra giocatori vicini. Scalate e scivolamenti coordinati.</div>
                           </div>

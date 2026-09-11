@@ -117,8 +117,14 @@
   }
   .odg-acc-detail p:last-of-type { margin-bottom: 0; }
 
-  /* sotto-componenti di Strutture, mostrati dentro il dettaglio */
+  /* sotto-componenti di Strutture, mostrati dentro il dettaglio — rientrati
+     con bordo laterale per segnalare che sono un livello sotto (stesso
+     trattamento di Superiorità/Progressione) */
   .odg-sub-list { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+  .odg-sub-list > div {
+    border-left: 2px solid var(--color-border);
+    padding-left: 16px;
+  }
   .odg-sub-list .sub-name {
     font-size: 13px;
     font-weight: var(--weight-semibold);
