@@ -206,6 +206,51 @@
     border-radius: var(--radius-card);
   }
 
+  /* ===== diagrammi tattici — Superiorità (Possesso) =====
+     Affiancati al testo dell'item cui si riferiscono, non a piena
+     larghezza: float a destra, il box .odg-item si allarga per
+     contenerli (overflow:hidden fa da clearfix). Tap/click ingrandisce
+     in overlay — utile soprattutto su mobile dove il thumbnail è piccolo. */
+  .odg-item-has-diagram { overflow: hidden; }
+  .odg-item-diagram {
+    max-width: 190px;
+    width: 42%;
+    height: auto;
+    display: block;
+    float: right;
+    margin: 0 0 10px 16px;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+    cursor: zoom-in;
+  }
+  @media (max-width: 560px) {
+    /* sotto il testo, non sopra: l'immagine è la prima nel markup (per il
+       float desktop), quindi su mobile la spostiamo in fondo con l'ordine flex */
+    .odg-item-has-diagram { display: flex; flex-direction: column; }
+    .odg-item-diagram { order: 1; float: none; width: 100%; max-width: 240px; margin: 10px 0 0; }
+  }
+
+  .odg-diagram-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    cursor: zoom-out;
+  }
+  .odg-diagram-overlay.is-open { display: flex; }
+  .odg-diagram-overlay img {
+    max-width: min(90vw, 480px);
+    max-height: 86vh;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius-card);
+    background: var(--color-bg);
+  }
+
   /* ===== fascia in fondo — 6 principi individuali ===== */
   .card-grid { display: grid; gap: 10px; }
   .card-grid-6 { grid-template-columns: repeat(6, 1fr); }
@@ -260,19 +305,23 @@
             <div class="odg-acc-body-inner">
               <div class="odg-acc-detail">
 
-                <div class="odg-item odg-item-indent">
+                <div class="odg-item odg-item-indent odg-item-has-diagram">
+                  <img class="odg-item-diagram" src="../../assets/img/diagrammi/possesso-superiorita-numerica.png" alt="Diagramma tattico della superiorità numerica: più giocatori in blu si dispongono in zona palla contro un numero inferiore di avversari in rosso">
                   <div class="odg-item-title">Numerica <span class="odg-item-tag">"Siamo di più"</span></div>
                   <div class="odg-item-desc">Più giocatori in zona palla. Mantenere le distanze e fissare un avversario per creare vantaggio numerico.</div>
                 </div>
-                <div class="odg-item odg-item-indent">
+                <div class="odg-item odg-item-indent odg-item-has-diagram">
+                  <img class="odg-item-diagram" src="../../assets/img/diagrammi/possesso-superiorita-posizionale.png" alt="Diagramma tattico della superiorità posizionale: il portatore di palla individua il compagno smarcato in una posizione vantaggiosa tra le linee avversarie">
                   <div class="odg-item-title">Posizionale <span class="odg-item-tag">"Siamo posizionati meglio"</span></div>
                   <div class="odg-item-desc">Trovare l'uomo libero in posizione vantaggiosa tra le linee avversarie.</div>
                 </div>
-                <div class="odg-item odg-item-indent">
+                <div class="odg-item odg-item-indent odg-item-has-diagram">
+                  <img class="odg-item-diagram" src="../../assets/img/diagrammi/possesso-superiorita-qualitativa.png" alt="Diagramma tattico della superiorità qualitativa: il portatore di palla supera in un duello 1 contro 1 la pressione diretta dell'avversario">
                   <div class="odg-item-title">Qualitativa <span class="odg-item-tag">"Siamo più bravi"</span></div>
                   <div class="odg-item-desc">Sfruttare le abilità individuali superiori nei duelli e nelle situazioni 1v1.</div>
                 </div>
-                <div class="odg-item odg-item-indent">
+                <div class="odg-item odg-item-indent odg-item-has-diagram">
+                  <img class="odg-item-diagram" src="../../assets/img/diagrammi/possesso-superiorita-relazionale.png" alt="Diagramma tattico della superiorità relazionale: combinazione di gioco tra due compagni con doppia opzione di passaggio per liberare lo spazio">
                   <div class="odg-item-title">Relazionale <span class="odg-item-tag">"Ci relazioniamo meglio"</span></div>
                   <div class="odg-item-desc">Percepire e riconoscere le intenzioni del compagno. Intelligenza collettiva nella circolazione palla.</div>
                 </div>
@@ -498,6 +547,10 @@
   <span class="footer-sign">MtX Model · Stefano Raponi · v1.0 · Settembre 2026</span>
 </footer>
 
+<div class="odg-diagram-overlay" id="diagram-overlay">
+  <img id="diagram-overlay-img" src="" alt="">
+</div>
+
 <script>
   document.querySelectorAll('.odg-acc-col').forEach(function (col) {
     var rows = col.querySelectorAll('.odg-acc-row');
@@ -534,6 +587,31 @@
       });
     });
   });
+
+  // Tap/click sui diagrammi tattici di Superiorità → ingrandimento in overlay
+  (function () {
+    var overlay = document.getElementById('diagram-overlay');
+    var overlayImg = document.getElementById('diagram-overlay-img');
+    if (!overlay || !overlayImg) return;
+
+    function openOverlay(img) {
+      overlayImg.src = img.src;
+      overlayImg.alt = img.alt;
+      overlay.classList.add('is-open');
+    }
+    function closeOverlay() {
+      overlay.classList.remove('is-open');
+      overlayImg.src = '';
+    }
+
+    document.querySelectorAll('.odg-item-diagram').forEach(function (img) {
+      img.addEventListener('click', function () { openOverlay(img); });
+    });
+    overlay.addEventListener('click', closeOverlay);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeOverlay();
+    });
+  })();
 </script>
 
 </body>
