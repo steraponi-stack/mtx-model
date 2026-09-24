@@ -249,6 +249,32 @@
     cursor: zoom-in;
   }
 
+  /* ===== layout a due colonne sticky (desktop) per i blocchi con un
+     .odg-diagram-full — testo a sinistra, immagine sticky a destra,
+     più larga della colonna testo (il diagramma è denso e verticale).
+     Stesso pattern/breakpoint di .mdg-layout in modello-gioco/index.html
+     (sticky a destra, stack singolo sotto i 1024px). Mobile non è
+     toccato: senza questa media query il markup resta un flusso
+     verticale normale — intro, immagine, card — esattamente come oggi. */
+  @media (min-width: 1024px) {
+    .odg-occ-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 36px;
+      align-items: start;
+    }
+    .odg-occ-layout > .odg-diagram-full {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      position: sticky;
+      top: 24px;
+      margin: 0;
+    }
+    .odg-occ-layout > :not(.odg-diagram-full) {
+      grid-column: 1;
+    }
+  }
+
   .odg-diagram-overlay {
     position: fixed;
     inset: 0;
@@ -374,6 +400,7 @@
                     <div class="odg-sub-acc-body">
                       <div class="odg-sub-acc-body-inner">
                         <div class="odg-sub-acc-detail">
+                          <div class="odg-occ-layout">
                           <div class="odg-item odg-item-indent-plain" style="padding-top:0;">
                             <div class="odg-item-desc"><strong>Posizioni, posture, distanze e movimento</strong> per occupare gli spazi di gioco offensivi:</div>
                             <div class="odg-item-sub">Statici: linee e corridoi (Settori - Matrice)</div>
@@ -404,6 +431,7 @@
                           <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Strutture dinamiche offensive <span class="odg-item-tag">SDIF</span></div>
                             <div class="odg-item-desc">Triangoli, rombi e blocchi di giocatori che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
+                          </div>
                           </div>
                         </div>
                       </div>
@@ -594,15 +622,32 @@
 </div>
 
 <script>
+  // .odg-acc-body-inner / .odg-sub-acc-body-inner hanno overflow:hidden per
+  // clippare il contenuto durante l'animazione di apertura/chiusura — ma un
+  // overflow diverso da visible su un antenato rompe position:sticky (il
+  // diagramma di Occupazione sticky-a-destra), perché diventa lui il
+  // contenitore di riferimento per lo sticky invece della pagina. Rimuovendo
+  // l'overflow:hidden (inline) solo a transizione conclusa e solo se la riga
+  // è rimasta aperta, l'animazione di apertura/chiusura resta identica a
+  // prima ma una volta aperta lo sticky torna ad agganciarsi allo scroll
+  // della pagina, non del suo contenitore.
   document.querySelectorAll('.odg-acc-col').forEach(function (col) {
     var rows = col.querySelectorAll('.odg-acc-row');
     rows.forEach(function (row) {
       var btn = row.querySelector('.odg-acc-summary');
+      var body = row.querySelector(':scope > .odg-acc-body');
+      var inner = body.querySelector(':scope > .odg-acc-body-inner');
+      body.addEventListener('transitionend', function (e) {
+        if (e.target !== body || e.propertyName !== 'grid-template-rows') return;
+        inner.style.overflow = row.classList.contains('is-open') ? 'visible' : '';
+      });
       btn.addEventListener('click', function () {
         var wasOpen = row.classList.contains('is-open');
         rows.forEach(function (r) {
           r.classList.remove('is-open');
           r.querySelector('.odg-acc-summary').setAttribute('aria-expanded', 'false');
+          var rInner = r.querySelector(':scope > .odg-acc-body > .odg-acc-body-inner');
+          if (rInner) rInner.style.overflow = '';
         });
         if (!wasOpen) {
           row.classList.add('is-open');
@@ -616,11 +661,19 @@
     var subs = list.querySelectorAll('.odg-sub-acc');
     subs.forEach(function (sub) {
       var btn = sub.querySelector('.odg-sub-acc-summary');
+      var body = sub.querySelector(':scope > .odg-sub-acc-body');
+      var inner = body.querySelector(':scope > .odg-sub-acc-body-inner');
+      body.addEventListener('transitionend', function (e) {
+        if (e.target !== body || e.propertyName !== 'grid-template-rows') return;
+        inner.style.overflow = sub.classList.contains('is-open') ? 'visible' : '';
+      });
       btn.addEventListener('click', function () {
         var wasOpen = sub.classList.contains('is-open');
         subs.forEach(function (s) {
           s.classList.remove('is-open');
           s.querySelector('.odg-sub-acc-summary').setAttribute('aria-expanded', 'false');
+          var sInner = s.querySelector(':scope > .odg-sub-acc-body > .odg-sub-acc-body-inner');
+          if (sInner) sInner.style.overflow = '';
         });
         if (!wasOpen) {
           sub.classList.add('is-open');
