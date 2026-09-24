@@ -26,15 +26,14 @@
         { label: 'Metodologia', href: 'come/metodologia/index.html' },
         { label: 'Modello di Gioco', href: 'come/modello-gioco/index.html' },
         {
-          /* Niente href qui — prima questa voce era insieme link e genitore
-             di sottomenu, e toccare il testo (cioè quasi tutta la riga)
-             navigava invece di aprire/chiudere: era questo il bug del tap
-             "solo sull'icona", segnalato più volte. Ora è un gruppo puro,
-             come Principi/Strumenti: tutta la riga apre/chiude, senza
-             ambiguità. La pagina hub resta raggiungibile da altrove (card
-             in home, breadcrumb e footer delle pagine Possesso/Recupero/
-             Transizioni). */
+          /* Voce "dual-purpose": ha sia href sia sottovoci. L'etichetta è
+             un link vero verso l'hub, la freccia è l'unico elemento che
+             apre/chiude il sottomenu — vedi renderItem(): per le voci con
+             href il click sull'intera riga NON fa toggle (solo la freccia
+             lo fa), altrimenti un click sull'etichetta attiverebbe insieme
+             sia la navigazione sia il toggle. */
           label: 'Organizzazione di Gioco',
+          href: 'come/organizzazione-di-gioco/index.html',
           items: [
             { label: 'Possesso', href: 'come/organizzazione-di-gioco/possesso.html' },
             { label: 'Recupero', href: 'come/organizzazione-di-gioco/recupero.html' },
@@ -213,11 +212,18 @@
       caretBtn.addEventListener('click', toggle);
       var labelBtn = row.querySelector('.mtx-nav-label-btn');
       if (labelBtn) labelBtn.addEventListener('click', toggle);
-      // Il target di tocco copre l'intera riga, non solo la freccia: un
-      // click sullo spazio vuoto tra etichetta e freccia apre/chiude
-      // comunque (i listener su etichetta/freccia fermano la propagazione,
-      // quindi qui arrivano solo i click "a vuoto", senza doppio toggle).
-      row.addEventListener('click', toggle);
+      // Il target di tocco copre l'intera riga, non solo la freccia — ma
+      // SOLO per i gruppi puri (senza href): un click sullo spazio vuoto
+      // tra etichetta e freccia apre/chiude comunque (i listener su
+      // etichetta/freccia fermano la propagazione, quindi qui arrivano
+      // solo i click "a vuoto", senza doppio toggle). Per le voci
+      // dual-purpose (href + items, es. "Organizzazione di Gioco")
+      // l'etichetta è un link vero: estendere il toggle a tutta la riga
+      // farebbe scattare insieme navigazione e apertura sullo stesso
+      // click. Qui la freccia resta l'unico modo per aprire/chiudere.
+      if (!item.href) {
+        row.addEventListener('click', toggle);
+      }
     } else {
       var spacer = document.createElement('span');
       spacer.className = 'mtx-nav-caret-btn mtx-nav-caret-spacer';

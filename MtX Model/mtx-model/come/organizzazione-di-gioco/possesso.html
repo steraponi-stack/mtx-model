@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Possesso — Organizzazione di Gioco — MtX Model</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
-<script src="../../assets/js/nav.js?v=3" defer></script>
+<script src="../../assets/js/nav.js?v=4" defer></script>
 <style>
   main { max-width: 1280px; }
 
@@ -536,6 +536,27 @@
     </div>
   </section>
 
+  <div style="border-top:var(--border-subtle); margin:0 0 var(--gap-section);"></div>
+
+  <!-- La slide -->
+  <section class="odg-section odg-section-narrow" style="margin-bottom:var(--gap-item);">
+    <h2>La slide</h2>
+  </section>
+  <section class="odg-section">
+    <div class="slide-embed">
+      <iframe src="../../assets/slides/possesso_slide.html" title="Possesso — slide" loading="lazy"
+              onload="window.mtxSlideCheck && window.mtxSlideCheck(this)"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"></iframe>
+      <div class="slide-missing" style="display:none">
+        <strong>Slide non ancora disponibile</strong>
+        <span>Aggiungi <code>possesso_slide.html</code> in <code>assets/slides/</code>.</span>
+      </div>
+    </div>
+    <div class="slide-actions">
+      <a class="btn" href="../../assets/slides/possesso_slide.html" target="_blank" rel="noopener">Apri la slide a schermo intero ↗</a>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -613,6 +634,8 @@
     });
   })();
 </script>
+
+<script src="../../assets/js/slide-fit.js"></script>
 
 </body>
 </html>
