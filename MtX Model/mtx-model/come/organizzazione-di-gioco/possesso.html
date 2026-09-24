@@ -230,6 +230,25 @@
     .odg-item-diagram { order: 1; float: none; width: 100%; max-width: 240px; margin: 10px 0 0; }
   }
 
+  /* ===== diagrammi di sintesi — full-width =====
+     Variante per i diagrammi che riassumono un'intera sottosezione (più
+     sotto-principi insieme, es. Occupazione: Scaglionamento + Appoggi +
+     Mobilità), non un singolo bullet come .odg-item-diagram: blocco
+     separato sotto al testo, largo quanto la colonna di contenuto invece
+     che 240px — qui la leggibilità dei dettagli conta più del risparmio
+     di spazio. Stesso overlay di zoom di .odg-item-diagram (vedi query
+     selector nello script in fondo), qui come rifinitura opzionale e non
+     più come unico modo per leggere il dettaglio. */
+  .odg-diagram-full {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 16px auto 24px;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+    cursor: zoom-in;
+  }
+
   .odg-diagram-overlay {
     position: fixed;
     inset: 0;
@@ -355,12 +374,14 @@
                     <div class="odg-sub-acc-body">
                       <div class="odg-sub-acc-body-inner">
                         <div class="odg-sub-acc-detail">
-                          <div class="odg-item odg-item-indent-plain odg-item-has-diagram" style="padding-top:0;">
-                            <img class="odg-item-diagram" src="../../assets/img/diagrammi/possesso-occupazione.png" alt="Diagramma di scaglionamento, appoggi e mobilità nella fase di possesso">
+                          <div class="odg-item odg-item-indent-plain" style="padding-top:0;">
                             <div class="odg-item-desc"><strong>Posizioni, posture, distanze e movimento</strong> per occupare gli spazi di gioco offensivi:</div>
                             <div class="odg-item-sub">Statici: linee e corridoi (Settori - Matrice)</div>
                             <div class="odg-item-sub">Dinamici: relazioni socio-affettive rispetto alla palla (intervento, aiuto reciproco, cooperazione)</div>
                           </div>
+
+                          <img class="odg-diagram-full" src="../../assets/img/diagrammi/possesso-occupazione.png" alt="Diagramma di scaglionamento, appoggi e mobilità nella fase di possesso">
+
                           <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Scaglionamento offensivo</div>
                             <!-- immagine inline opzionale: <img class="odg-item-img" src="..." alt="Scaglionamento offensivo"> -->
@@ -625,7 +646,7 @@
       overlayImg.src = '';
     }
 
-    document.querySelectorAll('.odg-item-diagram').forEach(function (img) {
+    document.querySelectorAll('.odg-item-diagram, .odg-diagram-full').forEach(function (img) {
       img.addEventListener('click', function () { openOverlay(img); });
     });
     overlay.addEventListener('click', closeOverlay);
