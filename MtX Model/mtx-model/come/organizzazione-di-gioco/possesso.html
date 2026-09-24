@@ -256,10 +256,29 @@
      (sticky a destra, stack singolo sotto i 1024px). Mobile non è
      toccato: senza questa media query il markup resta un flusso
      verticale normale — intro, immagine, card — esattamente come oggi. */
+  /* La colonna 1 (testo) ha esattamente 2 "righe": l'intro e il blocco
+     .odg-occ-cards che raggruppa le 4 card (Scaglionamento/Appoggi/
+     Mobilità/SDIF) — non 5 righe separate. Servono entrambe le cose
+     insieme perché il diagramma sticky in colonna 2 le copre entrambe
+     con grid-row:1/-1:
+     1) righe esplicite, non implicite — con grid-row:1/-1 ma senza
+        grid-template-rows dichiarato, "-1" non aveva un'ultima riga
+        esplicita a cui agganciarsi e il motore grid finiva per
+        scaricare TUTTA l'altezza necessaria all'immagine sticky dentro
+        la prima riga (l'intro, poche righe di testo) invece che
+        sull'insieme — un vuoto enorme sotto l'intro, prima di
+        "Scaglionamento offensivo". Dichiarare le righe esplicitamente
+        risolve l'ambiguità di "-1".
+     2) .odg-occ-cards raggruppa le 4 card in una sola riga — se restano
+        4 figli diretti separati, la riga 1 (l'intro) torna a gonfiarsi
+        per coprire da sola l'altezza dell'immagine, stesso sintomo.
+     Su mobile .odg-occ-cards non ha stile proprio: è invisibile, stesso
+     flusso di prima (intro, immagine, poi le 4 card in sequenza). */
   @media (min-width: 1024px) {
     .odg-occ-layout {
       display: grid;
       grid-template-columns: 1fr 1.4fr;
+      grid-template-rows: max-content max-content;
       gap: 36px;
       align-items: start;
     }
@@ -409,6 +428,7 @@
 
                           <img class="odg-diagram-full" src="../../assets/img/diagrammi/possesso-occupazione.png" alt="Diagramma di scaglionamento, appoggi e mobilità nella fase di possesso">
 
+                          <div class="odg-occ-cards">
                           <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Scaglionamento offensivo</div>
                             <!-- immagine inline opzionale: <img class="odg-item-img" src="..." alt="Scaglionamento offensivo"> -->
@@ -431,6 +451,7 @@
                           <div class="odg-item odg-item-indent-2">
                             <div class="odg-item-title">Strutture dinamiche offensive <span class="odg-item-tag">SDIF</span></div>
                             <div class="odg-item-desc">Triangoli, rombi e blocchi di giocatori che si riorganizzano per creare superiorità e spostare il centro del gioco.</div>
+                          </div>
                           </div>
                           </div>
                         </div>
